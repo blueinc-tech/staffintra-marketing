@@ -2,10 +2,16 @@
 // a doorway across a tiled floor to a wall terminal, with one worker already
 // through the door and another arriving phone in hand.
 //
-// Coordinates are exactly as drawn and geometry-checked — nothing has moved.
-// The drawing is only *grouped*: by build stage (--s), so it assembles from the
-// floor upward rather than sliding in whole, and by moving part, so screens,
-// arms, heads and the confirmation card keep their own loops afterwards.
+// The original coordinates are exactly as drawn and geometry-checked. What has
+// been added since:
+//   - grouping by build stage (--s), so it assembles from the floor upward
+//   - three terminal screens that cycle: idle stripes, a reading state, a tick
+//   - a shift change: the worker at the terminal leaves toward it and another
+//     arrives from the door, on an alternating loop
+//
+// New screen content is plotted inside the screen's parallelogram
+// (316.2,112.4) (349.5,131.6) (349.5,155.6) (316.2,136.4) and every added edge
+// keeps the isometric ratio dy/dx = 0.577.
 
 export default function HeroArt() {
   return (
@@ -49,18 +55,33 @@ export default function HeroArt() {
           <polygon points="326.6,96.8 368.2,120.8 353.6,129.2 312,105.2" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
         </g>
 
-        {/* 5 — the screen wakes, and its readout keeps cycling */}
+        {/* 5 — the screen wakes and cycles three states */}
         <g className="illo-b" style={{ '--s': 5 }}>
           <polygon points="316.2,136.4 349.5,155.6 349.5,131.6 316.2,112.4" fill="#4024C0" stroke="#341DA0" strokeWidth="2" />
-          <g className="illo-scan">
+
+          {/* a — idle: the Weave's stripes */}
+          <g className="illo-screen">
             <line x1="320.4" y1="136.4" x2="328.7" y2="119.6" stroke="#FFFFFF" strokeWidth="2.6" />
             <line x1="328.7" y1="141.2" x2="337" y2="124.4" stroke="#FFFFFF" strokeWidth="2.6" />
             <line x1="337" y1="146" x2="345.3" y2="129.2" stroke="#FFFFFF" strokeWidth="2.6" />
           </g>
+
+          {/* b — reading: rows of detail along the screen's own axis */}
+          <g className="illo-screen illo-screen--b">
+            <line x1="320" y1="120" x2="338" y2="130.4" stroke="#FFFFFF" strokeWidth="2.2" />
+            <line x1="320" y1="127" x2="344" y2="140.8" stroke="#FFFFFF" strokeWidth="2.2" opacity=".7" />
+            <line x1="320" y1="134" x2="334" y2="142.1" stroke="#FFFFFF" strokeWidth="2.2" opacity=".45" />
+          </g>
+
+          {/* c — accepted */}
+          <g className="illo-screen illo-screen--c">
+            <polyline points="324,133 330,140 342,130" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          </g>
+
           <polygon className="illo-pulse" points="320.4,142.4 345.3,156.8 345.3,154.4 320.4,140" fill="#4024C0" />
         </g>
 
-        {/* 6 — the staff arrive, and keep moving */}
+        {/* 6 — the worker through the door, waving */}
         <g className="illo-b" style={{ '--s': 6 }}>
           <polygon points="189.4,135.2 218.5,152 189.4,168.8 160.3,152" fill="#ECE8FB" />
           <polygon points="178.9,123 177.9,101 182.4,90 196.4,90 200.9,101 199.9,123" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
@@ -70,23 +91,38 @@ export default function HeroArt() {
           <circle className="illo-bob" cx="189.4" cy="80" r="9.5" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
         </g>
 
+        {/* 7 — the shift change: one leaves toward the terminal as the next
+               arrives from the door. Both walk the same isometric axis. */}
         <g className="illo-b" style={{ '--s': 7 }}>
-          <polygon points="268.4,195.2 297.5,212 268.4,228.8 239.3,212" fill="#ECE8FB" />
-          <polygon points="257.9,183 256.9,161 261.4,150 275.4,150 279.9,161 278.9,183" fill="#ECE8FB" stroke="#17171C" strokeWidth="2" />
-          <line x1="262" y1="183" x2="261" y2="212" stroke="#17171C" strokeWidth="3" strokeLinecap="round" />
-          <line x1="275" y1="183" x2="276" y2="212" stroke="#17171C" strokeWidth="3" strokeLinecap="round" />
-          <g className="illo-lift">
-            <polyline points="277,154 285,160 289,149" stroke="#17171C" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-            <polygon points="284,146 295.3,152.5 295.3,133.5 284,127" fill="#4024C0" stroke="#341DA0" strokeWidth="1.6" />
-            <g className="illo-scan illo-scan--fast">
-              <line x1="286.5" y1="143" x2="290" y2="136" stroke="#FFFFFF" strokeWidth="1.8" />
-              <line x1="290" y1="144.8" x2="293.5" y2="137.8" stroke="#FFFFFF" strokeWidth="1.8" />
+          <g className="illo-walk">
+            <polygon points="268.4,195.2 297.5,212 268.4,228.8 239.3,212" fill="#ECE8FB" />
+            <polygon points="257.9,183 256.9,161 261.4,150 275.4,150 279.9,161 278.9,183" fill="#ECE8FB" stroke="#17171C" strokeWidth="2" />
+            <line x1="262" y1="183" x2="261" y2="212" stroke="#17171C" strokeWidth="3" strokeLinecap="round" />
+            <line x1="275" y1="183" x2="276" y2="212" stroke="#17171C" strokeWidth="3" strokeLinecap="round" />
+            <g className="illo-lift">
+              <polyline points="277,154 285,160 289,149" stroke="#17171C" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              <polygon points="284,146 295.3,152.5 295.3,133.5 284,127" fill="#4024C0" stroke="#341DA0" strokeWidth="1.6" />
+              <g className="illo-scan illo-scan--fast">
+                <line x1="286.5" y1="143" x2="290" y2="136" stroke="#FFFFFF" strokeWidth="1.8" />
+                <line x1="290" y1="144.8" x2="293.5" y2="137.8" stroke="#FFFFFF" strokeWidth="1.8" />
+              </g>
             </g>
+            <circle className="illo-bob illo-bob--b" cx="268.4" cy="140" r="9.5" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
           </g>
-          <circle className="illo-bob illo-bob--b" cx="268.4" cy="140" r="9.5" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
+
+          {/* the next worker, arriving — same build, lanyard instead of a phone */}
+          <g className="illo-walk illo-walk--b">
+            <polygon points="268.4,195.2 297.5,212 268.4,228.8 239.3,212" fill="#ECE8FB" />
+            <polygon points="257.9,183 256.9,161 261.4,150 275.4,150 279.9,161 278.9,183" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
+            <line x1="262" y1="183" x2="261" y2="212" stroke="#17171C" strokeWidth="3" strokeLinecap="round" />
+            <line x1="275" y1="183" x2="276" y2="212" stroke="#17171C" strokeWidth="3" strokeLinecap="round" />
+            <polyline className="illo-swing" points="257,154 253,165 254,177" stroke="#17171C" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+            <polygon points="249.6,177 257.4,181.5 257.4,190.5 249.6,186" fill="#4024C0" stroke="#341DA0" strokeWidth="1.4" />
+            <circle className="illo-bob illo-bob--c" cx="268.4" cy="140" r="9.5" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
+          </g>
         </g>
 
-        {/* 7 — the confirmation, last, and it keeps floating */}
+        {/* 8 — the confirmation, last, and it keeps floating */}
         <g className="illo-b" style={{ '--s': 8 }}>
           <line className="illo-march-b" x1="325.6" y1="85.4" x2="325.6" y2="104.6" stroke="#4024C0" strokeWidth="2" strokeDasharray="4 4" />
           <g className="illo-hover">

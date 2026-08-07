@@ -136,7 +136,14 @@ body::after{right:var(--rail)}
 /* The drawing assembles from the floor upward: each stage rises into place in
    turn, rather than the whole thing sliding in. Animated groups need fill-box,
    or origins and percentages resolve against the viewport. */
-.illo-b,.illo-wave,.illo-bob,.illo-hover,.illo-scan,.illo-lift,.illo-pulse,.illo-tick{transform-box:fill-box}
+.illo-b,.illo-wave,.illo-bob,.illo-hover,.illo-scan,.illo-lift,.illo-pulse,.illo-tick,
+.illo-walk,.illo-screen,.illo-swing{transform-box:fill-box}
+
+/* Terminal screen states: only the first shows when nothing is animating, so
+   the drawing is still correct with motion disabled. */
+.illo-screen--b,.illo-screen--c{opacity:0}
+/* Likewise the incoming worker is hidden until the loop brings them in. */
+.illo-walk--b{opacity:0}
 .illo-b{translate:0 22px;opacity:0}
 .hero[data-ready] .illo-b{
   animation:illoRise .62s var(--ease-drive) calc(.35s + var(--s,0)*.13s) both;
@@ -150,6 +157,16 @@ body::after{right:var(--rail)}
 .hero[data-idle] .illo-march-b{animation:illoMarchB .5s linear infinite}
 .hero[data-idle] .illo-scan{animation:illoScan 2.4s ease-in-out infinite}
 .hero[data-idle] .illo-scan--fast{animation-duration:1.6s}
+/* Three terminal screens, 2.5s each on a 7.5s loop. */
+.hero[data-idle] .illo-screen{animation:illoScreen 7.5s linear infinite}
+.hero[data-idle] .illo-screen--b{animation-delay:2.5s}
+.hero[data-idle] .illo-screen--c{animation-delay:5s}
+/* Shift change. The second worker runs the same keyframes half a cycle out,
+   so as one leaves toward the terminal the next arrives from the door. */
+.hero[data-idle] .illo-walk{animation:illoWalk 16s ease-in-out infinite}
+.hero[data-idle] .illo-walk--b{animation-delay:-8s}
+.hero[data-idle] .illo-swing{transform-origin:top center;animation:illoSwing 2.6s ease-in-out infinite alternate}
+.hero[data-idle] .illo-bob--c{animation-duration:3.1s;animation-delay:.2s}
 .hero[data-idle] .illo-pulse{animation:illoPulse 2.4s ease-in-out infinite}
 .hero[data-idle] .illo-wave{transform-origin:top right;animation:illoWave 2.2s ease-in-out infinite}
 .hero[data-idle] .illo-lift{transform-origin:bottom left;animation:illoLift 3s ease-in-out infinite}
@@ -167,6 +184,16 @@ body::after{right:var(--rail)}
 @keyframes illoBob{to{translate:0 -2px}}
 @keyframes illoHover{to{translate:0 -6px}}
 @keyframes illoTick{0%,60%,100%{opacity:1}68%{opacity:.15}76%{opacity:1}}
+@keyframes illoScreen{0%{opacity:0}3%{opacity:1}30%{opacity:1}34%{opacity:0}100%{opacity:0}}
+@keyframes illoSwing{to{rotate:7deg}}
+/* The reset from the exit position back to the entry position happens at 44%,
+   while opacity is 0, so the jump is never seen. */
+@keyframes illoWalk{
+  0%,36%{translate:0 0;opacity:1}
+  44%{translate:26px -15px;opacity:0}
+  44.01%,86%{translate:-26px 15px;opacity:0}
+  94%,100%{translate:0 0;opacity:1}
+}
 
 /* The mockups slide up their own height, as the reference's phone does. */
 .hero-visual{opacity:0;translate:0 40px;transition:opacity .8s cubic-bezier(.4,0,.2,1),translate .8s cubic-bezier(.4,0,.2,1)}
@@ -180,7 +207,10 @@ body::after{right:var(--rail)}
   .hero[data-idle] .illo-scan,.hero[data-idle] .illo-pulse,
   .hero[data-idle] .illo-wave,.hero[data-idle] .illo-lift,
   .hero[data-idle] .illo-bob,.hero[data-idle] .illo-hover,
-  .hero[data-idle] .illo-tick{animation:none}
+  .hero[data-idle] .illo-tick,.hero[data-idle] .illo-screen,
+  .hero[data-idle] .illo-walk,.hero[data-idle] .illo-swing{animation:none}
+  /* With motion off the drawing rests on one screen and one worker. */
+  .illo-walk--b,.illo-screen--b,.illo-screen--c{opacity:0}
 }
 /* Reference-site eyebrow: plain uppercase, 12px, generously letterspaced —
    no pill. Uppercase here is a CSS display device, not shouted source copy. */

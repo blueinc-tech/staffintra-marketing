@@ -58,7 +58,6 @@ export default function Hero() {
               See how it works
             </a>
           </div>
-          <p className="hero-note">Free 30-day pilot · No credit card needed</p>
         </div>
 
         <div className="hero-visual">

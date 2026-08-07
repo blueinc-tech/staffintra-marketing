@@ -4,6 +4,7 @@ import Logos from '../components/Logos';
 import Splits from '../components/Splits';
 import FeatureGrid from '../components/FeatureGrid';
 import Stats from '../components/Stats';
+import Pricing from '../components/Pricing';
 import Quotes from '../components/Quotes';
 import Cta from '../components/Cta';
 import Footer from '../components/Footer';
@@ -18,6 +19,7 @@ export default function Home() {
         <Splits />
         <FeatureGrid />
         <Stats />
+        <Pricing />
         <Quotes />
         <Cta />
       </main>

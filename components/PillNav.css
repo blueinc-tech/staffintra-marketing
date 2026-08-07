@@ -140,6 +140,135 @@
   outline-offset: 3px;
 }
 
+/* Dropdown trigger is a <button>; strip the UA chrome so it matches the links. */
+.pill-trigger {
+  border: 0;
+  font: inherit;
+  appearance: none;
+}
+
+/* ---------- dropdown ---------- */
+.pill-list > li {
+  position: relative;
+}
+
+.pill-menu {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  width: max-content;
+  max-width: min(680px, calc(100vw - 44px));
+  background: var(--base);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md, 2px);
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  z-index: 120;
+}
+
+.pill-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Bridges the gap between pill and panel so the pointer can travel down. */
+.pill-menu::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -14px;
+  height: 14px;
+}
+
+.pill-menu-inner {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.pill-menu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px;
+  border-radius: var(--r-md, 2px);
+  text-decoration: none;
+  transition: background 0.16s ease;
+}
+
+.pill-menu-item:hover,
+.pill-menu-item:focus-visible {
+  background: var(--accent-soft);
+  outline: none;
+}
+
+.pill-menu-icon {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: var(--r-md, 2px);
+}
+
+.pill-menu-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.pill-menu-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.pill-menu-text strong {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.pill-menu-text span {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+
+.pill-menu-footer {
+  margin-top: 4px;
+  padding: 11px 13px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--ink-2);
+}
+
+.pill-menu-footer a {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill-menu {
+    transition: none;
+  }
+}
+
 /* ---------- nav actions ---------- */
 .pill-nav-actions {
   display: flex;
@@ -252,6 +381,27 @@
 
 .mobile-menu-popover .mobile-menu-link:hover,
 .mobile-menu-popover .mobile-menu-link.is-active {
+  color: var(--hover-circle);
+}
+
+.mobile-submenu {
+  list-style: none;
+  margin: 0 0 4px;
+  padding: 0 0 6px 14px;
+  border-left: 1px solid var(--line);
+  margin-left: 2px;
+}
+
+.mobile-submenu-link {
+  display: block;
+  padding: 10px 0;
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+  color: var(--ink-2);
+  text-decoration: none;
+}
+
+.mobile-submenu-link:hover {
   color: var(--hover-circle);
 }
 

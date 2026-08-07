@@ -32,6 +32,9 @@ export default function PillNav({
   initialLoadAnimation = false,
 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState(null);
+  const hoverTimer = useRef(null);
+  const shellRef = useRef(null);
   const circleRefs = useRef([]);
   const tlRefs = useRef([]);
   const activeTweenRefs = useRef([]);
@@ -202,6 +205,34 @@ export default function PillNav({
     return () => window.removeEventListener('keydown', onKey);
   });
 
+  // Dropdown: close on Escape or a click outside the header.
+  useEffect(() => {
+    if (!openMenu) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpenMenu(null);
+    };
+    const onDown = (e) => {
+      if (shellRef.current && !shellRef.current.contains(e.target)) setOpenMenu(null);
+    };
+    window.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onDown);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onDown);
+    };
+  }, [openMenu]);
+
+  useEffect(() => () => clearTimeout(hoverTimer.current), []);
+
+  const openWithIntent = (href) => {
+    clearTimeout(hoverTimer.current);
+    setOpenMenu(href);
+  };
+  const closeWithIntent = () => {
+    clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setOpenMenu(null), 140);
+  };
+
   const cssVars = {
     '--base': baseColor,
     '--pill-bg': pillColor,
@@ -211,7 +242,7 @@ export default function PillNav({
   };
 
   return (
-    <div className={`pill-nav-container ${className}`.trim()} style={cssVars}>
+    <div className={`pill-nav-container ${className}`.trim()} style={cssVars} ref={shellRef}>
       <nav className="pill-nav" aria-label="Primary">
         <a
           className="pill-logo"
@@ -227,18 +258,11 @@ export default function PillNav({
 
         <div className="pill-nav-items desktop-only" ref={navItemsRef}>
           <ul className="pill-list">
-            {items.map((item, i) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  className={`pill${activeHref === item.href ? ' is-active' : ''}`}
-                  aria-label={item.ariaLabel || item.label}
-                  aria-current={activeHref === item.href ? 'true' : undefined}
-                  onMouseEnter={() => handleEnter(i)}
-                  onMouseLeave={() => handleLeave(i)}
-                  onFocus={() => handleEnter(i)}
-                  onBlur={() => handleLeave(i)}
-                >
+            {items.map((item, i) => {
+              const hasMenu = Array.isArray(item.children) && item.children.length > 0;
+              const isOpen = hasMenu && openMenu === item.href;
+              const inner = (
+                <>
                   <span
                     className="hover-circle"
                     aria-hidden="true"
@@ -252,9 +276,80 @@ export default function PillNav({
                       {item.label}
                     </span>
                   </span>
-                </a>
-              </li>
-            ))}
+                </>
+              );
+
+              return (
+                <li
+                  key={item.href}
+                  onMouseEnter={hasMenu ? () => openWithIntent(item.href) : undefined}
+                  onMouseLeave={hasMenu ? closeWithIntent : undefined}
+                >
+                  {hasMenu ? (
+                    <button
+                      type="button"
+                      className={`pill pill-trigger${isOpen || activeHref === item.href ? ' is-active' : ''}`}
+                      aria-expanded={isOpen}
+                      aria-haspopup="true"
+                      aria-controls={`pill-menu-${item.label.toLowerCase()}`}
+                      onClick={() => setOpenMenu(isOpen ? null : item.href)}
+                      onMouseEnter={() => handleEnter(i)}
+                      onMouseLeave={() => handleLeave(i)}
+                      onFocus={() => handleEnter(i)}
+                      onBlur={() => handleLeave(i)}
+                    >
+                      {inner}
+                    </button>
+                  ) : (
+                    <a
+                      href={item.href}
+                      className={`pill${activeHref === item.href ? ' is-active' : ''}`}
+                      aria-label={item.ariaLabel || item.label}
+                      aria-current={activeHref === item.href ? 'true' : undefined}
+                      onMouseEnter={() => handleEnter(i)}
+                      onMouseLeave={() => handleLeave(i)}
+                      onFocus={() => handleEnter(i)}
+                      onBlur={() => handleLeave(i)}
+                    >
+                      {inner}
+                    </a>
+                  )}
+
+                  {hasMenu ? (
+                    <div
+                      id={`pill-menu-${item.label.toLowerCase()}`}
+                      className={`pill-menu${isOpen ? ' is-open' : ''}`}
+                      onMouseEnter={() => openWithIntent(item.href)}
+                      onMouseLeave={closeWithIntent}
+                    >
+                      <div className="pill-menu-inner">
+                        {item.children.map((child) => (
+                          <a
+                            key={child.href + child.label}
+                            className="pill-menu-item"
+                            href={child.href}
+                            onClick={() => setOpenMenu(null)}
+                          >
+                            {child.icon ? (
+                              <span className="pill-menu-icon" aria-hidden="true">
+                                {child.icon}
+                              </span>
+                            ) : null}
+                            <span className="pill-menu-text">
+                              <strong>{child.label}</strong>
+                              <span>{child.description}</span>
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+                      {item.menuFooter ? (
+                        <div className="pill-menu-footer">{item.menuFooter}</div>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </li>
+              );
+            })}
           </ul>
         </div>
 
@@ -286,6 +381,21 @@ export default function PillNav({
               >
                 {item.label}
               </a>
+              {Array.isArray(item.children) && item.children.length > 0 ? (
+                <ul className="mobile-submenu">
+                  {item.children.map((child) => (
+                    <li key={child.href + child.label}>
+                      <a
+                        href={child.href}
+                        className="mobile-submenu-link"
+                        onClick={toggleMobileMenu}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </li>
           ))}
         </ul>

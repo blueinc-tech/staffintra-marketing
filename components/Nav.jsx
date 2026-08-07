@@ -1,140 +1,519 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import PillNav from './PillNav';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { NAV_ITEMS } from './navData';
+import './Nav.css';
 
-const icons = {
-  rota: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="4.5" width="18" height="16" rx="1" />
-      <path d="M3 9.5h18M8 3v3M16 3v3M7 13.5h5M7 17h8" />
-    </svg>
-  ),
-  approvals: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 12.5l4.5 4.5L20 6" />
-    </svg>
-  ),
-  onboarding: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="8" r="3.6" />
-      <path d="M4.5 20a7.5 7.5 0 0 1 15 0" />
-    </svg>
-  ),
+// Timings follow the Stripe/Radix conventions: hover-intent before the first
+// open, instant switching once open, and a grace period on the way out.
+const OPEN_DELAY = 150;
+const CLOSE_DELAY = 150;
+const SKIP_DELAY = 300;
+const FADE_MS = 170;
+
+const whenMouse = (fn) => (e) => {
+  if (e.pointerType === 'mouse') fn(e);
 };
 
-// "Platform" opens a menu of the three product areas. Every entry is a real
-// anchor into the page — no pages are implied that do not exist.
-const LINKS = [
-  {
-    href: '#product',
-    label: 'Platform',
-    children: [
-      {
-        href: '#product',
-        label: 'Scheduling & shifts',
-        description: 'Build the rota, catch clashes, publish to every phone at once.',
-        icon: icons.rota,
-      },
-      {
-        href: '#product',
-        label: 'Leave & approvals',
-        description: 'Balances, cover, and policy in view, so answers take seconds.',
-        icon: icons.approvals,
-      },
-      {
-        href: '#product',
-        label: 'Onboarding journeys',
-        description: 'Paperwork, sign-off, and introductions sequenced before day one.',
-        icon: icons.onboarding,
-      },
-    ],
-    menuFooter: (
-      <>
-        Everything else the workspace does — time tracking, reporting, permissions —{' '}
-        <a href="#features">is in the features grid</a>.
-      </>
-    ),
-  },
-  { href: '#features', label: 'Features' },
-  { href: '#pricing', label: 'Pricing' },
-  { href: '#customers', label: 'Customers' },
-];
+/* ---------------- menu body renderers ---------------- */
+
+function MenuRow({ item }) {
+  return (
+    <a className="mm-row" href={item.href}>
+      <span className="mm-row-mark" aria-hidden="true">
+        {item.mark}
+      </span>
+      <span className="mm-row-label">{item.label}</span>
+    </a>
+  );
+}
+
+function ColumnsMenu({ menu }) {
+  return (
+    <div className="mm-columns" style={{ '--cols': menu.groups.reduce((n, g) => n + g.span, 0) }}>
+      <div className="mm-heads">
+        {menu.groups.map((g) => (
+          <div className="mm-head" key={g.heading} style={{ '--span': g.span }}>
+            {g.heading}
+          </div>
+        ))}
+      </div>
+      <div className="mm-cols">
+        {menu.groups.flatMap((g) =>
+          g.columns.map((col, ci) => (
+            <div className="mm-col" key={g.heading + ci}>
+              {col.feature ? (
+                <a className="mm-feature" href={col.feature.href}>
+                  <span className="mm-row-mark" aria-hidden="true">
+                    {col.feature.mark}
+                  </span>
+                  <span className="mm-feature-text">
+                    <strong>{col.feature.label}</strong>
+                    <span>{col.feature.description}</span>
+                  </span>
+                </a>
+              ) : null}
+              {col.items.map((item) => (
+                <MenuRow item={item} key={item.label} />
+              ))}
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+function IntroMenu({ menu }) {
+  return (
+    <div className="mm-intro-wrap">
+      <div className="mm-intro">
+        <strong>{menu.intro.title}</strong>
+        <span>{menu.intro.description}</span>
+      </div>
+      <div className="mm-intro-list">
+        {menu.items.map((item) => (
+          <MenuRow item={item} key={item.label} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ResourcesMenu({ menu }) {
+  return (
+    <div className="mm-resources">
+      <div className="mm-intro mm-intro--mark">
+        {menu.intro.mark ? (
+          <span className="mm-row-mark" aria-hidden="true">
+            {menu.intro.mark}
+          </span>
+        ) : null}
+        <span className="mm-intro-text">
+          <strong>{menu.intro.title}</strong>
+          <span>{menu.intro.description}</span>
+        </span>
+      </div>
+      <div className="mm-res-col">
+        <div className="mm-head mm-head--inline">{menu.byType.heading}</div>
+        {menu.byType.items.map((item) => (
+          <a className="mm-row mm-row--plain" href={item.href} key={item.label}>
+            <span className="mm-row-label">{item.label}</span>
+          </a>
+        ))}
+      </div>
+      <div className="mm-res-col mm-res-col--featured">
+        <div className="mm-head mm-head--inline">{menu.featured.heading}</div>
+        <a className="mm-featured" href={menu.featured.href}>
+          <span className="mm-featured-title">{menu.featured.title}</span>
+          <span className="mm-featured-art" aria-hidden="true">
+            <svg viewBox="0 0 200 90" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="butt">
+              <path d="M8 74 46 20M30 74 68 20M52 74 90 20M74 74 112 20M96 74 134 20M118 74 156 20M140 74 178 20" />
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function MenuBody({ menu }) {
+  if (menu.type === 'columns') return <ColumnsMenu menu={menu} />;
+  if (menu.type === 'resources') return <ResourcesMenu menu={menu} />;
+  return <IntroMenu menu={menu} />;
+}
+
+/* ---------------- nav ---------------- */
 
 export default function Nav() {
-  const [activeHref, setActiveHref] = useState(null);
+  const [activeId, setActiveId] = useState(null);
+  const [leavingId, setLeavingId] = useState(null);
+  const [morphing, setMorphing] = useState(false);
+  const [dir, setDir] = useState(1);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState(null);
 
-  // Light scroll spy: whichever linked section owns the upper third of the
-  // viewport is the active pill. Nothing is active while the hero is in view.
-  useEffect(() => {
-    const sections = LINKS.map((l) => document.querySelector(l.href)).filter(Boolean);
-    if (!sections.length || !('IntersectionObserver' in window)) return undefined;
+  const rootRef = useRef(null);
+  const panelRef = useRef(null);
+  const triggerRefs = useRef({});
+  const panelRefs = useRef({});
+  const openTimer = useRef(null);
+  const closeTimer = useRef(null);
+  const skipTimer = useRef(null);
+  const leaveTimer = useRef(null);
+  const isOpenDelayed = useRef(true);
+  const suppress = useRef(false);
+  const wasOpen = useRef(false);
+  const prevIndex = useRef(-1);
 
-    const visible = new Map();
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) visible.set(entry.target.id, entry.intersectionRatio);
-          else visible.delete(entry.target.id);
-        });
-        if (!visible.size) {
-          setActiveHref(null);
-          return;
-        }
-        const topId = [...visible.entries()].sort((a, b) => b[1] - a[1])[0][0];
-        setActiveHref(`#${topId}`);
-      },
-      { rootMargin: '-72px 0px -55% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
-    );
+  const menuItems = NAV_ITEMS.filter((i) => i.menu);
+  const triggerIds = NAV_ITEMS.map((i) => i.id);
 
-    sections.forEach((s) => io.observe(s));
-    return () => io.disconnect();
+  /* Measure with offsetWidth/Height: unlike getBoundingClientRect these ignore
+     transforms, so a measurement taken mid-morph can't feed back on itself. */
+  const layout = useCallback((id) => {
+    const content = panelRefs.current[id];
+    const trigger = triggerRefs.current[id];
+    const root = rootRef.current;
+    const panel = panelRef.current;
+    if (!content || !trigger || !root || !panel) return;
+
+    const w = content.offsetWidth;
+    const h = content.offsetHeight;
+    const rootRect = root.getBoundingClientRect();
+    const tRect = trigger.getBoundingClientRect();
+
+    // Centre on the trigger, then clamp inside the viewport.
+    const centre = tRect.left + tRect.width / 2 - rootRect.left;
+    const pad = 22;
+    const min = pad - rootRect.left;
+    const max = window.innerWidth - w - pad - rootRect.left;
+    const x = Math.min(Math.max(centre - w / 2, min), Math.max(min, max));
+
+    panel.style.setProperty('--x', `${x}px`);
+    panel.style.setProperty('--w', `${w}px`);
+    panel.style.setProperty('--h', `${h}px`);
   }, []);
 
+  /* First open places the panel with transitions suppressed, or it would appear
+     to grow out of the left edge. Only a switch animates. */
+  useLayoutEffect(() => {
+    const panel = panelRef.current;
+    if (!activeId || !panel) return;
+    if (!wasOpen.current) {
+      panel.setAttribute('data-instant', '');
+      layout(activeId);
+      void panel.offsetWidth;
+      panel.removeAttribute('data-instant');
+      wasOpen.current = true;
+    } else {
+      layout(activeId);
+    }
+  }, [activeId, layout]);
+
+  useEffect(() => {
+    if (!activeId) return undefined;
+    const content = panelRefs.current[activeId];
+    const onResize = () => layout(activeId);
+    let rAF = 0;
+    const ro = new ResizeObserver(() => {
+      cancelAnimationFrame(rAF);
+      rAF = requestAnimationFrame(() => layout(activeId));
+    });
+    if (content) ro.observe(content);
+    window.addEventListener('resize', onResize);
+    return () => {
+      ro.disconnect();
+      cancelAnimationFrame(rAF);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [activeId, layout]);
+
+  const commit = useCallback(
+    (id) => {
+      const idx = menuItems.findIndex((m) => m.id === id);
+      setActiveId((current) => {
+        if (current === id) return current;
+        if (current) {
+          setMorphing(true);
+          setDir(idx > prevIndex.current ? 1 : -1);
+          setLeavingId(current);
+          clearTimeout(leaveTimer.current);
+          leaveTimer.current = setTimeout(() => setLeavingId(null), FADE_MS);
+        } else {
+          setMorphing(false);
+        }
+        prevIndex.current = idx;
+        return id;
+      });
+    },
+    [menuItems]
+  );
+
+  const requestOpen = useCallback(
+    (id) => {
+      if (suppress.current) return;
+      clearTimeout(closeTimer.current);
+      if (isOpenDelayed.current) {
+        clearTimeout(openTimer.current);
+        openTimer.current = setTimeout(() => commit(id), OPEN_DELAY);
+      } else {
+        commit(id); // already open — switch instantly so the panel morphs
+      }
+    },
+    [commit]
+  );
+
+  const reset = useCallback(() => {
+    setActiveId(null);
+    setLeavingId(null);
+    setMorphing(false);
+    wasOpen.current = false;
+    prevIndex.current = -1;
+  }, []);
+
+  const scheduleClose = useCallback(() => {
+    clearTimeout(openTimer.current);
+    clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(reset, CLOSE_DELAY);
+  }, [reset]);
+
+  const closeNow = useCallback(() => {
+    clearTimeout(openTimer.current);
+    clearTimeout(closeTimer.current);
+    reset();
+  }, [reset]);
+
+  /* After closing, skip the hover-intent delay briefly so coming straight back
+     feels instant. */
+  useEffect(() => {
+    if (activeId) {
+      isOpenDelayed.current = false;
+      clearTimeout(skipTimer.current);
+    } else {
+      skipTimer.current = setTimeout(() => {
+        isOpenDelayed.current = true;
+      }, SKIP_DELAY);
+    }
+  }, [activeId]);
+
+  useEffect(
+    () => () => {
+      [openTimer, closeTimer, skipTimer, leaveTimer].forEach((t) => clearTimeout(t.current));
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (!activeId) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        suppress.current = true; // don't reopen on the next pointer move
+        const id = activeId;
+        closeNow();
+        triggerRefs.current[id]?.focus();
+      }
+    };
+    const onDown = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) closeNow();
+    };
+    window.addEventListener('keydown', onKey);
+    document.addEventListener('mousedown', onDown);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.removeEventListener('mousedown', onDown);
+    };
+  }, [activeId, closeNow]);
+
+  const onTriggerKeyDown = (id) => (e) => {
+    const i = triggerIds.indexOf(id);
+    const last = triggerIds.length - 1;
+    const focusAt = (n) => triggerRefs.current[triggerIds[n]]?.focus();
+    if (e.key === 'ArrowDown' && activeId === id) {
+      panelRefs.current[id]
+        ?.querySelector('a[href], button:not([disabled])')
+        ?.focus();
+      e.preventDefault();
+    } else if (e.key === 'ArrowRight') {
+      focusAt(Math.min(i + 1, last));
+      e.preventDefault();
+    } else if (e.key === 'ArrowLeft') {
+      focusAt(Math.max(i - 1, 0));
+      e.preventDefault();
+    } else if (e.key === 'Home') {
+      focusAt(0);
+      e.preventDefault();
+    } else if (e.key === 'End') {
+      focusAt(last);
+      e.preventDefault();
+    }
+  };
+
   return (
-    <header id="top">
-      {/* Brand guidelines put the horizontal lockup in the website header. */}
-      <PillNav
-        logo="/assets/StaffIntra_Logo_Horizontal_Purple.svg"
-        logoAlt="StaffIntra"
-        items={LINKS}
-        activeHref={activeHref}
-        logoHref="#top"
-        className="site-pill-nav"
-        ease="power3.easeOut"
-        baseColor="#FFFFFF"
-        pillColor="transparent"
-        pillTextColor="#17171C"
-        hoveredPillTextColor="#FFFFFF"
-        hoverCircleColor="#4024C0"
-        initialLoadAnimation={false}
-        actions={
-          <>
-            <a className="btn btn-nav btn-nav-ghost btn-swap" href="#">
-              <span className="swap">
-                <span>Log in</span>
-                <span aria-hidden="true">Log in</span>
-              </span>
+    <header
+      className="nav-root"
+      id="top"
+      ref={rootRef}
+      onPointerLeave={whenMouse(scheduleClose)}
+      onPointerEnter={() => {
+        suppress.current = false;
+      }}
+    >
+      <div className="nav-bar">
+        <a className="nav-logo" href="#top" aria-label="StaffIntra home" onClick={closeNow}>
+          <img src="/assets/StaffIntra_Logo_Horizontal_Purple.svg" alt="StaffIntra" />
+        </a>
+
+        <nav className={`nav-links${activeId ? ' has-open' : ''}`} aria-label="Primary">
+          {NAV_ITEMS.map((item) =>
+            item.menu ? (
+              <button
+                key={item.id}
+                type="button"
+                id={`trigger-${item.id}`}
+                className={`nav-link${activeId === item.id ? ' is-open' : ''}`}
+                aria-expanded={activeId === item.id}
+                aria-haspopup="true"
+                aria-controls={activeId === item.id ? `mm-${item.id}` : undefined}
+                ref={(el) => {
+                  triggerRefs.current[item.id] = el;
+                }}
+                /* pointermove, not pointerenter: a trigger sliding under a
+                   stationary cursor should not open a menu. */
+                onPointerMove={whenMouse(() => requestOpen(item.id))}
+                onPointerLeave={whenMouse(() => clearTimeout(openTimer.current))}
+                onFocus={() => commit(item.id)}
+                onKeyDown={onTriggerKeyDown(item.id)}
+                onClick={() => {
+                  if (activeId === item.id) {
+                    suppress.current = true;
+                    closeNow();
+                  } else {
+                    commit(item.id);
+                  }
+                }}
+              >
+                {item.label}
+              </button>
+            ) : (
+              <a
+                key={item.id}
+                className="nav-link"
+                href={item.href}
+                ref={(el) => {
+                  triggerRefs.current[item.id] = el;
+                }}
+                onPointerMove={whenMouse(scheduleClose)}
+                onFocus={closeNow}
+                onKeyDown={onTriggerKeyDown(item.id)}
+              >
+                {item.label}
+              </a>
+            )
+          )}
+        </nav>
+
+        <div className="nav-actions">
+          <a className="btn btn-nav btn-nav-ghost btn-swap" href="#">
+            <span className="swap">
+              <span>Log in</span>
+              <span aria-hidden="true">Log in</span>
+            </span>
+          </a>
+          <a className="btn btn-primary btn-nav btn-swap" href="#demo">
+            <span className="swap">
+              <span>Book a demo</span>
+              <span aria-hidden="true">Book a demo</span>
+            </span>
+          </a>
+        </div>
+
+        <button
+          type="button"
+          className="nav-burger"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          <span />
+          <span />
+        </button>
+      </div>
+
+      {/* One shared panel for every menu: it slides and resizes between
+          triggers rather than closing and reopening. */}
+      <div
+        ref={panelRef}
+        className={`nav-panel${activeId ? ' is-open' : ''}${morphing ? ' is-morphing' : ''}`}
+        style={{ '--dir': dir }}
+        onPointerEnter={() => clearTimeout(closeTimer.current)}
+        onPointerLeave={whenMouse(scheduleClose)}
+      >
+        <div className="nav-panel-viewport">
+          {menuItems.map((item) => {
+            const isActive = activeId === item.id;
+            return (
+              <div
+                key={item.id}
+                id={`mm-${item.id}`}
+                className={`nav-panel-content${isActive ? ' is-active' : ''}${
+                  leavingId === item.id ? ' is-leaving' : ''
+                }`}
+                aria-labelledby={`trigger-${item.id}`}
+                /* inert keeps the hidden panels out of the tab order and the
+                   a11y tree while still allowing them to be measured. */
+                inert={!isActive || undefined}
+                ref={(el) => {
+                  panelRefs.current[item.id] = el;
+                }}
+              >
+                <MenuBody menu={item.menu} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ---------------- mobile ---------------- */}
+      <div className={`nav-mobile${mobileOpen ? ' is-open' : ''}`}>
+        {NAV_ITEMS.map((item) =>
+          item.menu ? (
+            <div className="nav-mobile-group" key={item.id}>
+              <button
+                type="button"
+                className={`nav-mobile-trigger${mobileSection === item.id ? ' is-open' : ''}`}
+                aria-expanded={mobileSection === item.id}
+                onClick={() => setMobileSection((s) => (s === item.id ? null : item.id))}
+              >
+                {item.label}
+                <span className="nav-mobile-chev" aria-hidden="true" />
+              </button>
+              {mobileSection === item.id ? (
+                <div className="nav-mobile-sub">
+                  {flattenMenu(item.menu).map((link) => (
+                    <a
+                      key={link.label + link.href}
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <a
+              className="nav-mobile-link"
+              href={item.href}
+              key={item.id}
+              onClick={() => setMobileOpen(false)}
+            >
+              {item.label}
             </a>
-            <a className="btn btn-primary btn-swap btn-nav" href="#demo">
-              <span className="swap">
-                <span>Book a demo</span>
-                <span aria-hidden="true">Book a demo</span>
-              </span>
-            </a>
-          </>
-        }
-        mobileActions={
-          <>
-            <a className="btn btn-secondary btn-lg" href="#">
-              Log in
-            </a>
-            <a className="btn btn-primary btn-lg" href="#demo">
-              Book a demo
-            </a>
-          </>
-        }
-      />
+          )
+        )}
+        <div className="nav-mobile-actions">
+          <a className="btn btn-secondary btn-lg" href="#" onClick={() => setMobileOpen(false)}>
+            Log in
+          </a>
+          <a className="btn btn-primary btn-lg" href="#demo" onClick={() => setMobileOpen(false)}>
+            Book a demo
+          </a>
+        </div>
+      </div>
     </header>
   );
+}
+
+function flattenMenu(menu) {
+  if (menu.type === 'columns') {
+    return menu.groups.flatMap((g) =>
+      g.columns.flatMap((c) => [...(c.feature ? [c.feature] : []), ...c.items])
+    );
+  }
+  if (menu.type === 'resources') {
+    return [...menu.byType.items, { label: menu.featured.title, href: menu.featured.href }];
+  }
+  return menu.items;
 }

@@ -1,0 +1,381 @@
+/* Header modelled on the reference site, measured at 1440px:
+   64px sticky bar, opaque white, no border, no shadow; links Inter 15/400 at
+   40px apart; buttons 2px radius, 12x18, Inter 15/500. The dropdown is a single
+   shared panel that slides and resizes between triggers. */
+
+.nav-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--surface);
+}
+
+.nav-bar {
+  max-width: 1185px;
+  margin: 0 auto;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+
+.nav-logo {
+  height: 24px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-logo img { height: 100%; width: auto; display: block; }
+
+/* ---------- links ---------- */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin: 0 auto;
+}
+
+.nav-link {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.18s var(--ease);
+}
+
+/* While a menu is open the rest of the labels recede, as on the reference. */
+.nav-links.has-open .nav-link { color: var(--ink-3-text); }
+.nav-links.has-open .nav-link.is-open,
+.nav-link:hover { color: var(--ink); }
+
+.nav-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* ---------- shared morphing panel ---------- */
+.nav-panel {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  width: var(--w);
+  height: var(--h);
+  transform: translate3d(var(--x), 0, 0);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /* Opening is a plain fade; only a switch animates position and size. */
+  transition: opacity 0.16s var(--ease), visibility 0.16s;
+}
+
+.nav-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.nav-panel.is-morphing {
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.16s var(--ease);
+}
+
+/* Applied for one frame on first open so the panel does not appear to grow
+   out of the left edge. */
+.nav-panel[data-instant],
+.nav-panel[data-instant] .nav-panel-viewport {
+  transition: none !important;
+}
+
+/* Bridges the 8px gap under the bar so a diagonal cursor can reach the panel. */
+.nav-panel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 10px;
+}
+
+.nav-panel-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  /* Keeps the width/height transition from reflowing the rest of the page. */
+  contain: layout paint style;
+}
+
+.nav-panel-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Without max-content the text re-wraps while the box is still resizing —
+     the most visible failure mode of this pattern. */
+  width: max-content;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(calc(var(--dir) * -18px));
+  transition: opacity 0.17s linear, transform 0.17s var(--ease);
+}
+
+/* Both layers drift the same way the panel is travelling, so the old contents
+   read as being left behind rather than pushed aside. */
+.nav-panel-content.is-leaving {
+  opacity: 0;
+  transform: translateX(calc(var(--dir) * 18px));
+}
+
+.nav-panel-content.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* ---------- menu: columns (Platform) ---------- */
+.mm-columns { display: flex; flex-direction: column; width: max-content; }
+
+.mm-heads { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
+.mm-head {
+  grid-column: span var(--span);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-3-text);
+  background: var(--surface-2);
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+}
+.mm-head:last-child { border-right: 0; }
+
+.mm-cols { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
+.mm-col { border-right: 1px solid var(--line); min-width: 208px; }
+.mm-col:last-child { border-right: 0; }
+
+.mm-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  transition: background 0.16s var(--ease);
+}
+.mm-feature:hover { background: var(--accent-soft); }
+
+.mm-feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 16px 18px 16px 14px;
+}
+.mm-feature-text strong {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+  line-height: 1.25;
+}
+.mm-feature-text span {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+
+.mm-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  transition: background 0.16s var(--ease);
+}
+.mm-row:last-child { border-bottom: 0; }
+.mm-row:hover { background: var(--accent-soft); }
+
+.mm-row-mark {
+  flex-shrink: 0;
+  width: 54px;
+  align-self: stretch;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 0;
+  border-right: 1px solid var(--line);
+  color: var(--accent);
+}
+.mm-row-mark svg { width: 20px; height: 20px; display: block; }
+
+.mm-row-label {
+  font-family: var(--font-ui);
+  font-size: 0.92rem;
+  color: var(--ink);
+  padding: 13px 18px 13px 14px;
+  white-space: nowrap;
+}
+
+.mm-row--plain .mm-row-label { padding-left: 18px; }
+
+/* ---------- menu: intro + list (Solutions, Company) ---------- */
+.mm-intro-wrap { display: grid; grid-template-columns: minmax(210px, 240px) minmax(230px, 1fr); }
+
+.mm-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+  border-right: 1px solid var(--line);
+}
+.mm-intro strong {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.mm-intro span {
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--ink-2);
+  line-height: 1.45;
+}
+
+.mm-intro-list { display: flex; flex-direction: column; }
+.mm-intro-list .mm-row-label { flex: 1; }
+
+/* ---------- menu: resources ---------- */
+.mm-resources { display: grid; grid-template-columns: minmax(210px, 240px) minmax(150px, 190px) minmax(230px, 270px); }
+
+.mm-intro--mark { flex-direction: row; gap: 0; padding: 0; align-items: stretch; }
+.mm-intro--mark .mm-row-mark { align-self: flex-start; border-right: 0; padding-top: 18px; }
+.mm-intro-text { display: flex; flex-direction: column; gap: 6px; padding: 18px 18px 18px 0; }
+.mm-intro-text strong {
+  font-family: var(--font-ui); font-weight: 600; font-size: 0.95rem; color: var(--ink);
+}
+.mm-intro-text span {
+  font-family: var(--font-ui); font-size: 0.82rem; color: var(--ink-2); line-height: 1.45;
+}
+
+.mm-res-col { border-left: 1px solid var(--line); display: flex; flex-direction: column; }
+.mm-head--inline { background: var(--surface-2); border-right: 0; }
+
+.mm-featured { display: flex; flex-direction: column; gap: 10px; padding: 14px 18px; text-decoration: none; }
+.mm-featured:hover .mm-featured-title { color: var(--accent-ink); }
+.mm-featured-title {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+  transition: color 0.16s var(--ease);
+}
+.mm-featured-art {
+  display: block;
+  background: var(--accent-ink);
+  color: rgba(255, 255, 255, 0.4);
+  padding: 14px;
+}
+.mm-featured-art svg { width: 100%; height: auto; display: block; }
+
+/* ---------- burger + mobile ---------- */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+.nav-burger span { display: block; width: 20px; height: 2px; background: var(--ink); }
+.nav-burger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.nav-mobile { display: none; }
+
+@media (max-width: 1000px) {
+  .nav-links,
+  .nav-actions,
+  .nav-panel { display: none; }
+  .nav-burger { display: flex; }
+
+  .nav-mobile {
+    display: block;
+    max-height: 0;
+    overflow: hidden auto;
+    border-top: 1px solid transparent;
+    transition: max-height 0.3s var(--ease), border-color 0.3s;
+  }
+  .nav-mobile.is-open {
+    max-height: calc(100vh - 64px);
+    border-top-color: var(--line);
+  }
+
+  .nav-mobile-link,
+  .nav-mobile-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px 22px;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    color: var(--ink);
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .nav-mobile-chev {
+    width: 9px; height: 9px;
+    border-right: 2px solid var(--ink-3-text);
+    border-bottom: 2px solid var(--ink-3-text);
+    transform: rotate(45deg);
+    transition: transform 0.2s var(--ease);
+  }
+  .nav-mobile-trigger.is-open .nav-mobile-chev { transform: rotate(-135deg); }
+
+  .nav-mobile-sub { display: flex; flex-direction: column; background: var(--surface-2); }
+  .nav-mobile-sub a {
+    padding: 13px 22px 13px 36px;
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-mobile-actions { display: flex; flex-direction: column; gap: 8px; padding: 18px 22px 24px; }
+  .nav-mobile-actions .btn { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-panel,
+  .nav-panel.is-morphing,
+  .nav-panel-content,
+  .nav-mobile { transition: none; }
+}

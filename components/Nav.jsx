@@ -39,9 +39,16 @@ function ColumnsMenu({ menu }) {
         ))}
       </div>
       <div className="mm-cols">
-        {menu.groups.flatMap((g) =>
+        {menu.groups.flatMap((g, gi) =>
           g.columns.map((col, ci) => (
-            <div className="mm-col" key={g.heading + ci}>
+            <div
+              /* Columns inside a group are separated by a dashed rule; the
+                 boundary between groups is solid. */
+              className={`mm-col${
+                ci === g.columns.length - 1 && gi < menu.groups.length - 1 ? ' is-group-end' : ''
+              }`}
+              key={g.heading + ci}
+            >
               {col.feature ? (
                 <a className="mm-feature" href={col.feature.href}>
                   <span className="mm-row-mark" aria-hidden="true">
@@ -134,6 +141,7 @@ export default function Nav() {
   const [mobileSection, setMobileSection] = useState(null);
 
   const rootRef = useRef(null);
+  const barRef = useRef(null);
   const panelRef = useRef(null);
   const triggerRefs = useRef({});
   const panelRefs = useRef({});
@@ -155,20 +163,28 @@ export default function Nav() {
     const content = panelRefs.current[id];
     const trigger = triggerRefs.current[id];
     const root = rootRef.current;
+    const bar = barRef.current;
     const panel = panelRef.current;
-    if (!content || !trigger || !root || !panel) return;
+    if (!content || !trigger || !root || !bar || !panel) return;
 
-    const w = content.offsetWidth;
-    const h = content.offsetHeight;
+    // The framed contents sit inset from the panel edge, so the panel is the
+    // frame plus that gap on every side.
+    const gap = parseFloat(getComputedStyle(panel).getPropertyValue('--gap')) || 0;
+    const w = content.offsetWidth + gap * 2;
+    const h = content.offsetHeight + gap * 2;
+
     const rootRect = root.getBoundingClientRect();
-    const tRect = trigger.getBoundingClientRect();
+    const barRect = bar.getBoundingClientRect();
+    const barCS = getComputedStyle(bar);
 
-    // Centre on the trigger, then clamp inside the viewport.
+    // Clamp to the nav's own content box, not the viewport: the panel should
+    // never run wider than the bar above it.
+    const left = barRect.left + parseFloat(barCS.paddingLeft) - rootRect.left;
+    const right = barRect.right - parseFloat(barCS.paddingRight) - rootRect.left;
+
+    const tRect = trigger.getBoundingClientRect();
     const centre = tRect.left + tRect.width / 2 - rootRect.left;
-    const pad = 22;
-    const min = pad - rootRect.left;
-    const max = window.innerWidth - w - pad - rootRect.left;
-    const x = Math.min(Math.max(centre - w / 2, min), Math.max(min, max));
+    const x = Math.min(Math.max(centre - w / 2, left), Math.max(left, right - w));
 
     panel.style.setProperty('--x', `${x}px`);
     panel.style.setProperty('--w', `${w}px`);
@@ -339,7 +355,7 @@ export default function Nav() {
         suppress.current = false;
       }}
     >
-      <div className="nav-bar">
+      <div className="nav-bar" ref={barRef}>
         <a className="nav-logo" href="#top" aria-label="StaffIntra home" onClick={closeNow}>
           <img src="/assets/StaffIntra_Logo_Horizontal_Purple.svg" alt="StaffIntra" />
         </a>

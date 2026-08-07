@@ -103,16 +103,18 @@ body::after{right:var(--rail)}
   gap:clamp(24px,3vw,48px);align-items:start;text-align:left;
   padding-top:56px;
 }
-.hero-copy{padding-bottom:150px}
+.hero-copy{padding-bottom:120px}
 .hero-visual{position:relative;z-index:2;min-width:0}
 
-/* Behind the copy, resting on the section's ground plane. */
+/* Sits beside the copy rather than under it, on the section's ground plane and
+   behind the mockups — the shadow is what reads as "further back". */
 .hero-art{
-  position:absolute;left:0;bottom:0;z-index:0;
-  width:min(560px,48vw);pointer-events:none;
-  opacity:.9;
+  position:absolute;left:36%;bottom:-6px;z-index:0;
+  width:min(430px,33vw);pointer-events:none;
+  filter:drop-shadow(0 18px 24px rgba(23,23,28,.13));
 }
 .hero-art svg{width:100%;height:auto;display:block}
+@media (max-width:1120px){.hero-art{left:auto;right:2%;width:min(360px,30vw)}}
 @media (max-width:940px){.hero-art{display:none}}
 /* Reference-site eyebrow: plain uppercase, 12px, generously letterspaced —
    no pill. Uppercase here is a CSS display device, not shouted source copy. */

@@ -97,8 +97,9 @@ body::after{right:var(--rail)}
 .btn-nav-ghost:hover{background:rgba(23,23,28,.09)}
 
 /* ---------- Hero ---------- */
-/* Flat tinted band, like the reference — no gradient, no grid overlay. */
-.hero{position:relative;padding:104px 0 0;overflow:hidden;background:var(--tint)}
+/* Flat tinted band, like the reference — no gradient, no grid overlay.
+   The bottom padding is the room the illustration drops into. */
+.hero{position:relative;padding:104px 0 30px;overflow:hidden;background:var(--tint)}
 .hero-bg{display:none}
 
 /* Copy left, product visual bleeding off the right edge (clipped by .hero
@@ -116,7 +117,8 @@ body::after{right:var(--rail)}
 /* Sits in the cleared band below the copy and to the left of the phone, on the
    section's ground plane — the shadow is what reads as "further back". */
 .hero-art{
-  position:absolute;left:15%;bottom:0;z-index:0;
+  /* -12px trims only the empty floor below the drawing's lowest vertex. */
+  position:absolute;left:15%;bottom:-12px;z-index:0;
   width:min(400px,31vw);pointer-events:none;
   filter:drop-shadow(0 16px 22px rgba(23,23,28,.12));
 }
@@ -163,8 +165,9 @@ body::after{right:var(--rail)}
 .hero[data-idle] .illo-screen--c{animation-delay:5s}
 /* Shift change. The second worker runs the same keyframes half a cycle out,
    so as one leaves toward the terminal the next arrives from the door. */
-.hero[data-idle] .illo-walk{animation:illoWalk 16s ease-in-out infinite}
-.hero[data-idle] .illo-walk--b{animation-delay:-8s}
+/* Delay is exactly half the duration, so the two workers stay opposite. */
+.hero[data-idle] .illo-walk{animation:illoWalk 24s ease-in-out infinite}
+.hero[data-idle] .illo-walk--b{animation-delay:-12s}
 .hero[data-idle] .illo-swing{transform-origin:top center;animation:illoSwing 2.6s ease-in-out infinite alternate}
 .hero[data-idle] .illo-bob--c{animation-duration:3.1s;animation-delay:.2s}
 .hero[data-idle] .illo-pulse{animation:illoPulse 2.4s ease-in-out infinite}

@@ -29,7 +29,7 @@ export default function Hero() {
 
   return (
     <section
-      className="hero"
+      className="hero has-rails"
       ref={rootRef}
       data-ready={ready ? '' : undefined}
       data-idle={idle ? '' : undefined}

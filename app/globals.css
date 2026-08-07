@@ -41,20 +41,19 @@ h4,h5{line-height:1.2}
    between them, so each band reads as sitting IN the page.
    The rails are SOLID alongside the content and break into fine dashes once
    they leave it — through the nav band above and below the last section. */
-main{
-  margin:0 var(--rail);position:relative;z-index:1;
-  border-left:1px solid var(--line);border-right:1px solid var(--line);
+main{margin:0 var(--rail);position:relative;z-index:1}
+/* Rails belong to the banded sections, not the whole page — they run down the
+   hero and stop where the logo band starts, as on the reference. */
+.has-rails{position:relative}
+.has-rails::before,.has-rails::after{
+  content:"";position:absolute;top:0;bottom:0;width:0;
+  border-left:1px solid var(--line);pointer-events:none;z-index:2;
 }
-body::before,body::after{
-  content:"";position:fixed;top:0;bottom:0;z-index:0;
-  border-left:1px dashed var(--line-strong);pointer-events:none;
-}
-body::before{left:var(--rail)}
-body::after{right:var(--rail)}
+.has-rails::before{left:0}
+.has-rails::after{right:0}
 @media (max-width:900px){
   :root{--rail:0px}
-  body::before,body::after{display:none}
-  main{border-left:0;border-right:0}
+  .has-rails::before,.has-rails::after{display:none}
 }
 
 /* ---------- Buttons ---------- */
@@ -319,19 +318,7 @@ body::after{right:var(--rail)}
 .mf-2{bottom:48px;left:-18px;animation:float 6.5s ease-in-out .8s infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 
-/* ---------- Logo strip ---------- */
-.logos{padding:56px 0 30px;background:var(--bg)}
-.logos-label{
-  text-align:center;font-family:var(--font-ui);font-weight:600;font-size:.75rem;
-  text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3-text);margin-bottom:22px;
-}
-.logos-row{display:flex;justify-content:center;gap:clamp(24px,4.5vw,56px);flex-wrap:wrap}
-.logos-row span{
-  font-family:var(--font-product);font-weight:700;font-size:1.05rem;color:var(--ink-3-text);
-  transition:color .2s;
-}
-.logos-row span:hover{color:var(--ink-2)}
-.count-inline{color:var(--accent);font-variant-numeric:tabular-nums}
+/* Logo band lives in components/Logos.css */
 
 /* ---------- Sections ---------- */
 .section-head{max-width:640px;margin:0 auto 56px;text-align:center}

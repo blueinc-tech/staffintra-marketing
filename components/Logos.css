@@ -1,0 +1,189 @@
+/* Customer band. Sits on white with no rails — the page rails stop above it —
+   and the grid is flanked by diagonal-hatch filler panels, as on the reference. */
+
+.logos {
+  background: var(--surface);
+  padding: 46px 0 56px;
+  overflow: hidden;
+}
+
+.logos-label {
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--ink-2);
+  margin-bottom: 30px;
+}
+.count-inline { color: var(--accent); font-variant-numeric: tabular-nums; }
+
+/* The grid holds the container width; the hatch fills the rest of the row. */
+.logos-band {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 1105px) 1fr;
+  align-items: stretch;
+}
+
+.logos-hatch {
+  display: block;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--line-strong) 0 1px,
+    transparent 1px 9px
+  );
+}
+
+.logos-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  /* One shared hairline between cells rather than doubled borders. */
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.lg-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 112px;
+  padding: 18px 14px;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font: inherit;
+  text-align: center;
+}
+
+.lg-mark { display: block; width: 100%; max-width: 108px; color: var(--ink-3); }
+.lg-mark svg { width: 100%; height: auto; display: block; }
+
+/* --- tiles that carry a case study --- */
+.lg-cell--study {
+  cursor: pointer;
+  transition: background .2s var(--ease);
+}
+.lg-cell--study:hover,
+.lg-cell--study.is-open { background: var(--surface-2); }
+.lg-cell--study:hover .lg-mark,
+.lg-cell--study.is-open .lg-mark { color: var(--ink-2); }
+.lg-cell--study:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+
+.lg-arrow {
+  position: absolute;
+  right: 9px;
+  bottom: 8px;
+  width: 12px;
+  height: 12px;
+  color: var(--ink-3);
+  opacity: .55;
+  transition: opacity .2s var(--ease), translate .2s var(--ease), color .2s var(--ease);
+}
+.lg-arrow svg { width: 100%; height: 100%; display: block; }
+.lg-cell--study:hover .lg-arrow,
+.lg-cell--study:focus-visible .lg-arrow {
+  opacity: 1;
+  color: var(--accent);
+  translate: 1.5px -1.5px;
+}
+.lg-cell--study.is-open .lg-arrow {
+  opacity: 1;
+  color: var(--accent);
+  rotate: 135deg;
+}
+
+.lg-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* --- the case study panel --- */
+.lg-study-wrap { max-width: 1105px; margin: 0 auto; padding: 0 40px; }
+.lg-study-wrap[hidden] { display: none; }
+
+.lg-study {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  margin-top: 26px;
+  padding: 26px 28px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  animation: lgStudyIn .32s var(--ease) both;
+}
+@keyframes lgStudyIn {
+  from { opacity: 0; translate: 0 -8px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+.lg-study-eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--accent);
+  margin-bottom: 9px;
+}
+.lg-study h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.28rem;
+  letter-spacing: -.015em;
+  margin-bottom: 10px;
+}
+.lg-study-body { font-size: .94rem; color: var(--ink-2); max-width: 56ch; }
+
+.lg-study-close {
+  margin-top: 16px;
+  font-family: var(--font-ui);
+  font-size: .82rem;
+  color: var(--ink-2);
+  background: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: border-color .18s, color .18s;
+}
+.lg-study-close:hover { border-color: var(--ink); color: var(--ink); }
+
+.lg-study-facts { display: grid; gap: 12px; align-content: start; }
+.lg-study-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--line-strong);
+}
+.lg-study-facts dt { font-size: .78rem; color: var(--ink-3-text); }
+.lg-study-facts dd { font-size: .82rem; font-weight: 600; color: var(--ink); }
+
+/* --- responsive --- */
+@media (max-width: 1000px) {
+  .logos-band { grid-template-columns: 1fr; }
+  .logos-hatch { display: none; }
+  .logos-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); border-left: 0; border-right: 0; }
+  .lg-cell:nth-child(3n) { border-right: 0; }
+  .lg-study { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .logos-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lg-cell:nth-child(3n) { border-right: 1px solid var(--line); }
+  .lg-cell:nth-child(2n) { border-right: 0; }
+  .lg-cell { min-height: 92px; }
+  .lg-study-wrap { padding: 0 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lg-study { animation: none; }
+  .lg-arrow { transition: none; }
+}

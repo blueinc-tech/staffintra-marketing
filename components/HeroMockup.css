@@ -26,7 +26,8 @@
   border-radius: 4px 0 0 4px;
   border-right: 0;
   overflow: hidden;
-  min-height: 392px;
+  /* Fixed, not min — a changing height would shunt the phone on every tab. */
+  height: 396px;
 }
 
 .hm-rail {
@@ -49,7 +50,12 @@
 .hm-rail-item { width: 24px; height: 24px; border-radius: 2px; background: rgba(255,255,255,.16); }
 .hm-rail-item.is-active { background: rgba(255,255,255,.34); }
 
-.hm-main { flex: 1; min-width: 0; padding: 11px 13px 15px; }
+.hm-main { flex: 1; min-width: 0; padding: 11px 13px 15px; display: flex; flex-direction: column; overflow: hidden; }
+
+/* Views cross-fade in place; the shell never resizes. */
+.hm-viewport { flex: 1; min-height: 0; overflow: hidden; animation: hmViewIn .3s var(--ease) both; }
+@keyframes hmViewIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .hm-viewport { animation: none; } }
 
 /* top bar */
 .hm-topbar {
@@ -61,9 +67,11 @@
 .hm-greet strong { display: block; font-size: .85rem; font-weight: 700; color: var(--ink); }
 .hm-topbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .hm-search {
+  display: inline-flex; align-items: center; gap: 5px;
   font-family: var(--font-ui); font-size: .66rem; color: var(--ink-3-text);
-  border: 1px solid var(--line); border-radius: 2px; padding: 5px 24px 5px 9px;
+  border: 1px solid var(--line); border-radius: 2px; padding: 5px 22px 5px 8px;
 }
+.hm-search svg { width: 11px; height: 11px; }
 
 /* avatars carry initials rather than being blank discs */
 .hm-ava {
@@ -74,6 +82,7 @@
 .hm-ava--a { background: var(--chrome); color: #fff; }
 .hm-ava--b { background: var(--tint-2); color: var(--chrome-deep); }
 .hm-ava--c { background: var(--tint-1); color: var(--chrome-deep); }
+.hm-ava--img { object-fit: cover; display: block; background: var(--tint-1); }
 
 /* ---------------- view switcher ---------------- */
 .hm-views { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 11px; }
@@ -167,9 +176,10 @@
 .hm-stat { border: 1px solid var(--line); border-radius: 2px; padding: 9px 11px; }
 .hm-stat-k { display: flex; align-items: center; gap: 6px; font-size: .66rem; color: var(--ink-3-text); }
 .hm-stat-mark {
-  width: 9px; height: 9px; flex-shrink: 0;
-  background: var(--ink-3); clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
+  width: 12px; height: 12px; flex-shrink: 0; color: var(--ink-3);
+  display: inline-flex; align-items: center; justify-content: center;
 }
+.hm-stat-mark svg { width: 12px; height: 12px; display: block; }
 .hm-stat strong { display: block; font-size: 1.12rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
 .hm-stat-d { font-size: .56rem; color: var(--ok); }
 
@@ -228,7 +238,8 @@
 .hm-chart-plot { position: relative; flex: 1; display: flex; align-items: flex-end; gap: 6px; height: 96px; }
 .hm-grid { position: absolute; left: 0; right: 0; top: var(--t); height: 1px; background: var(--line); }
 .hm-col { position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; }
-.hm-stack { display: flex; flex-direction: column; justify-content: flex-end; width: 100%; height: 100%; }
+/* Narrower bars — full-width columns read as a solid block. */
+.hm-stack { display: flex; flex-direction: column; justify-content: flex-end; width: 56%; margin: 0 auto; height: 100%; }
 .hm-seg { display: block; width: 100%; height: var(--h); position: relative; }
 /* Light tinted body with a saturated cap, like the reference's bars. */
 .hm-seg--hires { background: var(--tint-2); }
@@ -277,10 +288,11 @@
    frame: an outer bezel with an inset screen. Fully visible — never clipped. */
 /* Left edge aligned to the dashboard's, not overhanging it — overhanging is
    what buried the illustration. Still covers the rail. */
+/* Anchored from the top so a taller or shorter view can never shunt it. */
 .hm-phone {
   position: absolute;
-  left: 0;
-  bottom: 18px;
+  left: -24px;
+  top: 34px;
   z-index: 3;
   width: 184px;
   padding: 4px;
@@ -334,23 +346,25 @@
   border: 1px solid var(--line); border-radius: 2px; padding: 7px 2px;
   font-size: .5rem; color: var(--ink-2); text-align: center;
 }
-.hm-tile-mark {
-  width: 12px; height: 12px; background: var(--ink-3);
-  clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
-}
+.hm-tile-mark { width: 14px; height: 14px; color: var(--chrome); display: inline-flex; }
+.hm-tile-mark svg { width: 14px; height: 14px; display: block; }
 
+/* A labelled quick action, not a heavy black plus. */
 .hm-fab {
-  position: absolute; right: 10px; bottom: 40px; z-index: 2;
-  width: 27px; height: 27px; border-radius: 50%;
-  background: var(--ink-btn); color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: .95rem; line-height: 1;
+  position: absolute; right: 8px; bottom: 42px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--chrome); color: #fff;
+  font-family: var(--font-ui); font-size: .52rem; font-weight: 600;
+  padding: 5px 8px; border-radius: 2px;
+  box-shadow: 0 3px 10px rgba(64, 36, 192, .32);
 }
+.hm-fab svg { width: 10px; height: 10px; }
 
 .hm-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--line); padding: 5px 0 7px; }
 .hm-tabs span { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: .46rem; color: var(--ink-3); }
 .hm-tabs span.is-active { color: var(--chrome); }
-.hm-tabs i { width: 11px; height: 11px; background: currentColor; clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%); }
+.hm-tabs i { width: 12px; height: 12px; display: inline-flex; }
+.hm-tabs i svg { width: 12px; height: 12px; display: block; }
 
 /* ---------------- responsive ---------------- */
 @media (max-width: 1120px) {

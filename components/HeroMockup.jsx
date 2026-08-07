@@ -3,6 +3,74 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import './HeroMockup.css';
 
+/* ---------------- icons ---------------- */
+/* Small line icons at a shared 16px grid, square-cut to match the brand. */
+const ic = {
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 1.7,
+  strokeLinecap: 'square',
+  strokeLinejoin: 'miter',
+  viewBox: '0 0 16 16',
+};
+const IconPeople = () => (
+  <svg {...ic}><circle cx="6" cy="5.5" r="2.6" /><path d="M1.5 14a4.5 4.5 0 0 1 9 0M11 3.4a2.6 2.6 0 0 1 0 4.9M12.2 14a4.6 4.6 0 0 0-1.6-3.3" /></svg>
+);
+const IconAlert = () => (
+  <svg {...ic}><path d="M8 1.8 15 14H1z" /><path d="M8 6.2v3.4M8 11.4v.8" /></svg>
+);
+const IconClock = () => (
+  <svg {...ic}><circle cx="8" cy="8" r="6.3" /><path d="M8 4.4V8l2.5 1.6" /></svg>
+);
+const IconCal = () => (
+  <svg {...ic}><rect x="1.8" y="3" width="12.4" height="11.2" /><path d="M1.8 6.4h12.4M5 1.6v2.6M11 1.6v2.6" /></svg>
+);
+const IconLeave = () => (
+  <svg {...ic}><path d="M2 13.6h12M4.4 13.6V7.2l3.6-2.8 3.6 2.8v6.4" /><path d="M6.8 13.6v-3.2h2.4v3.2" /></svg>
+);
+const IconDoc = () => (
+  <svg {...ic}><path d="M3.4 1.8h6L12.6 5v9.2H3.4z" /><path d="M9.2 1.8V5h3.4M5.6 8.4h5M5.6 11h5" /></svg>
+);
+const IconGrid = () => (
+  <svg {...ic}><rect x="2" y="2" width="5" height="5" /><rect x="9" y="2" width="5" height="5" /><rect x="2" y="9" width="5" height="5" /><rect x="9" y="9" width="5" height="5" /></svg>
+);
+const IconBolt = () => (
+  <svg {...ic}><path d="M9 1.5 3.5 9h4l-.5 5.5L13 7H9z" /></svg>
+);
+const IconSearch = () => (
+  <svg {...ic}><circle cx="7" cy="7" r="4.6" /><path d="M10.4 10.4 14.2 14.2" /></svg>
+);
+
+const TILE_ICONS = {
+  'Time clock': IconClock,
+  Leave: IconLeave,
+  Payslips: IconDoc,
+  Timesheets: IconGrid,
+  'Time off': IconLeave,
+  Rota: IconCal,
+};
+const TAB_ICONS = { Home: IconGrid, Rota: IconCal, Time: IconClock, Leave: IconLeave, Team: IconPeople };
+
+/* Photo where we have one, initials where we don't. */
+function Avatar({ person, className = '' }) {
+  if (person.img) {
+    return (
+      <img
+        className={`hm-ava hm-ava--img ${className}`.trim()}
+        src={`/assets/people/${person.img}.jpg`}
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+  return (
+    <span className={`hm-ava hm-ava--${person.tone || 'a'} ${className}`.trim()}>
+      {person.initials}
+    </span>
+  );
+}
+
 /* ---------------- data ---------------- */
 
 const RANGES = {
@@ -55,28 +123,28 @@ const SHIFTS = {
 };
 
 const ROTA = [
-  { name: 'Sofia Reyes', initials: 'SR', tone: 'b', cells: ['early', null, 'late', 'early', null, 'night', null] },
-  { name: 'Tunde Okafor', initials: 'TO', tone: 'c', cells: [null, 'late', 'late', null, 'early', 'early', null] },
-  { name: 'Priya Sharma', initials: 'PS', tone: 'a', cells: ['night', 'night', null, 'open', 'late', null, 'late'] },
-  { name: 'Marcus Bell', initials: 'MB', tone: 'b', cells: ['late', null, 'early', 'early', 'open', null, 'night'] },
+  { name: 'Sofia Reyes', initials: 'SR', img: 'sofia', cells: ['early', null, 'late', 'early', null, 'night', null] },
+  { name: 'Tunde Okafor', initials: 'TO', img: 'tunde', cells: [null, 'late', 'late', null, 'early', 'early', null] },
+  { name: 'Priya Sharma', initials: 'PS', img: 'priya', cells: ['night', 'night', null, 'open', 'late', null, 'late'] },
+  { name: 'Marcus Bell', initials: 'MB', img: 'marcus', cells: ['late', null, 'early', 'early', 'open', null, 'night'] },
   { name: 'Dana Whyte', initials: 'DW', tone: 'c', cells: [null, 'early', null, 'late', 'night', 'late', 'early'] },
 ];
 
 const PEOPLE = [
-  { name: 'Amara Osei', initials: 'AO', tone: 'a', role: 'Operations lead', site: 'Northwind Care', status: 'On shift' },
-  { name: 'Sofia Reyes', initials: 'SR', tone: 'b', role: 'Senior carer', site: 'Northwind Care', status: 'On shift' },
-  { name: 'Tunde Okafor', initials: 'TO', tone: 'c', role: 'Floor supervisor', site: 'Harbor & Lane', status: 'Off today' },
-  { name: 'Priya Sharma', initials: 'PS', tone: 'a', role: 'Night lead', site: 'Brightline', status: 'On leave' },
-  { name: 'Marcus Bell', initials: 'MB', tone: 'b', role: 'Care assistant', site: 'Northwind Care', status: 'On shift' },
-  { name: 'Kofi Mensah', initials: 'KM', tone: 'c', role: 'Floor supervisor', site: 'Harbor & Lane', status: 'Onboarding' },
+  { name: 'Amara Osei', initials: 'AO', img: 'amara', role: 'Operations lead', site: 'Northwind Care', status: 'On shift' },
+  { name: 'Sofia Reyes', initials: 'SR', img: 'sofia', role: 'Senior carer', site: 'Northwind Care', status: 'On shift' },
+  { name: 'Tunde Okafor', initials: 'TO', img: 'tunde', role: 'Floor supervisor', site: 'Harbor & Lane', status: 'Off today' },
+  { name: 'Priya Sharma', initials: 'PS', img: 'priya', role: 'Night lead', site: 'Brightline', status: 'On leave' },
+  { name: 'Marcus Bell', initials: 'MB', img: 'marcus', role: 'Care assistant', site: 'Northwind Care', status: 'On shift' },
+  { name: 'Kofi Mensah', initials: 'KM', img: 'kofi', role: 'Floor supervisor', site: 'Harbor & Lane', status: 'Onboarding' },
 ];
 
 const OUT_TODAY = [
-  { name: 'John Pinnock', role: 'Floor supervisor', initials: 'JP', tone: 'a' },
-  { name: 'Hannah Jenner', role: 'Shift lead', initials: 'HJ', tone: 'b' },
+  { name: 'John Pinnock', role: 'Floor supervisor', initials: 'JP', img: 'john' },
+  { name: 'Hannah Jenner', role: 'Shift lead', initials: 'HJ', img: 'hannah' },
 ];
 const OUT_TOMORROW = [
-  { name: 'David Martins', role: 'Care assistant', initials: 'DM', tone: 'c' },
+  { name: 'David Martins', role: 'Care assistant', initials: 'DM', img: 'david' },
 ];
 
 /* ---------------- parts ---------------- */
@@ -231,7 +299,7 @@ function Rota() {
         {ROTA.map((person, row) => (
           <Fragment key={person.name}>
             <span className="hm-rota-person">
-              <span className={`hm-ava hm-ava--${person.tone}`}>{person.initials}</span>
+              <Avatar person={person} />
               <span>{person.name.split(' ')[0]}</span>
             </span>
             {DAYS.map((d, col) => {
@@ -293,7 +361,7 @@ function People() {
         {rows.map((p) => (
           <div className="hm-tr" role="row" key={p.name}>
             <span className="hm-td-name">
-              <span className={`hm-ava hm-ava--${p.tone}`}>{p.initials}</span>
+              <Avatar person={p} />
               {p.name}
             </span>
             <span>{p.role}</span>
@@ -349,7 +417,12 @@ function Phone() {
           <div className="hm-tiles">
             {['Time clock', 'Leave', 'Payslips'].map((t) => (
               <span className="hm-tile" key={t}>
-                <i className="hm-tile-mark" aria-hidden="true" />
+                <i className="hm-tile-mark" aria-hidden="true">
+                  {(() => {
+                    const I = TILE_ICONS[t];
+                    return I ? <I /> : null;
+                  })()}
+                </i>
                 {t}
               </span>
             ))}
@@ -358,23 +431,33 @@ function Phone() {
           <div className="hm-tiles">
             {['Timesheets', 'Time off', 'Rota'].map((t) => (
               <span className="hm-tile" key={t}>
-                <i className="hm-tile-mark" aria-hidden="true" />
+                <i className="hm-tile-mark" aria-hidden="true">
+                  {(() => {
+                    const I = TILE_ICONS[t];
+                    return I ? <I /> : null;
+                  })()}
+                </i>
                 {t}
               </span>
             ))}
           </div>
         </div>
 
+        {/* A quick-action chip rather than a heavy black plus. */}
         <span className="hm-fab" aria-hidden="true">
-          +
+          <IconBolt />
+          Swap
         </span>
         <div className="hm-tabs" aria-hidden="true">
-          {['Home', 'Rota', 'Time', 'Leave', 'Team'].map((t, i) => (
-            <span className={i === 0 ? 'is-active' : undefined} key={t}>
-              <i />
-              {t}
-            </span>
-          ))}
+          {['Home', 'Rota', 'Time', 'Leave', 'Team'].map((t, i) => {
+            const I = TAB_ICONS[t];
+            return (
+              <span className={i === 0 ? 'is-active' : undefined} key={t}>
+                <i>{I ? <I /> : null}</i>
+                {t}
+              </span>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -407,6 +490,7 @@ export default function HeroMockup() {
             </div>
             <div className="hm-topbar-right">
               <span className="hm-search" aria-hidden="true">
+                <IconSearch />
                 Search
               </span>
               <span className="hm-ava hm-ava--a">AO</span>
@@ -428,6 +512,8 @@ export default function HeroMockup() {
             ))}
           </div>
 
+          {/* keyed so switching replays the transition */}
+          <div className="hm-viewport" key={view}>
           {view === 'Rota' ? <Rota /> : null}
           {view === 'People' ? <People /> : null}
 
@@ -435,13 +521,15 @@ export default function HeroMockup() {
             <>
           <div className="hm-stats">
             {[
-              { k: 'Team members', v: '312', d: '+1 since last month' },
-              { k: 'Absences', v: '4', d: '+2 since last month' },
-              { k: 'Overtime hours', v: '253', d: '+22 since last month' },
+              { k: 'Team members', v: '312', d: '+1 since last month', I: IconPeople },
+              { k: 'Absences', v: '4', d: '+2 since last month', I: IconAlert },
+              { k: 'Overtime hours', v: '253', d: '+22 since last month', I: IconClock },
             ].map((s) => (
               <div className="hm-stat" key={s.k}>
                 <span className="hm-stat-k">
-                  <i className="hm-stat-mark" aria-hidden="true" />
+                  <i className="hm-stat-mark" aria-hidden="true">
+                    <s.I />
+                  </i>
                   {s.k}
                 </span>
                 <strong>{s.v}</strong>
@@ -484,7 +572,7 @@ export default function HeroMockup() {
               <p className="hm-sub">Out today</p>
               {OUT_TODAY.map((p) => (
                 <div className="hm-person" key={p.name}>
-                  <span className={`hm-ava hm-ava--${p.tone}`}>{p.initials}</span>
+                  <Avatar person={p} />
                   <span className="hm-person-txt">
                     <strong>{p.name}</strong>
                     <span>{p.role}</span>
@@ -494,7 +582,7 @@ export default function HeroMockup() {
               <p className="hm-sub">Out tomorrow</p>
               {OUT_TOMORROW.map((p) => (
                 <div className="hm-person" key={p.name}>
-                  <span className={`hm-ava hm-ava--${p.tone}`}>{p.initials}</span>
+                  <Avatar person={p} />
                   <span className="hm-person-txt">
                     <strong>{p.name}</strong>
                     <span>{p.role}</span>
@@ -540,10 +628,12 @@ export default function HeroMockup() {
           </div>
             </>
           ) : null}
+          </div>
         </div>
       </div>
 
-      <Phone />
+      {/* Only on Overview — the other views want the full width. */}
+      {view === 'Overview' ? <Phone /> : null}
     </div>
   );
 }

@@ -133,30 +133,54 @@ body::after{right:var(--rail)}
    an SVG need transform-box:fill-box. */
 .hero{--ease-drive:cubic-bezier(.53,.17,.21,1.03)}
 
-/* Percentage translate on an SVG group needs fill-box, or 100% resolves
-   against the viewport instead of the drawing's own bounds. */
-.illo-slab{
-  transform-box:fill-box;transform-origin:50% 50%;
-  translate:100% -100%;opacity:0;
+/* The drawing assembles from the floor upward: each stage rises into place in
+   turn, rather than the whole thing sliding in. Animated groups need fill-box,
+   or origins and percentages resolve against the viewport. */
+.illo-b,.illo-wave,.illo-bob,.illo-hover,.illo-scan,.illo-lift,.illo-pulse,.illo-tick{transform-box:fill-box}
+.illo-b{translate:0 22px;opacity:0}
+.hero[data-ready] .illo-b{
+  animation:illoRise .62s var(--ease-drive) calc(.35s + var(--s,0)*.13s) both;
 }
-.hero[data-ready] .illo-slab{animation:illoArrive 2s var(--ease-drive) .9s both}
+@keyframes illoRise{to{translate:0 0;opacity:1}}
 
-/* The shift-path marches while the hero is on screen. Its dash period is
-   9 + 7 = 16, so the travel is exactly two periods or the loop visibly jumps. */
+/* --- loops, all gated on the hero being on screen --- */
+/* Path dash period is 9 + 7 = 16, so it travels exactly two periods. */
 .hero[data-idle] .illo-march{animation:illoMarch .6s linear infinite}
+/* Connector period is 4 + 4 = 8. */
+.hero[data-idle] .illo-march-b{animation:illoMarchB .5s linear infinite}
+.hero[data-idle] .illo-scan{animation:illoScan 2.4s ease-in-out infinite}
+.hero[data-idle] .illo-scan--fast{animation-duration:1.6s}
+.hero[data-idle] .illo-pulse{animation:illoPulse 2.4s ease-in-out infinite}
+.hero[data-idle] .illo-wave{transform-origin:top right;animation:illoWave 2.2s ease-in-out infinite}
+.hero[data-idle] .illo-lift{transform-origin:bottom left;animation:illoLift 3s ease-in-out infinite}
+.hero[data-idle] .illo-bob{animation:illoBob 2.8s ease-in-out infinite alternate}
+.hero[data-idle] .illo-bob--b{animation-duration:3.4s;animation-delay:.4s}
+.hero[data-idle] .illo-hover{animation:illoHover 3.6s ease-in-out infinite alternate}
+.hero[data-idle] .illo-tick{animation:illoTick 3.6s ease-in-out infinite}
 
-@keyframes illoArrive{to{translate:0 0;opacity:1}}
 @keyframes illoMarch{to{stroke-dashoffset:-32}}
+@keyframes illoMarchB{to{stroke-dashoffset:-16}}
+@keyframes illoScan{0%,100%{opacity:.35}45%{opacity:1}}
+@keyframes illoPulse{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes illoWave{0%,72%,100%{rotate:0deg}80%{rotate:-13deg}90%{rotate:5deg}}
+@keyframes illoLift{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -2.5px;rotate:-3deg}}
+@keyframes illoBob{to{translate:0 -2px}}
+@keyframes illoHover{to{translate:0 -6px}}
+@keyframes illoTick{0%,60%,100%{opacity:1}68%{opacity:.15}76%{opacity:1}}
 
 /* The mockups slide up their own height, as the reference's phone does. */
 .hero-visual{opacity:0;translate:0 40px;transition:opacity .8s cubic-bezier(.4,0,.2,1),translate .8s cubic-bezier(.4,0,.2,1)}
 .hero[data-ready] .hero-visual{opacity:1;translate:0 0}
 
 @media (prefers-reduced-motion:reduce){
-  .illo-slab{translate:0 0;opacity:1}
+  .illo-b{translate:0 0;opacity:1}
   .hero-visual{opacity:1;translate:0 0;transition:none}
-  .hero[data-ready] .illo-slab,
-  .hero[data-idle] .illo-march{animation:none}
+  .hero[data-ready] .illo-b,
+  .hero[data-idle] .illo-march,.hero[data-idle] .illo-march-b,
+  .hero[data-idle] .illo-scan,.hero[data-idle] .illo-pulse,
+  .hero[data-idle] .illo-wave,.hero[data-idle] .illo-lift,
+  .hero[data-idle] .illo-bob,.hero[data-idle] .illo-hover,
+  .hero[data-idle] .illo-tick{animation:none}
 }
 /* Reference-site eyebrow: plain uppercase, 12px, generously letterspaced —
    no pill. Uppercase here is a CSS display device, not shouted source copy. */
@@ -166,8 +190,6 @@ body::after{right:var(--rail)}
   text-transform:uppercase;letter-spacing:.1em;
   color:var(--accent);margin-bottom:24px;
 }
-.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2.4s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(64,36,192,.35)}55%{box-shadow:0 0 0 6px rgba(64,36,192,0)}}
 /* Sized so the headline sets on two lines in this column, as the reference's
    does — at 62px ours broke to four. */
 .hero h1{
@@ -647,8 +669,6 @@ body::after{right:var(--rail)}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .anim-in,.reveal{opacity:1;transform:none;animation:none;transition:none}
-  .mf-1,.mf-2{animation:none}
-  .eyebrow-dot{animation:none}
 }
 
 /* ---------- Responsive ---------- */

@@ -38,9 +38,7 @@ export default function Hero() {
         {/* Deliberately not animated — the copy paints immediately, as the
             reference does, and the motion budget goes on the artwork. */}
         <div className="hero-copy">
-          <span className="eyebrow">
-            <span className="eyebrow-dot" /> The connected workforce platform
-          </span>
+          <span className="eyebrow">The connected workforce platform</span>
           <h1>
             One workspace for
             <br />

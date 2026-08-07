@@ -1,115 +1,299 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+// Based on React Bits "PillNav" (shadcn registry: @react-bits/PillNav-TS-CSS).
+// Adapted for this project:
+//   - converted to JSX + 'use client' for the Next.js app router
+//   - react-router-dom dropped: every link here is a same-page hash anchor
+//   - logo hover no longer rotates the mark (brand guidelines list rotation as misuse)
+//   - hover-circle colour decoupled from the bar colour, so the bar can stay light
+//   - added a logoHref and an actions slot for the demo CTA
+//   - honours prefers-reduced-motion
+
+import { useEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import './PillNav.css';
 
 export default function PillNav({
   logo,
-  logoAlt = 'Company logo',
+  logoAlt = 'Logo',
   items = [],
-  activeHref = '/',
+  activeHref,
   className = '',
-  ease = 'cubic-bezier(.22,.61,.36,1)',
-  baseColor = '#ffffff',
-  pillColor = '#17171C',
-  hoveredPillTextColor = '#ffffff',
+  ease = 'power3.easeOut',
+  baseColor = '#fff',
+  pillColor = 'transparent',
+  hoveredPillTextColor = '#fff',
   pillTextColor = '#17171C',
-  theme = 'light',
-  initialLoadAnimation = true,
+  hoverCircleColor,
+  logoHref = '#top',
+  actions = null,
+  mobileActions = null,
+  onMobileMenuClick,
+  initialLoadAnimation = false,
 }) {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const circleRefs = useRef([]);
+  const tlRefs = useRef([]);
+  const activeTweenRefs = useRef([]);
+  const logoImgRef = useRef(null);
+  const logoTweenRef = useRef(null);
+  const hamburgerRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const navItemsRef = useRef(null);
+  const logoRef = useRef(null);
+
+  const reduced = () =>
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    const layout = () => {
+      circleRefs.current.forEach((circle) => {
+        if (!circle?.parentElement) return;
+
+        const pill = circle.parentElement;
+        const { width: w, height: h } = pill.getBoundingClientRect();
+        if (!w || !h) return;
+
+        const R = ((w * w) / 4 + h * h) / (2 * h);
+        const D = Math.ceil(2 * R) + 2;
+        const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
+        const originY = D - delta;
+
+        circle.style.width = `${D}px`;
+        circle.style.height = `${D}px`;
+        circle.style.bottom = `-${delta}px`;
+
+        gsap.set(circle, { xPercent: -50, scale: 0, transformOrigin: `50% ${originY}px` });
+
+        const label = pill.querySelector('.pill-label');
+        const hoverLabel = pill.querySelector('.pill-label-hover');
+
+        if (label) gsap.set(label, { y: 0 });
+        if (hoverLabel) gsap.set(hoverLabel, { y: h + 12, opacity: 0 });
+
+        const index = circleRefs.current.indexOf(circle);
+        if (index === -1) return;
+
+        tlRefs.current[index]?.kill();
+        const tl = gsap.timeline({ paused: true });
+
+        tl.to(circle, { scale: 1.2, xPercent: -50, duration: 2, ease, overwrite: 'auto' }, 0);
+        if (label) tl.to(label, { y: -(h + 8), duration: 2, ease, overwrite: 'auto' }, 0);
+        if (hoverLabel) {
+          gsap.set(hoverLabel, { y: Math.ceil(h + 100), opacity: 0 });
+          tl.to(hoverLabel, { y: 0, opacity: 1, duration: 2, ease, overwrite: 'auto' }, 0);
+        }
+
+        tlRefs.current[index] = tl;
+      });
+    };
+
+    layout();
+
+    const onResize = () => layout();
+    window.addEventListener('resize', onResize);
+
+    // The display face loads async; remeasure once it lands or the pills mis-size.
+    if (document.fonts?.ready) document.fonts.ready.then(layout).catch(() => {});
+
+    const menu = mobileMenuRef.current;
+    if (menu) gsap.set(menu, { visibility: 'hidden', opacity: 0, scaleY: 1 });
+
+    if (initialLoadAnimation && !reduced()) {
+      if (logoRef.current) {
+        gsap.set(logoRef.current, { scale: 0 });
+        gsap.to(logoRef.current, { scale: 1, duration: 0.6, ease });
+      }
+      if (navItemsRef.current) {
+        gsap.set(navItemsRef.current, { width: 0, overflow: 'hidden' });
+        gsap.to(navItemsRef.current, { width: 'auto', duration: 0.6, ease });
+      }
+    }
+
+    return () => window.removeEventListener('resize', onResize);
+  }, [items, ease, initialLoadAnimation]);
+
+  const handleEnter = (i) => {
+    const tl = tlRefs.current[i];
+    if (!tl || reduced()) return;
+    activeTweenRefs.current[i]?.kill();
+    activeTweenRefs.current[i] = tl.tweenTo(tl.duration(), {
+      duration: 0.3,
+      ease,
+      overwrite: 'auto',
+    });
+  };
+
+  const handleLeave = (i) => {
+    const tl = tlRefs.current[i];
+    if (!tl || reduced()) return;
+    activeTweenRefs.current[i]?.kill();
+    activeTweenRefs.current[i] = tl.tweenTo(0, { duration: 0.2, ease, overwrite: 'auto' });
+  };
+
+  // The mark must not rotate (brand guidelines) — a small lift reads as responsive instead.
+  const handleLogoEnter = () => {
+    const img = logoImgRef.current;
+    if (!img || reduced()) return;
+    logoTweenRef.current?.kill();
+    logoTweenRef.current = gsap.to(img, { scale: 1.08, duration: 0.25, ease, overwrite: 'auto' });
+  };
+
+  const handleLogoLeave = () => {
+    const img = logoImgRef.current;
+    if (!img || reduced()) return;
+    logoTweenRef.current?.kill();
+    logoTweenRef.current = gsap.to(img, { scale: 1, duration: 0.25, ease, overwrite: 'auto' });
+  };
+
+  const closeMobile = () => {
+    if (isMobileMenuOpen) toggleMobileMenu();
+  };
+
+  const toggleMobileMenu = () => {
+    const newState = !isMobileMenuOpen;
+    setIsMobileMenuOpen(newState);
+
+    const hamburger = hamburgerRef.current;
+    const menu = mobileMenuRef.current;
+    const dur = reduced() ? 0 : 0.3;
+
+    if (hamburger) {
+      const lines = hamburger.querySelectorAll('.hamburger-line');
+      if (newState) {
+        gsap.to(lines[0], { rotation: 45, y: 3, duration: dur, ease });
+        gsap.to(lines[1], { rotation: -45, y: -3, duration: dur, ease });
+      } else {
+        gsap.to(lines[0], { rotation: 0, y: 0, duration: dur, ease });
+        gsap.to(lines[1], { rotation: 0, y: 0, duration: dur, ease });
+      }
+    }
+
+    if (menu) {
+      if (newState) {
+        gsap.set(menu, { visibility: 'visible' });
+        gsap.fromTo(
+          menu,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: dur, ease, transformOrigin: 'top center' }
+        );
+      } else {
+        gsap.to(menu, {
+          opacity: 0,
+          y: 10,
+          duration: reduced() ? 0 : 0.2,
+          ease,
+          transformOrigin: 'top center',
+          onComplete: () => gsap.set(menu, { visibility: 'hidden' }),
+        });
+      }
+    }
+
+    onMobileMenuClick?.();
+  };
 
   useEffect(() => {
-    if (!open) return undefined;
+    if (!isMobileMenuOpen) return undefined;
     const onKey = (e) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') toggleMobileMenu();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [open]);
+  });
 
-  const shellStyle = {
-    '--pill-nav-base': baseColor,
-    '--pill-nav-pill': pillColor,
-    '--pill-nav-hover-text': hoveredPillTextColor,
-    '--pill-nav-text': pillTextColor,
-    '--pill-nav-ease': ease,
+  const cssVars = {
+    '--base': baseColor,
+    '--pill-bg': pillColor,
+    '--hover-text': hoveredPillTextColor,
+    '--pill-text': pillTextColor,
+    '--hover-circle': hoverCircleColor || baseColor,
   };
 
-  const close = () => setOpen(false);
-
   return (
-    <div
-      className={`pill-nav-shell ${className} ${scrolled ? 'is-scrolled' : ''} ${initialLoadAnimation ? 'is-animated' : ''} ${theme === 'dark' ? 'pill-nav-shell--dark' : ''}`.trim()}
-      style={shellStyle}
-    >
-      <div className="pill-nav">
-        <a className="pill-nav__logo" href="#top" aria-label="StaffIntra home" onClick={close}>
-          {typeof logo === 'string' ? <img src={logo} alt={logoAlt} /> : logo}
+    <div className={`pill-nav-container ${className}`.trim()} style={cssVars}>
+      <nav className="pill-nav" aria-label="Primary">
+        <a
+          className="pill-logo"
+          href={logoHref}
+          aria-label="StaffIntra home"
+          onMouseEnter={handleLogoEnter}
+          onMouseLeave={handleLogoLeave}
+          onClick={closeMobile}
+          ref={logoRef}
+        >
+          <img src={logo} alt={logoAlt} ref={logoImgRef} />
         </a>
 
-        <nav className="pill-nav__links" aria-label="Main navigation">
-          {items.map((item) => {
-            const isActive = activeHref === item.href;
-            return (
-              <a
-                key={item.href}
-                href={item.href}
-                className={`pill-nav__link${isActive ? ' active' : ''}`}
-                onClick={close}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-        </nav>
-
-        <div className="pill-nav__actions">
-          <a className="pill-nav__ghost" href="#demo" onClick={close}>
-            Demo
-          </a>
-          <a className="pill-nav__cta" href="#demo" onClick={close}>
-            Book a demo
-          </a>
+        <div className="pill-nav-items desktop-only" ref={navItemsRef}>
+          <ul className="pill-list">
+            {items.map((item, i) => (
+              <li key={item.href}>
+                <a
+                  href={item.href}
+                  className={`pill${activeHref === item.href ? ' is-active' : ''}`}
+                  aria-label={item.ariaLabel || item.label}
+                  aria-current={activeHref === item.href ? 'true' : undefined}
+                  onMouseEnter={() => handleEnter(i)}
+                  onMouseLeave={() => handleLeave(i)}
+                  onFocus={() => handleEnter(i)}
+                  onBlur={() => handleLeave(i)}
+                >
+                  <span
+                    className="hover-circle"
+                    aria-hidden="true"
+                    ref={(el) => {
+                      circleRefs.current[i] = el;
+                    }}
+                  />
+                  <span className="label-stack">
+                    <span className="pill-label">{item.label}</span>
+                    <span className="pill-label-hover" aria-hidden="true">
+                      {item.label}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
+
+        {actions ? <div className="pill-nav-actions desktop-only">{actions}</div> : null}
 
         <button
           type="button"
-          className="pill-nav__burger"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
+          className="mobile-menu-button mobile-only"
+          onClick={toggleMobileMenu}
+          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={isMobileMenuOpen}
           aria-controls="pill-nav-mobile"
-          onClick={() => setOpen((value) => !value)}
+          ref={hamburgerRef}
         >
-          <span />
-          <span />
+          <span className="hamburger-line" />
+          <span className="hamburger-line" />
         </button>
-      </div>
+      </nav>
 
-      <div id="pill-nav-mobile" className={`pill-nav__mobile${open ? ' is-open' : ''}`}>
-        {items.map((item) => {
-          const isActive = activeHref === item.href;
-          return (
-            <a
-              key={item.href}
-              href={item.href}
-              className={`pill-nav__mobile-link${isActive ? ' active' : ''}`}
-              onClick={close}
-            >
-              {item.label}
-            </a>
-          );
-        })}
-        <a className="pill-nav__mobile-cta" href="#demo" onClick={close}>
-          Book a demo
-        </a>
+      <div id="pill-nav-mobile" className="mobile-menu-popover mobile-only" ref={mobileMenuRef}>
+        <ul className="mobile-menu-list">
+          {items.map((item) => (
+            <li key={item.href}>
+              <a
+                href={item.href}
+                className={`mobile-menu-link${activeHref === item.href ? ' is-active' : ''}`}
+                aria-current={activeHref === item.href ? 'true' : undefined}
+                onClick={toggleMobileMenu}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        {mobileActions ? (
+          <div className="mobile-menu-actions" onClick={toggleMobileMenu}>
+            {mobileActions}
+          </div>
+        ) : null}
       </div>
     </div>
   );

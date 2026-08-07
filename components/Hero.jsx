@@ -10,11 +10,11 @@ export default function Hero() {
           <h1 className="anim-in" style={{ '--d': 1 }}>
             One workspace for
             <br />
-            your whole team.
+            your <span className="accent">whole team</span>.
           </h1>
           <p className="hero-sub anim-in" style={{ '--d': 2 }}>
-            StaffIntra brings scheduling, leave, approvals, and onboarding into a single workspace
-            — so your people spend less time on admin and more time on the work that matters.
+            StaffIntra brings scheduling, leave, approvals, and onboarding into a single workspace,
+            so your people spend less time on admin and more time on the work that matters.
           </p>
           <div className="hero-ctas anim-in" style={{ '--d': 3 }}>
             <a className="btn btn-primary btn-lg btn-swap" href="#demo">

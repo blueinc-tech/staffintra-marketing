@@ -1,69 +1,52 @@
-/* React Bits PillNav — restyled on the StaffIntra tokens.
+/* React Bits PillNav, restyled to the reference site's header.
+   Measured from the live site at 1440px:
+     header 64px, sticky, opaque white, no border, no shadow, z-index 50
+     nav links Inter 15px / 400, ink, sentence case, 40px between labels
+     buttons 2px radius, 12px 18px padding, Inter 15px / 500
    Colours arrive as inline custom properties from the component:
    --base (bar), --pill-bg (pill), --pill-text, --hover-text, --hover-circle. */
 
 .pill-nav-container {
   position: fixed;
-  top: 14px;
+  top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 0 24px;
-  pointer-events: none;
-}
-
-.pill-nav-container > * {
-  pointer-events: auto;
+  background: var(--base);
 }
 
 .pill-nav {
-  --nav-h: 52px;
-  --logo: 52px;
-  --pill-pad-x: 20px;
-  --pill-gap: 4px;
-  max-width: 1140px;
+  max-width: 1185px;
   margin: 0 auto;
-  height: var(--nav-h);
+  height: 64px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 0 8px 0 8px;
+  gap: 24px;
+  padding: 0 40px;
   box-sizing: border-box;
-  background: color-mix(in srgb, var(--base) 82%, transparent);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--line);
-  border-radius: 9999px;
-  box-shadow: var(--shadow-md);
 }
 
 /* ---------- logo ---------- */
 .pill-logo {
-  width: 38px;
-  height: 38px;
+  height: 24px;
   flex-shrink: 0;
-  border-radius: 50%;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  margin-left: 4px;
 }
 
 .pill-logo img {
-  width: 100%;
   height: 100%;
-  object-fit: contain;
+  width: auto;
   display: block;
   will-change: transform;
 }
 
-/* ---------- pill list ---------- */
+/* ---------- links ---------- */
 .pill-nav-items {
   position: relative;
   display: flex;
   align-items: center;
-  height: 40px;
+  height: 36px;
   margin: 0 auto;
 }
 
@@ -71,7 +54,8 @@
   list-style: none;
   display: flex;
   align-items: stretch;
-  gap: var(--pill-gap);
+  /* 12px gap + 14px padding each side = 40px between labels, matching the reference. */
+  gap: 12px;
   margin: 0;
   padding: 0;
   height: 100%;
@@ -87,19 +71,20 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 var(--pill-pad-x);
+  padding: 0 14px;
   background: var(--pill-bg);
   color: var(--pill-text);
   text-decoration: none;
   border-radius: 9999px;
   box-sizing: border-box;
-  /* Brand voice is sentence case everywhere — the upstream component uppercases. */
-  text-transform: none;
-  font-family: var(--font-display);
+  /* Reference nav is Inter 15px regular, sentence case — not the display face.
+     The display face is reserved for headline-scale type. */
+  font-family: var(--font-ui);
   font-weight: 400;
-  font-size: 1rem;
+  font-size: 15px;
   line-height: 0;
-  letter-spacing: 0;
+  letter-spacing: normal;
+  text-transform: none;
   white-space: nowrap;
   cursor: pointer;
   position: relative;
@@ -155,13 +140,12 @@
   outline-offset: 3px;
 }
 
-/* ---------- nav CTA ---------- */
+/* ---------- nav actions ---------- */
 .pill-nav-actions {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  margin-right: 4px;
 }
 
 /* ---------- responsive switches ---------- */
@@ -189,6 +173,7 @@
 
   .pill-nav {
     justify-content: space-between;
+    padding: 0 22px;
   }
 }
 
@@ -196,8 +181,8 @@
 .mobile-menu-button {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background: var(--hover-circle);
+  border-radius: var(--r-md, 2px);
+  background: transparent;
   border: none;
   display: none;
   flex-direction: column;
@@ -208,7 +193,6 @@
   padding: 0;
   position: relative;
   flex-shrink: 0;
-  margin-right: 4px;
 }
 
 @media (max-width: 900px) {
@@ -219,13 +203,13 @@
 
 .mobile-menu-button:focus-visible {
   outline: 2px solid var(--hover-circle);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 .hamburger-line {
-  width: 16px;
+  width: 20px;
   height: 2px;
-  background: var(--hover-text);
+  background: var(--pill-text);
   border-radius: 1px;
   transform-origin: center;
 }
@@ -233,16 +217,15 @@
 /* ---------- mobile popover ---------- */
 .mobile-menu-popover {
   position: absolute;
-  top: calc(var(--nav-h, 52px) + 12px);
-  left: 24px;
-  right: 24px;
+  top: 64px;
+  left: 0;
+  right: 0;
   background: var(--base);
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  box-shadow: var(--shadow-lg);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   z-index: 998;
   opacity: 0;
-  padding: 8px;
+  padding: 10px 22px 18px;
   transform-origin: top center;
   visibility: hidden;
 }
@@ -253,29 +236,30 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
 }
 
 .mobile-menu-popover .mobile-menu-link {
   display: block;
-  padding: 13px 16px;
+  padding: 14px 0;
   color: var(--pill-text);
   background: transparent;
   text-decoration: none;
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  border-radius: 14px;
-  transition: background 0.2s ease, color 0.2s ease;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  border-bottom: 1px solid var(--line);
+  transition: color 0.2s ease;
 }
 
 .mobile-menu-popover .mobile-menu-link:hover,
 .mobile-menu-popover .mobile-menu-link.is-active {
-  background: var(--hover-circle);
-  color: var(--hover-text);
+  color: var(--hover-circle);
 }
 
 .mobile-menu-actions {
-  padding: 8px 8px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
 }
 
 .mobile-menu-actions .btn {

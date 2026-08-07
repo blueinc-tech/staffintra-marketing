@@ -42,8 +42,9 @@ export default function Nav() {
 
   return (
     <header id="top">
+      {/* Brand guidelines put the horizontal lockup in the website header. */}
       <PillNav
-        logo="/assets/StaffIntra_Logo_Mark_Purple.svg"
+        logo="/assets/StaffIntra_Logo_Horizontal_Purple.svg"
         logoAlt="StaffIntra"
         items={LINKS}
         activeHref={activeHref}
@@ -57,17 +58,30 @@ export default function Nav() {
         hoverCircleColor="#4024C0"
         initialLoadAnimation={false}
         actions={
-          <a className="btn btn-primary btn-swap btn-nav" href="#demo">
-            <span className="swap">
-              <span>Book a demo</span>
-              <span aria-hidden="true">Book a demo</span>
-            </span>
-          </a>
+          <>
+            <a className="btn btn-nav btn-nav-ghost btn-swap" href="#">
+              <span className="swap">
+                <span>Log in</span>
+                <span aria-hidden="true">Log in</span>
+              </span>
+            </a>
+            <a className="btn btn-primary btn-swap btn-nav" href="#demo">
+              <span className="swap">
+                <span>Book a demo</span>
+                <span aria-hidden="true">Book a demo</span>
+              </span>
+            </a>
+          </>
         }
         mobileActions={
-          <a className="btn btn-primary btn-lg" href="#demo">
-            Book a demo
-          </a>
+          <>
+            <a className="btn btn-secondary btn-lg" href="#">
+              Log in
+            </a>
+            <a className="btn btn-primary btn-lg" href="#demo">
+              Book a demo
+            </a>
+          </>
         }
       />
     </header>

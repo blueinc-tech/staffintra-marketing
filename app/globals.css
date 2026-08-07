@@ -16,7 +16,7 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:84px}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
 body{
   font-family:var(--font-ui);font-weight:450;color:var(--ink);
   background:var(--surface);-webkit-font-smoothing:antialiased;
@@ -62,10 +62,16 @@ h4,h5{line-height:1.2}
 /* ---------- Nav ----------
    Layout and interaction live in components/PillNav.css (React Bits PillNav).
    Only the site-specific CTA sizing belongs here. */
-.btn-nav{padding:9px 18px;font-size:.92rem;border-radius:999px}
+/* Reference header buttons: Inter 15px / 500, 12x18 padding, 2px radius. */
+.btn-nav{
+  font-family:var(--font-ui);font-weight:500;font-size:15px;line-height:1.15;
+  padding:12px 18px;border-radius:var(--r-md);
+}
+.btn-nav-ghost{background:rgba(23,23,28,.05);color:var(--ink)}
+.btn-nav-ghost:hover{background:rgba(23,23,28,.09)}
 
 /* ---------- Hero ---------- */
-.hero{position:relative;padding:128px 0 64px;overflow:hidden}
+.hero{position:relative;padding:112px 0 64px;overflow:hidden}
 .hero-bg{
   position:absolute;inset:0;z-index:-1;
   background:

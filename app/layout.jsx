@@ -1,20 +1,13 @@
 import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from 'next/font/google';
-import localFont from 'next/font/local';
 import './globals.css';
 
-// Marketing display face (headlines, nav, buttons) — user-supplied.
-const sugar = localFont({
-  src: './fonts/JustSugar.woff2',
-  weight: '400',
-  variable: '--font-display',
-  display: 'swap',
-});
-
-// Product face — the in-page mockups depict the real app, which uses Plus Jakarta Sans.
+// Display face for headlines, and the same face inside the product mockups.
+// Closest available match to the reference site's wide geometric headline face,
+// and the display font the brand guidelines specify.
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  weight: ['600', '700', '800'],
-  variable: '--font-product',
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-display',
   display: 'swap',
 });
 const inter = Inter({
@@ -44,7 +37,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en-GB" className={`${sugar.variable} ${jakarta.variable} ${inter.variable} ${mono.variable}`}>
+    <html lang="en-GB" className={`${jakarta.variable} ${inter.variable} ${mono.variable}`}>
       <body>
         <noscript>
           <style>{`.reveal{opacity:1;transform:none}`}</style>

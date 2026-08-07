@@ -111,14 +111,17 @@
   height: 10px;
 }
 
+/* The page surface is flat, but this panel floats over content, so — like the
+   reference's — it carries a soft shadow and a slightly larger radius. */
 .nav-panel-viewport {
   position: relative;
   width: 100%;
   height: 100%;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--r-md);
+  border-radius: 4px;
   overflow: hidden;
+  box-shadow: 0 2px 6px rgba(23, 23, 28, 0.05), 0 14px 38px rgba(23, 23, 28, 0.10);
   /* Keeps the width/height transition from reflowing the rest of the page. */
   contain: layout paint style;
 }
@@ -162,14 +165,16 @@
   letter-spacing: 0.1em;
   color: var(--ink-3-text);
   background: var(--surface-2);
-  padding: 12px 18px;
+  padding: 12px 20px;
   border-bottom: 1px solid var(--line);
-  border-right: 1px solid var(--line);
+  border-right: 1px dashed var(--line-strong);
 }
 .mm-head:last-child { border-right: 0; }
 
+/* Dividers run dashed vertically and solid horizontally, matching the
+   reference's grid. Dashes read lighter, so they take the stronger line. */
 .mm-cols { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
-.mm-col { border-right: 1px solid var(--line); min-width: 208px; }
+.mm-col { border-right: 1px dashed var(--line-strong); min-width: 216px; }
 .mm-col:last-child { border-right: 0; }
 
 .mm-feature {
@@ -186,7 +191,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  padding: 16px 18px 16px 14px;
+  padding: 18px 20px 18px 16px;
 }
 .mm-feature-text strong {
   font-family: var(--font-ui);
@@ -214,26 +219,26 @@
 
 .mm-row-mark {
   flex-shrink: 0;
-  width: 54px;
+  width: 60px;
   align-self: stretch;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 13px 0;
-  border-right: 1px solid var(--line);
+  padding: 16px 0;
+  border-right: 1px dashed var(--line-strong);
   color: var(--accent);
 }
-.mm-row-mark svg { width: 20px; height: 20px; display: block; }
+.mm-row-mark svg { width: 23px; height: 23px; display: block; }
 
 .mm-row-label {
   font-family: var(--font-ui);
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   color: var(--ink);
-  padding: 13px 18px 13px 14px;
+  padding: 16px 20px 16px 16px;
   white-space: nowrap;
 }
 
-.mm-row--plain .mm-row-label { padding-left: 18px; }
+.mm-row--plain .mm-row-label { padding-left: 20px; }
 
 /* ---------- menu: intro + list (Solutions, Company) ---------- */
 .mm-intro-wrap { display: grid; grid-template-columns: minmax(210px, 240px) minmax(230px, 1fr); }
@@ -241,9 +246,9 @@
 .mm-intro {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 18px;
-  border-right: 1px solid var(--line);
+  gap: 7px;
+  padding: 20px 22px;
+  border-right: 1px dashed var(--line-strong);
 }
 .mm-intro strong {
   font-family: var(--font-ui);
@@ -266,7 +271,7 @@
 
 .mm-intro--mark { flex-direction: row; gap: 0; padding: 0; align-items: stretch; }
 .mm-intro--mark .mm-row-mark { align-self: flex-start; border-right: 0; padding-top: 18px; }
-.mm-intro-text { display: flex; flex-direction: column; gap: 6px; padding: 18px 18px 18px 0; }
+.mm-intro-text { display: flex; flex-direction: column; gap: 7px; padding: 20px 22px 20px 0; }
 .mm-intro-text strong {
   font-family: var(--font-ui); font-weight: 600; font-size: 0.95rem; color: var(--ink);
 }
@@ -274,7 +279,7 @@
   font-family: var(--font-ui); font-size: 0.82rem; color: var(--ink-2); line-height: 1.45;
 }
 
-.mm-res-col { border-left: 1px solid var(--line); display: flex; flex-direction: column; }
+.mm-res-col { border-left: 1px dashed var(--line-strong); display: flex; flex-direction: column; }
 .mm-head--inline { background: var(--surface-2); border-right: 0; }
 
 .mm-featured { display: flex; flex-direction: column; gap: 10px; padding: 14px 18px; text-decoration: none; }

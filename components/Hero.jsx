@@ -1,23 +1,55 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import HeroMockup from './HeroMockup';
 import HeroArt from './HeroArt';
 
 export default function Hero() {
+  const rootRef = useRef(null);
+  const [ready, setReady] = useState(false);
+  const [idle, setIdle] = useState(false);
+
+  // The reveal is gated on paint, not on scroll: the hero is above the fold,
+  // so an observer there would only cost a frame. The observer below exists
+  // purely to pause the idle loops once the hero scrolls away.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || !('IntersectionObserver' in window)) return undefined;
+    const io = new IntersectionObserver(([e]) => setIdle(e.isIntersecting), {
+      threshold: 0.15,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <section className="hero">
+    <section
+      className="hero"
+      ref={rootRef}
+      data-ready={ready ? '' : undefined}
+      data-idle={idle ? '' : undefined}
+    >
       <div className="container hero-inner">
+        {/* Deliberately not animated — the copy paints immediately, as the
+            reference does, and the motion budget goes on the artwork. */}
         <div className="hero-copy">
-          <span className="eyebrow anim-in" style={{ '--d': 0 }}>
+          <span className="eyebrow">
             <span className="eyebrow-dot" /> The connected workforce platform
           </span>
-          <h1 className="anim-in" style={{ '--d': 1 }}>
+          <h1>
             One workspace for
             <br />
             your <span className="accent">whole team</span>.
           </h1>
-          <p className="hero-sub anim-in" style={{ '--d': 2 }}>
+          <p className="hero-sub">
             How modern operators manage rotas, leave, onboarding, and time in one place.
           </p>
-          <div className="hero-ctas anim-in" style={{ '--d': 3 }}>
+          <div className="hero-ctas">
             <a className="btn btn-primary btn-lg btn-swap" href="#demo">
               <span className="swap">
                 <span>Book a demo</span>
@@ -28,17 +60,14 @@ export default function Hero() {
               See how it works
             </a>
           </div>
-          <p className="hero-note anim-in" style={{ '--d': 4 }}>
-            Free 30-day pilot · No credit card needed
-          </p>
+          <p className="hero-note">Free 30-day pilot · No credit card needed</p>
         </div>
 
-        <div className="hero-visual anim-in" style={{ '--d': 5 }}>
+        <div className="hero-visual">
           <HeroMockup />
         </div>
       </div>
 
-      {/* Sits behind the copy, on the section's ground plane. */}
       <HeroArt />
     </section>
   );

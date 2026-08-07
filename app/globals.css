@@ -113,9 +113,59 @@ body::after{right:var(--rail)}
   width:min(430px,33vw);pointer-events:none;
   filter:drop-shadow(0 18px 24px rgba(23,23,28,.13));
 }
-.hero-art svg{width:100%;height:auto;display:block}
+.hero-art svg{width:100%;height:auto;display:block;overflow:visible}
+/* The reference drops its hero illustration below 1024px rather than scaling
+   it — the drive-in reads badly at narrow widths. */
 @media (max-width:1120px){.hero-art{left:auto;right:2%;width:min(360px,30vw)}}
-@media (max-width:940px){.hero-art{display:none}}
+@media (max-width:1024px){.hero-art{display:none}}
+
+/* ---------- Hero reveal ----------
+   Timings taken from the reference: guide lines slide in at 700/800ms over
+   500ms, the objects arrive over 2s from 900ms on a slightly overshooting
+   curve, and the dashed path marches on a loop. Percentage transforms inside
+   an SVG need transform-box:fill-box. */
+.hero{--ease-drive:cubic-bezier(.53,.17,.21,1.03)}
+
+.illo-line,.illo-slab,.illo-float{transform-box:fill-box;transform-origin:50% 50%}
+
+.illo-dash{
+  stroke:#17171C;stroke-width:1.5;fill:none;stroke-linecap:butt;
+  /* period 12; the march must travel an exact multiple or it visibly jumps */
+  stroke-dasharray:7 5;
+}
+.illo-line{translate:-100% 100%}
+.illo-slab{translate:100% -100%;opacity:0}
+
+.hero[data-ready] .illo-line--a{animation:illoLineIn .5s ease-out .7s both}
+.hero[data-ready] .illo-line--b{animation:illoLineIn .5s ease-out .8s both}
+.hero[data-ready] .illo-slab{
+  animation:illoArrive 2s var(--ease-drive) calc(.9s + var(--i,0)*.16s) both;
+}
+
+/* Idle loops only while the hero is on screen. */
+.hero[data-idle] .illo-dash{animation:illoMarch .55s linear infinite}
+.hero[data-idle] .illo-float{animation:illoFloat 3.2s ease-in-out infinite alternate}
+.hero[data-idle] .illo-float--b{animation-duration:3.8s;animation-delay:.25s}
+.hero[data-idle] .illo-float--c{animation-duration:4.4s;animation-delay:.5s}
+
+@keyframes illoLineIn{to{translate:0 0}}
+@keyframes illoArrive{to{translate:0 0;opacity:1}}
+@keyframes illoMarch{to{stroke-dashoffset:-24}}
+@keyframes illoFloat{to{translate:0 -5px}}
+
+/* The mockups slide up their own height, as the reference's phone does. */
+.hero-visual{opacity:0;translate:0 40px;transition:opacity .8s cubic-bezier(.4,0,.2,1),translate .8s cubic-bezier(.4,0,.2,1)}
+.hero[data-ready] .hero-visual{opacity:1;translate:0 0}
+
+@media (prefers-reduced-motion:reduce){
+  .illo-line,.illo-slab{translate:0 0;opacity:1}
+  .hero-visual{opacity:1;translate:0 0;transition:none}
+  .hero[data-ready] .illo-line--a,
+  .hero[data-ready] .illo-line--b,
+  .hero[data-ready] .illo-slab,
+  .hero[data-idle] .illo-dash,
+  .hero[data-idle] .illo-float{animation:none}
+}
 /* Reference-site eyebrow: plain uppercase, 12px, generously letterspaced —
    no pill. Uppercase here is a CSS display device, not shouted source copy. */
 .eyebrow{

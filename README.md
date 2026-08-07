@@ -14,7 +14,7 @@ The build is a fully prerendered static export — no server needed. Drop `out/`
 
 ## Structure
 
-- `app/layout.jsx` — fonts (Plus Jakarta Sans / Inter / JetBrains Mono via `next/font`, self-hosted), metadata, favicon
+- `app/layout.jsx` — fonts and metadata. Font tiers: **Just Sugar** (`app/fonts/JustSugar.woff2`, self-hosted) for marketing display — headlines, nav, buttons, stat numbers; **Plus Jakarta Sans** scoped to product-UI mockups (`--font-product`); **Inter** for body and micro-labels; **JetBrains Mono** for time/tabular.
 - `app/globals.css` — the whole design system, built on the canonical brand tokens (`--accent: #4024C0` etc.)
 - `components/` — one component per section: `Nav`, `Hero`, `Logos`, `Splits`, `FeatureGrid`, `Stats`, `Quotes`, `Cta`/`DemoForm`, `Footer`
 - `components/Reveal.jsx` — scroll-in animation wrapper (IntersectionObserver, respects `prefers-reduced-motion`)
@@ -26,6 +26,8 @@ The build is a fully prerendered static export — no server needed. Drop `out/`
 `components/DemoForm.jsx` is front-end only. Point `handleSubmit` at your form endpoint (HubSpot, Formspree, your API) where marked. Client-side validation and the success state are already in place.
 
 ## Deliberate choices
+
+- The brand guidelines' original typography (Plus Jakarta Sans display) was superseded by a stakeholder font decision (Just Sugar for marketing display, 2026-08-07). Jakarta remains in the product mockups, which depict the app itself.
 
 - **British English** throughout (`rota`, `colours`, `Help centre`), `lang="en-GB"`.
 - Sentence case everywhere including buttons; no exclamation marks — per brand voice.

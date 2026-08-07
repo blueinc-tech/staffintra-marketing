@@ -13,7 +13,7 @@
   --tint-2: #DDD5F5;
   position: relative;
   /* Runs off the right edge; .hero clips it. */
-  width: calc(100% + 210px);
+  width: calc(100% + 150px);
   font-family: var(--font-product);
 }
 
@@ -25,28 +25,30 @@
   border-radius: 4px 0 0 4px;
   border-right: 0;
   overflow: hidden;
-  min-height: 452px;
+  min-height: 392px;
 }
 
 .hm-rail {
-  width: 44px;
+  width: 38px;
   flex-shrink: 0;
   background: var(--chrome);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  padding: 9px 0;
+  padding: 8px 0;
 }
+/* Three stripes rather than one block — the Weave's device, not the mark. */
 .hm-rail-mark {
-  width: 24px; height: 24px; margin-bottom: 5px;
-  background: #fff;
-  clip-path: polygon(18% 0, 100% 0, 82% 100%, 0 100%);
+  width: 20px; height: 20px; margin-bottom: 5px;
+  background: repeating-linear-gradient(
+    58deg, #fff 0 3px, transparent 3px 6px
+  );
 }
-.hm-rail-item { width: 28px; height: 28px; border-radius: 2px; background: rgba(255,255,255,.16); }
+.hm-rail-item { width: 24px; height: 24px; border-radius: 2px; background: rgba(255,255,255,.16); }
 .hm-rail-item.is-active { background: rgba(255,255,255,.34); }
 
-.hm-main { flex: 1; min-width: 0; padding: 13px 16px 18px; }
+.hm-main { flex: 1; min-width: 0; padding: 11px 13px 15px; }
 
 /* top bar */
 .hm-topbar {
@@ -54,8 +56,8 @@
   gap: 12px; padding-bottom: 11px; margin-bottom: 12px;
   border-bottom: 1px solid var(--line);
 }
-.hm-greet span { display: block; font-size: .74rem; color: var(--ink-3-text); }
-.hm-greet strong { display: block; font-size: .98rem; font-weight: 700; color: var(--ink); }
+.hm-greet span { display: block; font-size: .66rem; color: var(--ink-3-text); }
+.hm-greet strong { display: block; font-size: .85rem; font-weight: 700; color: var(--ink); }
 .hm-topbar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .hm-search {
   font-family: var(--font-ui); font-size: .66rem; color: var(--ink-3-text);
@@ -80,8 +82,8 @@
   width: 9px; height: 9px; flex-shrink: 0;
   background: var(--ink-3); clip-path: polygon(20% 0, 100% 0, 80% 100%, 0 100%);
 }
-.hm-stat strong { display: block; font-size: 1.42rem; font-weight: 700; line-height: 1.18; color: var(--ink); }
-.hm-stat-d { font-size: .62rem; color: var(--ok); }
+.hm-stat strong { display: block; font-size: 1.12rem; font-weight: 700; line-height: 1.2; color: var(--ink); }
+.hm-stat-d { font-size: .56rem; color: var(--ok); }
 
 /* filters */
 .hm-filters { display: flex; gap: 5px; margin-bottom: 11px; flex-wrap: wrap; }
@@ -132,10 +134,10 @@
 .hm-chart-body { display: flex; gap: 7px; }
 .hm-axis {
   display: flex; flex-direction: column; justify-content: space-between;
-  height: 116px; font-family: var(--font-mono); font-size: .54rem; color: var(--ink-3);
-  text-align: right; flex-shrink: 0; min-width: 16px;
+  height: 96px; font-family: var(--font-mono); font-size: .5rem; color: var(--ink-3);
+  text-align: right; flex-shrink: 0; min-width: 15px;
 }
-.hm-chart-plot { position: relative; flex: 1; display: flex; align-items: flex-end; gap: 7px; height: 116px; }
+.hm-chart-plot { position: relative; flex: 1; display: flex; align-items: flex-end; gap: 6px; height: 96px; }
 .hm-grid { position: absolute; left: 0; right: 0; top: var(--t); height: 1px; background: var(--line); }
 .hm-col { position: relative; flex: 1; height: 100%; display: flex; align-items: flex-end; }
 .hm-stack { display: flex; flex-direction: column; justify-content: flex-end; width: 100%; height: 100%; }
@@ -187,11 +189,11 @@
    frame: an outer bezel with an inset screen. Fully visible — never clipped. */
 .hm-phone {
   position: absolute;
-  left: -58px;
-  bottom: 14px;
+  left: -44px;
+  bottom: 18px;
   z-index: 3;
-  width: 186px;
-  padding: 5px;
+  width: 152px;
+  padding: 4px;
   background: #E4E4E9;
   border: 1px solid #CFCFD6;
   border-radius: 20px;
@@ -262,7 +264,7 @@
 
 /* ---------------- responsive ---------------- */
 @media (max-width: 1120px) {
-  .hm-phone { left: -34px; width: 168px; }
+  .hm-phone { left: -26px; width: 138px; }
 }
 @media (max-width: 940px) {
   .hm { width: 100%; }

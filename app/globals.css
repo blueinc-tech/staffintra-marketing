@@ -105,19 +105,20 @@ body::after{right:var(--rail)}
    overflow:hidden), with the illustration sitting behind at bottom-left. */
 .hero-inner{
   position:relative;z-index:1;
-  display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
-  gap:clamp(24px,3vw,48px);align-items:start;text-align:left;
-  padding-top:56px;
+  display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);
+  gap:clamp(20px,2.4vw,36px);align-items:start;text-align:left;
+  padding-top:34px;
 }
-.hero-copy{padding-bottom:120px}
+/* Reserves the band the illustration sits in, so it is never crowded out. */
+.hero-copy{padding-bottom:clamp(150px,20vw,230px)}
 .hero-visual{position:relative;z-index:2;min-width:0}
 
-/* Sits beside the copy rather than under it, on the section's ground plane and
-   behind the mockups — the shadow is what reads as "further back". */
+/* Sits in the cleared band below the copy and to the left of the phone, on the
+   section's ground plane — the shadow is what reads as "further back". */
 .hero-art{
-  position:absolute;left:36%;bottom:-6px;z-index:0;
-  width:min(430px,33vw);pointer-events:none;
-  filter:drop-shadow(0 18px 24px rgba(23,23,28,.13));
+  position:absolute;left:15%;bottom:0;z-index:0;
+  width:min(400px,31vw);pointer-events:none;
+  filter:drop-shadow(0 16px 22px rgba(23,23,28,.12));
 }
 .hero-art svg{width:100%;height:auto;display:block;overflow:visible}
 /* The reference drops its hero illustration below 1024px rather than scaling
@@ -167,17 +168,19 @@ body::after{right:var(--rail)}
 }
 .eyebrow-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2.4s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(64,36,192,.35)}55%{box-shadow:0 0 0 6px rgba(64,36,192,0)}}
-/* Matches the reference: 62px, line-height 1.0, -0.01em. */
+/* Sized so the headline sets on two lines in this column, as the reference's
+   does — at 62px ours broke to four. */
 .hero h1{
-  font-size:clamp(2.4rem,5vw,3.875rem);font-weight:800;letter-spacing:-.022em;
-  line-height:1;margin-bottom:22px;
+  font-size:clamp(1.95rem,3.4vw,2.85rem);font-weight:800;letter-spacing:-.022em;
+  line-height:1.04;margin-bottom:18px;
 }
 .hero h1 .accent{color:var(--accent)}
 .hero-sub{
-  font-size:clamp(1.02rem,1.35vw,1.14rem);color:var(--ink-2);max-width:30em;margin-bottom:30px;
+  font-size:clamp(.95rem,1.1vw,1.02rem);color:var(--ink-2);max-width:30em;margin-bottom:24px;
 }
-.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-start}
-.hero-note{font-size:.85rem;color:var(--ink-3-text);margin-top:16px}
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-start}
+.hero-ctas .btn-lg{padding:11px 20px;font-size:.92rem}
+.hero-note{font-size:.78rem;color:var(--ink-3-text);margin-top:14px}
 
 /* Hero entrance */
 .anim-in{opacity:0;transform:translateY(18px);animation:rise .8s var(--ease) forwards;animation-delay:calc(var(--d,0)*.09s + .05s)}

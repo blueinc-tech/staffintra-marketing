@@ -12,8 +12,9 @@
   --tint-1: #EFEBFC;
   --tint-2: #DDD5F5;
   position: relative;
-  /* Runs off the right edge; .hero clips it. */
-  width: calc(100% + 150px);
+  /* Runs well off the right edge, past the page rail, as the reference's does;
+     .hero clips it. */
+  width: calc(100% + 250px);
   font-family: var(--font-product);
 }
 
@@ -73,6 +74,93 @@
 .hm-ava--a { background: var(--chrome); color: #fff; }
 .hm-ava--b { background: var(--tint-2); color: var(--chrome-deep); }
 .hm-ava--c { background: var(--tint-1); color: var(--chrome-deep); }
+
+/* ---------------- view switcher ---------------- */
+.hm-views { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 11px; }
+.hm-view {
+  font-family: var(--font-ui); font-size: .7rem; color: var(--ink-3-text);
+  background: none; border: 0; border-bottom: 2px solid transparent;
+  padding: 0 10px 7px; margin-bottom: -1px; cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.hm-view:hover { color: var(--ink); }
+.hm-view.is-on { color: var(--chrome); border-bottom-color: var(--chrome); font-weight: 600; }
+
+/* ---------------- rota ---------------- */
+.hm-rota-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 9px; }
+.hm-rota-week { font-size: .78rem; font-weight: 700; color: var(--ink); }
+.hm-rota-meta { font-size: .62rem; color: var(--ink-3-text); }
+
+.hm-rota-grid {
+  display: grid;
+  grid-template-columns: 76px repeat(7, minmax(0, 1fr));
+  gap: 2px;
+}
+.hm-rota-corner { }
+.hm-rota-day {
+  font-size: .58rem; font-weight: 600; color: var(--ink-3-text);
+  text-align: center; padding-bottom: 3px;
+}
+.hm-rota-person {
+  display: flex; align-items: center; gap: 5px;
+  font-size: .62rem; color: var(--ink-2); min-width: 0;
+}
+.hm-rota-person .hm-ava { width: 18px; height: 18px; font-size: .46rem; }
+
+/* Cells are buttons — clicking one cycles the shift, so the rota edits. */
+.hm-cell {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  gap: 1px; min-height: 30px; padding: 3px 5px; cursor: pointer;
+  border: 1px dashed var(--line-strong); border-radius: 2px;
+  background: transparent; font-family: var(--font-product);
+  transition: background .14s, border-color .14s;
+}
+.hm-cell:hover { border-color: var(--chrome); }
+.hm-cell-time { font-family: var(--font-mono); font-size: .48rem; opacity: .8; }
+.hm-cell-label { font-size: .55rem; font-weight: 600; }
+.hm-cell.is-early { background: var(--tint-1); border: 1px solid var(--tint-2); color: var(--chrome-deep); }
+.hm-cell.is-late { background: var(--tint-2); border: 1px solid #C9BFF0; color: var(--chrome-deep); }
+.hm-cell.is-night { background: var(--chrome); border: 1px solid var(--chrome-deep); color: #fff; }
+.hm-cell.is-open { background: var(--warn-soft); border: 1px dashed var(--warm); color: var(--warm); }
+
+.hm-rota-key { display: flex; gap: 11px; margin-top: 9px; flex-wrap: wrap; }
+.hm-rota-key span { display: inline-flex; align-items: center; gap: 4px; font-size: .58rem; color: var(--ink-2); }
+.hm-key-dot { width: 8px; height: 8px; border-radius: 1px; }
+.hm-key-dot.is-early { background: var(--tint-1); border: 1px solid var(--tint-2); }
+.hm-key-dot.is-late { background: var(--tint-2); }
+.hm-key-dot.is-night { background: var(--chrome); }
+.hm-key-dot.is-open { background: var(--warn-soft); border: 1px dashed var(--warm); }
+
+/* ---------------- people ---------------- */
+.hm-people-search {
+  width: 100%; font-family: var(--font-ui); font-size: .68rem; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 2px; padding: 6px 9px; margin-bottom: 9px;
+  background: var(--surface);
+}
+.hm-people-search:focus { outline: none; border-color: var(--chrome); }
+.hm-people-search::placeholder { color: var(--ink-3); }
+
+.hm-tr {
+  display: grid; grid-template-columns: 1.3fr 1.1fr 1.1fr .8fr;
+  gap: 8px; align-items: center; padding: 6px 4px;
+  border-bottom: 1px solid var(--line); font-size: .65rem; color: var(--ink-2);
+}
+.hm-tr:last-child { border-bottom: 0; }
+.hm-tr--head {
+  font-size: .56rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--ink-3-text); border-bottom-color: var(--line-strong);
+}
+.hm-td-name { display: flex; align-items: center; gap: 6px; color: var(--ink); font-weight: 600; min-width: 0; }
+.hm-td-name .hm-ava { width: 20px; height: 20px; font-size: .48rem; }
+.hm-pill {
+  font-style: normal; font-family: var(--font-ui); font-size: .54rem; font-weight: 600;
+  padding: 2px 6px; border-radius: 2px; white-space: nowrap;
+}
+.hm-pill.is-onshift { background: var(--ok-soft); color: var(--ok); }
+.hm-pill.is-offtoday { background: var(--surface-2); color: var(--ink-3-text); }
+.hm-pill.is-onleave { background: var(--warn-soft); color: var(--warn); }
+.hm-pill.is-onboarding { background: var(--tint-1); color: var(--chrome-deep); }
+.hm-empty { font-size: .65rem; color: var(--ink-3-text); padding: 12px 4px; }
 
 /* stats */
 .hm-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin-bottom: 11px; }
@@ -187,12 +275,14 @@
 /* ---------------- phone ---------------- */
 /* Sits over the dashboard's rail, covering the lower nav buttons. Nested
    frame: an outer bezel with an inset screen. Fully visible — never clipped. */
+/* Left edge aligned to the dashboard's, not overhanging it — overhanging is
+   what buried the illustration. Still covers the rail. */
 .hm-phone {
   position: absolute;
-  left: -44px;
+  left: 0;
   bottom: 18px;
   z-index: 3;
-  width: 152px;
+  width: 184px;
   padding: 4px;
   background: #E4E4E9;
   border: 1px solid #CFCFD6;
@@ -264,7 +354,7 @@
 
 /* ---------------- responsive ---------------- */
 @media (max-width: 1120px) {
-  .hm-phone { left: -26px; width: 138px; }
+  .hm-phone { left: 0; width: 158px; }
 }
 @media (max-width: 940px) {
   .hm { width: 100%; }

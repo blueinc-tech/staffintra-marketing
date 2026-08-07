@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import './HeroMockup.css';
 
 /* ---------------- data ---------------- */
@@ -42,6 +42,34 @@ const COST = {
 };
 
 const FILTERS = ['All sites', 'Care', 'Retail', 'Nights'];
+
+const VIEWS = ['Overview', 'Rota', 'People'];
+
+const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+const SHIFTS = {
+  early: { label: 'Early', time: '07:00', tone: 'early' },
+  late: { label: 'Late', time: '14:00', tone: 'late' },
+  night: { label: 'Night', time: '22:00', tone: 'night' },
+  open: { label: 'Open', time: 'Claim', tone: 'open' },
+};
+
+const ROTA = [
+  { name: 'Sofia Reyes', initials: 'SR', tone: 'b', cells: ['early', null, 'late', 'early', null, 'night', null] },
+  { name: 'Tunde Okafor', initials: 'TO', tone: 'c', cells: [null, 'late', 'late', null, 'early', 'early', null] },
+  { name: 'Priya Sharma', initials: 'PS', tone: 'a', cells: ['night', 'night', null, 'open', 'late', null, 'late'] },
+  { name: 'Marcus Bell', initials: 'MB', tone: 'b', cells: ['late', null, 'early', 'early', 'open', null, 'night'] },
+  { name: 'Dana Whyte', initials: 'DW', tone: 'c', cells: [null, 'early', null, 'late', 'night', 'late', 'early'] },
+];
+
+const PEOPLE = [
+  { name: 'Amara Osei', initials: 'AO', tone: 'a', role: 'Operations lead', site: 'Northwind Care', status: 'On shift' },
+  { name: 'Sofia Reyes', initials: 'SR', tone: 'b', role: 'Senior carer', site: 'Northwind Care', status: 'On shift' },
+  { name: 'Tunde Okafor', initials: 'TO', tone: 'c', role: 'Floor supervisor', site: 'Harbor & Lane', status: 'Off today' },
+  { name: 'Priya Sharma', initials: 'PS', tone: 'a', role: 'Night lead', site: 'Brightline', status: 'On leave' },
+  { name: 'Marcus Bell', initials: 'MB', tone: 'b', role: 'Care assistant', site: 'Northwind Care', status: 'On shift' },
+  { name: 'Kofi Mensah', initials: 'KM', tone: 'c', role: 'Floor supervisor', site: 'Harbor & Lane', status: 'Onboarding' },
+];
 
 const OUT_TODAY = [
   { name: 'John Pinnock', role: 'Floor supervisor', initials: 'JP', tone: 'a' },
@@ -169,6 +197,118 @@ function Chart({ data }) {
   );
 }
 
+/* A real week grid: people down, days across, shifts in the cells. Clicking a
+   cell cycles it, so the rota can actually be edited. */
+function Rota() {
+  const [grid, setGrid] = useState(() => ROTA.map((r) => r.cells.slice()));
+  const order = [null, 'early', 'late', 'night', 'open'];
+
+  const cycle = (row, col) =>
+    setGrid((g) =>
+      g.map((r, i) =>
+        i !== row ? r : r.map((c, j) => (j !== col ? c : order[(order.indexOf(c) + 1) % order.length]))
+      )
+    );
+
+  const filled = grid.flat().filter(Boolean).length;
+  const open = grid.flat().filter((c) => c === 'open').length;
+
+  return (
+    <div className="hm-rota">
+      <div className="hm-rota-head">
+        <span className="hm-rota-week">Week of 10 Aug</span>
+        <span className="hm-rota-meta">
+          {filled} shifts · {open} open
+        </span>
+      </div>
+      <div className="hm-rota-grid">
+        <span className="hm-rota-corner" />
+        {DAYS.map((d) => (
+          <span className="hm-rota-day" key={d}>
+            {d}
+          </span>
+        ))}
+        {ROTA.map((person, row) => (
+          <Fragment key={person.name}>
+            <span className="hm-rota-person">
+              <span className={`hm-ava hm-ava--${person.tone}`}>{person.initials}</span>
+              <span>{person.name.split(' ')[0]}</span>
+            </span>
+            {DAYS.map((d, col) => {
+              const key = grid[row][col];
+              const s = key ? SHIFTS[key] : null;
+              return (
+                <button
+                  type="button"
+                  key={d}
+                  className={`hm-cell${s ? ` is-${s.tone}` : ''}`}
+                  onClick={() => cycle(row, col)}
+                  aria-label={`${person.name}, ${d}: ${s ? s.label : 'no shift'}`}
+                >
+                  {s ? (
+                    <>
+                      <span className="hm-cell-time">{s.time}</span>
+                      <span className="hm-cell-label">{s.label}</span>
+                    </>
+                  ) : null}
+                </button>
+              );
+            })}
+          </Fragment>
+        ))}
+      </div>
+      <div className="hm-rota-key">
+        {Object.entries(SHIFTS).map(([k, s]) => (
+          <span key={k}>
+            <i className={`hm-key-dot is-${s.tone}`} /> {s.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function People() {
+  const [q, setQ] = useState('');
+  const rows = PEOPLE.filter((p) =>
+    (p.name + p.role + p.site).toLowerCase().includes(q.toLowerCase())
+  );
+
+  return (
+    <div className="hm-people">
+      <input
+        className="hm-people-search"
+        placeholder="Search people"
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        aria-label="Search people"
+      />
+      <div className="hm-table" role="table">
+        <div className="hm-tr hm-tr--head" role="row">
+          <span>Name</span>
+          <span>Role</span>
+          <span>Site</span>
+          <span>Status</span>
+        </div>
+        {rows.map((p) => (
+          <div className="hm-tr" role="row" key={p.name}>
+            <span className="hm-td-name">
+              <span className={`hm-ava hm-ava--${p.tone}`}>{p.initials}</span>
+              {p.name}
+            </span>
+            <span>{p.role}</span>
+            <span>{p.site}</span>
+            <span>
+              <i className={`hm-pill is-${p.status.replace(/\s/g, '').toLowerCase()}`}>{p.status}</i>
+            </span>
+          </div>
+        ))}
+        {rows.length === 0 ? <p className="hm-empty">No one matches “{q}”.</p> : null}
+      </div>
+    </div>
+  );
+}
+
 function Phone() {
   const [clockedIn, setClockedIn] = useState(false);
 
@@ -244,6 +384,7 @@ function Phone() {
 /* ---------------- dashboard ---------------- */
 
 export default function HeroMockup() {
+  const [view, setView] = useState('Overview');
   const [range, setRange] = useState('6 months');
   const [costRange, setCostRange] = useState('3 months');
   const [filter, setFilter] = useState('All sites');
@@ -272,6 +413,26 @@ export default function HeroMockup() {
             </div>
           </div>
 
+          <div className="hm-views" role="tablist" aria-label="Dashboard view">
+            {VIEWS.map((v) => (
+              <button
+                type="button"
+                key={v}
+                role="tab"
+                aria-selected={view === v}
+                className={`hm-view${view === v ? ' is-on' : ''}`}
+                onClick={() => setView(v)}
+              >
+                {v}
+              </button>
+            ))}
+          </div>
+
+          {view === 'Rota' ? <Rota /> : null}
+          {view === 'People' ? <People /> : null}
+
+          {view === 'Overview' ? (
+            <>
           <div className="hm-stats">
             {[
               { k: 'Team members', v: '312', d: '+1 since last month' },
@@ -377,6 +538,8 @@ export default function HeroMockup() {
               </div>
             </div>
           </div>
+            </>
+          ) : null}
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './HeroMockup.css';
 
 /* ---------------- data ---------------- */
@@ -44,12 +44,14 @@ const COST = {
 const FILTERS = ['All sites', 'Care', 'Retail', 'Nights'];
 
 const OUT_TODAY = [
-  { name: 'John Pinnock', role: 'Floor supervisor', tone: 'a' },
-  { name: 'Hannah Jenner', role: 'Shift lead', tone: 'b' },
+  { name: 'John Pinnock', role: 'Floor supervisor', initials: 'JP', tone: 'a' },
+  { name: 'Hannah Jenner', role: 'Shift lead', initials: 'HJ', tone: 'b' },
 ];
-const OUT_TOMORROW = [{ name: 'David Martins', role: 'Care assistant', tone: 'c' }];
+const OUT_TOMORROW = [
+  { name: 'David Martins', role: 'Care assistant', initials: 'DM', tone: 'c' },
+];
 
-/* ---------------- small parts ---------------- */
+/* ---------------- parts ---------------- */
 
 function Select({ value, options, onChange, label }) {
   const [open, setOpen] = useState(false);
@@ -101,42 +103,59 @@ function Select({ value, options, onChange, label }) {
   );
 }
 
+/* Bars read as the reference's do: a light tinted body with a saturated cap,
+   and the second series stacked above in the contrast colour. */
 function Chart({ data }) {
   const [hover, setHover] = useState(null);
-  const max = Math.max(...data.hires.map((h, i) => h + data.leavers[i])) * 1.15;
+  const peak = Math.max(...data.hires.map((h, i) => h + data.leavers[i]));
+  const max = Math.ceil((peak * 1.2) / 20) * 20;
+  const ticks = [max, max * 0.75, max * 0.5, max * 0.25, 0];
 
   return (
     <div className="hm-chart">
-      <div className="hm-chart-plot">
-        {[0, 1, 2, 3].map((g) => (
-          <span className="hm-grid" style={{ '--t': `${g * 33}%` }} key={g} />
-        ))}
-        {data.labels.map((m, i) => {
-          const h = (data.hires[i] / max) * 100;
-          const l = (data.leavers[i] / max) * 100;
-          return (
-            <div
-              className={`hm-bar-col${hover === i ? ' is-hover' : ''}`}
-              key={m}
-              onMouseEnter={() => setHover(i)}
-              onMouseLeave={() => setHover(null)}
-            >
-              <span className="hm-bar-stack">
-                {data.leavers[i] > 0 ? (
-                  <span className="hm-bar hm-bar--leavers" style={{ '--h': `${l}%` }} />
-                ) : null}
-                <span className="hm-bar hm-bar--hires" style={{ '--h': `${h}%` }} />
-              </span>
-              {hover === i ? (
-                <span className="hm-tip">
-                  {data.hires[i]} hires
-                  {data.leavers[i] > 0 ? ` · ${data.leavers[i]} leavers` : ''}
+      <div className="hm-chart-body">
+        <div className="hm-axis" aria-hidden="true">
+          {ticks.map((t) => (
+            <span key={t}>{Math.round(t)}</span>
+          ))}
+        </div>
+        <div className="hm-chart-plot">
+          {ticks.map((t, i) => (
+            <span className="hm-grid" style={{ '--t': `${(i / (ticks.length - 1)) * 100}%` }} key={t} />
+          ))}
+          {data.labels.map((m, i) => {
+            const h = (data.hires[i] / max) * 100;
+            const l = (data.leavers[i] / max) * 100;
+            return (
+              <div
+                className={`hm-col${hover === i ? ' is-hover' : ''}`}
+                key={m}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
+              >
+                <span className="hm-stack">
+                  {data.leavers[i] > 0 ? (
+                    <span className="hm-seg hm-seg--leavers" style={{ '--h': `${l}%` }} />
+                  ) : null}
+                  <span className="hm-seg hm-seg--hires" style={{ '--h': `${h}%` }}>
+                    <i className="hm-cap" />
+                  </span>
                 </span>
-              ) : null}
-              <span className="hm-bar-label">{m}</span>
-            </div>
-          );
-        })}
+                {hover === i ? (
+                  <span className="hm-tip">
+                    {data.hires[i]} hires
+                    {data.leavers[i] > 0 ? ` · ${data.leavers[i]} leavers` : ''}
+                  </span>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className="hm-xaxis" aria-hidden="true">
+        {data.labels.map((m) => (
+          <span key={m}>{m}</span>
+        ))}
       </div>
       <div className="hm-legend">
         <span>
@@ -150,103 +169,73 @@ function Chart({ data }) {
   );
 }
 
-/* ---------------- phone ---------------- */
-
 function Phone() {
   const [clockedIn, setClockedIn] = useState(false);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const drag = useRef(null);
-  const frameRef = useRef(null);
-
-  // Draggable, but only within a small area so it can never leave the hero.
-  const LIMIT = { x: 46, y: 40 };
-
-  const onPointerDown = (e) => {
-    if (e.target.closest('button')) return;
-    const el = frameRef.current;
-    el.setPointerCapture?.(e.pointerId);
-    drag.current = { px: e.clientX, py: e.clientY, ox: pos.x, oy: pos.y };
-  };
-
-  const onPointerMove = (e) => {
-    if (!drag.current) return;
-    const dx = e.clientX - drag.current.px;
-    const dy = e.clientY - drag.current.py;
-    setPos({
-      x: Math.max(-LIMIT.x, Math.min(LIMIT.x, drag.current.ox + dx)),
-      y: Math.max(-LIMIT.y, Math.min(LIMIT.y, drag.current.oy + dy)),
-    });
-  };
-
-  const onPointerUp = (e) => {
-    drag.current = null;
-    frameRef.current?.releasePointerCapture?.(e.pointerId);
-  };
 
   return (
-    <div
-      className={`hm-phone${drag.current ? ' is-dragging' : ''}`}
-      ref={frameRef}
-      style={{ '--px': `${pos.x}px`, '--py': `${pos.y}px` }}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerCancel={onPointerUp}
-      role="img"
-      aria-label="StaffIntra mobile app: upcoming shift and clock in"
-    >
-      <div className="hm-phone-bar">
-        <span className="hm-phone-time">9:41</span>
-        <span className="hm-phone-icons" aria-hidden="true">
-          <i /><i /><i />
-        </span>
-      </div>
-      <div className="hm-phone-head">
-        <span className="hm-avatar" aria-hidden="true">A</span>
-        <span className="hm-phone-bell" aria-hidden="true" />
-      </div>
-      <div className="hm-phone-body">
-        <p className="hm-phone-h">Upcoming shift</p>
-        <div className="hm-shift-card">
-          <span className="hm-shift-time">07:00 · Early</span>
-          <strong>Northwind Care — Ward B</strong>
-          <span className="hm-shift-addr">14 Mission Street, Leeds LS1 4AP</span>
+    <div className="hm-phone" role="img" aria-label="StaffIntra on mobile: upcoming shift and clock in">
+      <div className="hm-phone-screen">
+        <div className="hm-phone-top">
+          <div className="hm-phone-status">
+            <span>9:41</span>
+            <span className="hm-phone-icons" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+            </span>
+          </div>
+          <div className="hm-phone-head">
+            <span className="hm-ava hm-ava--a">A</span>
+            <span className="hm-phone-bell" aria-hidden="true" />
+          </div>
         </div>
-        <button
-          type="button"
-          className={`hm-clock${clockedIn ? ' is-in' : ''}`}
-          onClick={() => setClockedIn((v) => !v)}
-        >
-          {clockedIn ? 'Clock out' : 'Clock in'}
-        </button>
 
-        <p className="hm-phone-sub">Favourites</p>
-        <div className="hm-tiles">
-          {['Time clock', 'Leave', 'Payslips'].map((t) => (
-            <span className="hm-tile" key={t}>
-              <i className="hm-tile-mark" aria-hidden="true" />
+        <div className="hm-phone-body">
+          <p className="hm-phone-h">Upcoming shift</p>
+          <div className="hm-shift">
+            <span className="hm-shift-time">07:00 · Early</span>
+            <strong>Northwind Care — Ward B</strong>
+            <span className="hm-shift-addr">14 Mission Street, Leeds</span>
+          </div>
+          <button
+            type="button"
+            className={`hm-clock${clockedIn ? ' is-in' : ''}`}
+            onClick={() => setClockedIn((v) => !v)}
+          >
+            {clockedIn ? 'Clock out' : 'Clock in'}
+          </button>
+
+          <p className="hm-phone-sub">Favourites</p>
+          <div className="hm-tiles">
+            {['Time clock', 'Leave', 'Payslips'].map((t) => (
+              <span className="hm-tile" key={t}>
+                <i className="hm-tile-mark" aria-hidden="true" />
+                {t}
+              </span>
+            ))}
+          </div>
+          <p className="hm-phone-sub">Tools</p>
+          <div className="hm-tiles">
+            {['Timesheets', 'Time off', 'Rota'].map((t) => (
+              <span className="hm-tile" key={t}>
+                <i className="hm-tile-mark" aria-hidden="true" />
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <span className="hm-fab" aria-hidden="true">
+          +
+        </span>
+        <div className="hm-tabs" aria-hidden="true">
+          {['Home', 'Rota', 'Time', 'Leave', 'Team'].map((t, i) => (
+            <span className={i === 0 ? 'is-active' : undefined} key={t}>
+              <i />
               {t}
             </span>
           ))}
         </div>
-        <p className="hm-phone-sub">Tools</p>
-        <div className="hm-tiles">
-          {['Timesheets', 'Time off', 'Rota'].map((t) => (
-            <span className="hm-tile" key={t}>
-              <i className="hm-tile-mark" aria-hidden="true" />
-              {t}
-            </span>
-          ))}
-        </div>
-      </div>
-      <span className="hm-fab" aria-hidden="true">+</span>
-      <div className="hm-phone-tabs" aria-hidden="true">
-        {['Home', 'Rota', 'Time', 'Leave', 'Team'].map((t, i) => (
-          <span className={i === 0 ? 'is-active' : undefined} key={t}>
-            <i />
-            {t}
-          </span>
-        ))}
       </div>
     </div>
   );
@@ -259,11 +248,10 @@ export default function HeroMockup() {
   const [costRange, setCostRange] = useState('3 months');
   const [filter, setFilter] = useState('All sites');
 
-  const shift = useCallback((v) => v, []);
-
   return (
     <div className="hm">
-      <div className="hm-dash" role="img" aria-label="StaffIntra dashboard: headcount, time off and labour cost">
+      <div className="hm-dash">
+        {/* Only the top of the rail is visible; the phone covers the rest. */}
         <div className="hm-rail" aria-hidden="true">
           <span className="hm-rail-mark" />
           <span className="hm-rail-item is-active" />
@@ -271,9 +259,17 @@ export default function HeroMockup() {
         </div>
 
         <div className="hm-main">
-          <div className="hm-greet">
-            <span>Good afternoon Amara</span>
-            <strong>Welcome back to StaffIntra</strong>
+          <div className="hm-topbar">
+            <div className="hm-greet">
+              <span>Good afternoon Amara</span>
+              <strong>Welcome back to StaffIntra</strong>
+            </div>
+            <div className="hm-topbar-right">
+              <span className="hm-search" aria-hidden="true">
+                Search
+              </span>
+              <span className="hm-ava hm-ava--a">AO</span>
+            </div>
           </div>
 
           <div className="hm-stats">
@@ -287,7 +283,7 @@ export default function HeroMockup() {
                   <i className="hm-stat-mark" aria-hidden="true" />
                   {s.k}
                 </span>
-                <strong>{shift(s.v)}</strong>
+                <strong>{s.v}</strong>
                 <span className="hm-stat-d">{s.d}</span>
               </div>
             ))}
@@ -320,14 +316,14 @@ export default function HeroMockup() {
               <Chart data={RANGES[range]} />
             </div>
 
-            <div className="hm-card hm-timeoff">
+            <div className="hm-card">
               <div className="hm-card-head">
                 <strong>Time off</strong>
               </div>
               <p className="hm-sub">Out today</p>
               {OUT_TODAY.map((p) => (
                 <div className="hm-person" key={p.name}>
-                  <span className={`hm-face hm-face--${p.tone}`} aria-hidden="true" />
+                  <span className={`hm-ava hm-ava--${p.tone}`}>{p.initials}</span>
                   <span className="hm-person-txt">
                     <strong>{p.name}</strong>
                     <span>{p.role}</span>
@@ -337,7 +333,7 @@ export default function HeroMockup() {
               <p className="hm-sub">Out tomorrow</p>
               {OUT_TOMORROW.map((p) => (
                 <div className="hm-person" key={p.name}>
-                  <span className={`hm-face hm-face--${p.tone}`} aria-hidden="true" />
+                  <span className={`hm-ava hm-ava--${p.tone}`}>{p.initials}</span>
                   <span className="hm-person-txt">
                     <strong>{p.name}</strong>
                     <span>{p.role}</span>
@@ -346,7 +342,7 @@ export default function HeroMockup() {
               ))}
             </div>
 
-            <div className="hm-card hm-cost">
+            <div className="hm-card">
               <div className="hm-card-head">
                 <strong>Live labour cost breakdown</strong>
                 <Select
@@ -367,7 +363,7 @@ export default function HeroMockup() {
               ))}
             </div>
 
-            <div className="hm-card hm-certs">
+            <div className="hm-card">
               <div className="hm-card-head">
                 <strong>Certifications</strong>
               </div>

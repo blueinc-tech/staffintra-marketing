@@ -37,18 +37,24 @@ h4,h5{line-height:1.2}
 .container{max-width:1185px;margin:0 auto;padding:0 40px}
 @media (max-width:600px){.container{padding:0 22px}}
 
-/* Page rails: white gutters down both edges with a hairline, and the section
-   backgrounds inset between them, so each band reads as sitting IN the page. */
-main{margin:0 var(--rail)}
+/* Page rails: white gutters down both edges, and the section backgrounds inset
+   between them, so each band reads as sitting IN the page.
+   The rails are SOLID alongside the content and break into fine dashes once
+   they leave it — through the nav band above and below the last section. */
+main{
+  margin:0 var(--rail);position:relative;z-index:1;
+  border-left:1px solid var(--line);border-right:1px solid var(--line);
+}
 body::before,body::after{
-  content:"";position:fixed;top:0;bottom:0;width:1px;
-  background:var(--line);z-index:101;pointer-events:none;
+  content:"";position:fixed;top:0;bottom:0;z-index:0;
+  border-left:1px dashed var(--line-strong);pointer-events:none;
 }
 body::before{left:var(--rail)}
 body::after{right:var(--rail)}
 @media (max-width:900px){
   :root{--rail:0px}
   body::before,body::after{display:none}
+  main{border-left:0;border-right:0}
 }
 
 /* ---------- Buttons ---------- */

@@ -10,6 +10,27 @@
   right: 0;
   z-index: 100;
   background: var(--surface);
+  /* Runs the full page width, past the rails to both edges. */
+  border-bottom: 1px solid var(--line);
+}
+
+/* The page rails continue through the nav band, but dashed — they only go
+   solid where they run alongside content. */
+.nav-root::before,
+.nav-root::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed var(--line-strong);
+  pointer-events: none;
+}
+.nav-root::before { left: var(--rail); }
+.nav-root::after { right: var(--rail); }
+
+@media (max-width: 900px) {
+  .nav-root::before,
+  .nav-root::after { display: none; }
 }
 
 .nav-bar {

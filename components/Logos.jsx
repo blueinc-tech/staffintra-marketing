@@ -1,46 +1,40 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CountUp from './CountUp';
 import './Logos.css';
 
-// Deliberately not real customers and not invented ones either — each tile is
-// an obvious placeholder until actual logos and case studies are supplied.
+// Deliberately not real customers and not invented ones — each tile is an
+// obvious placeholder until real logos and stories are supplied.
 // `study` marks the tiles that will carry a case study; those get the arrow.
+// `quote` marks the ones that will also carry a testimonial card on hover.
 const TILES = [
-  { id: 1, study: false },
-  { id: 2, study: false },
-  { id: 3, study: true },
-  { id: 4, study: true },
-  { id: 5, study: true },
-  { id: 6, study: true },
-  { id: 7, study: true },
-  { id: 8, study: false },
-  { id: 9, study: false },
-  { id: 10, study: true },
-  { id: 11, study: true },
-  { id: 12, study: true },
+  { id: 1, study: false, quote: false },
+  { id: 2, study: false, quote: false },
+  { id: 3, study: true, quote: true },
+  { id: 4, study: true, quote: true },
+  { id: 5, study: true, quote: true },
+  { id: 6, study: true, quote: true },
+  { id: 7, study: true, quote: true },
+  { id: 8, study: false, quote: false },
+  { id: 9, study: false, quote: false },
+  { id: 10, study: true, quote: true },
+  { id: 11, study: true, quote: true },
+  { id: 12, study: true, quote: true },
 ];
 
-const PLACEHOLDER_STUDY = {
-  eyebrow: 'Case study',
-  title: 'Customer story goes here',
-  body:
-    'A short account of what this operator ran before, what changed after go-live, and the ' +
-    'one number that moved. Two or three sentences is the right length — enough to be ' +
-    'concrete, short enough to read from the grid.',
-  facts: [
-    ['Sector', 'To be confirmed'],
-    ['Team size', '—'],
-    ['Sites', '—'],
-    ['Live since', '—'],
-  ],
+const PLACEHOLDER_QUOTE = {
+  quote:
+    'A short line from this customer about what changed — the kind of sentence an ' +
+    'operations lead would actually say, naming one thing that got easier.',
+  name: 'Name, role',
+  org: 'Organisation · sector',
 };
 
 /* A neutral stand-in mark: no wordmark, no invented brand. */
 function PlaceholderLogo() {
   return (
-    <span className="lg-mark" aria-hidden="true">
+    <span className="lg-logo" aria-hidden="true">
       <svg viewBox="0 0 96 26" fill="none">
         <rect x="0.5" y="4.5" width="17" height="17" stroke="currentColor" strokeWidth="1.4" />
         <path d="M4.5 17.5 9 8.5l4.5 9" stroke="currentColor" strokeWidth="1.4" />
@@ -51,8 +45,31 @@ function PlaceholderLogo() {
   );
 }
 
+/* Always visible — on the reference this glyph never animates; only the
+   label beside it moves. */
+function ArrowUpRight() {
+  return (
+    <svg className="lg-arrow" width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+      <path d="M2.9 8.1 8.1 2.9" stroke="currentColor" strokeWidth="0.9" strokeLinecap="square" />
+      <path d="M3.78 2.75H8.25v4.47" stroke="currentColor" strokeWidth="0.825" strokeLinecap="square" />
+    </svg>
+  );
+}
+
 export default function Logos() {
-  const [open, setOpen] = useState(null);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [hovered, setHovered] = useState(null);
+
+  useEffect(() => {
+    const on = () => setIsDesktop(window.innerWidth >= 768);
+    on();
+    window.addEventListener('resize', on);
+    return () => window.removeEventListener('resize', on);
+  }, []);
+
+  const cols = isDesktop ? 6 : 3;
+  const visible = isDesktop ? TILES : TILES.slice(0, TILES.length - 3);
+  const rows = Math.ceil(visible.length / cols);
 
   return (
     <section className="logos" id="customers-strip">
@@ -61,66 +78,66 @@ export default function Logos() {
       </p>
 
       <div className="logos-band">
-        <span className="logos-hatch" aria-hidden="true" />
+        <span className="logos-hatch logos-hatch--l" aria-hidden="true" />
 
-        <div className="logos-grid">
-          {TILES.map((t) => {
-            const isOpen = open === t.id;
-            return t.study ? (
-              <button
-                type="button"
+        <div className="logos-grid" style={{ '--cols': cols }}>
+          {visible.map((t, i) => {
+            const lastCol = (i + 1) % cols === 0;
+            const lastRow = Math.floor(i / cols) + 1 === rows;
+            // Row one drops in from above; rows below rise from underneath.
+            const below = i >= cols;
+            // Left half of a row opens rightwards, right half opens leftwards.
+            const left = i % cols < cols / 2;
+
+            return (
+              <div
                 key={t.id}
-                className={`lg-cell lg-cell--study${isOpen ? ' is-open' : ''}`}
-                aria-expanded={isOpen}
-                aria-controls="lg-study"
-                onClick={() => setOpen(isOpen ? null : t.id)}
+                className={`lg-cell${lastCol ? ' is-last-col' : ''}${lastRow ? ' is-last-row' : ''}`}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
               >
                 <PlaceholderLogo />
-                <span className="lg-arrow" aria-hidden="true">
-                  <svg viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M3 9 9 3M4.4 3H9v4.6"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="square"
-                    />
-                  </svg>
-                </span>
-                <span className="lg-sr">Read the case study for this customer</span>
-              </button>
-            ) : (
-              <span className="lg-cell" key={t.id}>
-                <PlaceholderLogo />
-              </span>
+
+                {t.study ? (
+                  <a className="lg-link" href="#customers">
+                    <span className="lg-cta">
+                      <span className="lg-cta-clip">
+                        <span className="lg-cta-label">Case study</span>
+                      </span>
+                      <ArrowUpRight />
+                    </span>
+                    <span className="lg-sr">Read this customer&apos;s story</span>
+                  </a>
+                ) : null}
+
+                {/* Twice the cell in both directions, so it lands over its own
+                    row and the one beside it. Never takes the pointer. */}
+                {t.quote ? (
+                  <div
+                    aria-hidden="true"
+                    className={
+                      `lg-card${hovered === i ? ' is-open' : ''}` +
+                      `${below ? ' from-below' : ' from-above'}` +
+                      `${left ? ' to-right' : ' to-left'}` +
+                      `${lastCol ? ' has-edge' : ''}`
+                    }
+                  >
+                    <blockquote>“{PLACEHOLDER_QUOTE.quote}”</blockquote>
+                    <div className="lg-card-by">
+                      <span className="lg-avatar" />
+                      <div>
+                        <div className="lg-card-name">{PLACEHOLDER_QUOTE.name}</div>
+                        <div className="lg-card-role">{PLACEHOLDER_QUOTE.org}</div>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             );
           })}
         </div>
 
-        <span className="logos-hatch" aria-hidden="true" />
-      </div>
-
-      {/* Placeholder copy — replaced when the real stories land. */}
-      <div className="lg-study-wrap" id="lg-study" hidden={open === null}>
-        {open !== null ? (
-          <div className="lg-study">
-            <div className="lg-study-main">
-              <p className="lg-study-eyebrow">{PLACEHOLDER_STUDY.eyebrow}</p>
-              <h3>{PLACEHOLDER_STUDY.title}</h3>
-              <p className="lg-study-body">{PLACEHOLDER_STUDY.body}</p>
-              <button type="button" className="lg-study-close" onClick={() => setOpen(null)}>
-                Close
-              </button>
-            </div>
-            <dl className="lg-study-facts">
-              {PLACEHOLDER_STUDY.facts.map(([k, v]) => (
-                <div key={k}>
-                  <dt>{k}</dt>
-                  <dd>{v}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        ) : null}
+        <span className="logos-hatch logos-hatch--r" aria-hidden="true" />
       </div>
     </section>
   );

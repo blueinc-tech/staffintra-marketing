@@ -15,6 +15,10 @@
   --ease:cubic-bezier(.22,.61,.36,1);
   /* The mockups depict the product, which uses the same face as the headlines. */
   --font-product:var(--font-display);
+  /* Very light purple section tint — our counterpart to the reference's warm
+     off-white, and the width of the white gutters either side of the page. */
+  --tint:#F6F4FD;
+  --rail:48px;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -32,6 +36,20 @@ h1,h2,h3{font-family:var(--font-display);font-weight:800;line-height:1.16;letter
 h4,h5{line-height:1.2}
 .container{max-width:1185px;margin:0 auto;padding:0 40px}
 @media (max-width:600px){.container{padding:0 22px}}
+
+/* Page rails: white gutters down both edges with a hairline, and the section
+   backgrounds inset between them, so each band reads as sitting IN the page. */
+main{margin:0 var(--rail)}
+body::before,body::after{
+  content:"";position:fixed;top:0;bottom:0;width:1px;
+  background:var(--line);z-index:101;pointer-events:none;
+}
+body::before{left:var(--rail)}
+body::after{right:var(--rail)}
+@media (max-width:900px){
+  :root{--rail:0px}
+  body::before,body::after{display:none}
+}
 
 /* ---------- Buttons ---------- */
 .btn{
@@ -73,29 +91,29 @@ h4,h5{line-height:1.2}
 .btn-nav-ghost:hover{background:rgba(23,23,28,.09)}
 
 /* ---------- Hero ---------- */
-.hero{position:relative;padding:112px 0 64px;overflow:hidden}
-.hero-bg{
-  position:absolute;inset:0;z-index:-1;
-  background:
-    radial-gradient(52% 46% at 78% 6%,rgba(64,36,192,.10),transparent 68%),
-    radial-gradient(44% 40% at 12% 22%,rgba(122,91,214,.10),transparent 70%),
-    linear-gradient(var(--surface) 0%,var(--bg) 100%);
-}
-.hero-bg::after{
-  content:"";position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(23,23,28,.035) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(23,23,28,.035) 1px,transparent 1px);
-  background-size:44px 44px;
-  -webkit-mask-image:radial-gradient(70% 60% at 30% 10%,#000 25%,transparent 78%);
-  mask-image:radial-gradient(70% 60% at 30% 10%,#000 25%,transparent 78%);
-}
-/* Split composition: copy left, product visual bleeding off the right edge
-   (clipped by .hero overflow:hidden), following the reference site. */
+/* Flat tinted band, like the reference — no gradient, no grid overlay. */
+.hero{position:relative;padding:104px 0 0;overflow:hidden;background:var(--tint)}
+.hero-bg{display:none}
+
+/* Copy left, product visual bleeding off the right edge (clipped by .hero
+   overflow:hidden), with the illustration sitting behind at bottom-left. */
 .hero-inner{
-  display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);
-  gap:clamp(28px,4vw,60px);align-items:center;text-align:left;
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:clamp(24px,3vw,48px);align-items:start;text-align:left;
+  padding-top:56px;
 }
+.hero-copy{padding-bottom:150px}
+.hero-visual{position:relative;z-index:2;min-width:0}
+
+/* Behind the copy, resting on the section's ground plane. */
+.hero-art{
+  position:absolute;left:0;bottom:0;z-index:0;
+  width:min(560px,48vw);pointer-events:none;
+  opacity:.9;
+}
+.hero-art svg{width:100%;height:auto;display:block}
+@media (max-width:940px){.hero-art{display:none}}
 /* Reference-site eyebrow: plain uppercase, 12px, generously letterspaced —
    no pill. Uppercase here is a CSS display device, not shouted source copy. */
 .eyebrow{

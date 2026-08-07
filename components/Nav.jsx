@@ -111,13 +111,29 @@ function ResourcesMenu({ menu }) {
       </div>
       <div className="mm-res-col mm-res-col--featured">
         <div className="mm-head mm-head--inline">{menu.featured.heading}</div>
+        {/* Artwork is the card; the title sits on top of it. */}
         <a className="mm-featured" href={menu.featured.href}>
-          <span className="mm-featured-title">{menu.featured.title}</span>
           <span className="mm-featured-art" aria-hidden="true">
-            <svg viewBox="0 0 200 90" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="butt">
-              <path d="M8 74 46 20M30 74 68 20M52 74 90 20M74 74 112 20M96 74 134 20M118 74 156 20M140 74 178 20" />
+            <svg viewBox="0 0 260 150" fill="none">
+              <g stroke="#6E58D8" strokeWidth="1.6" strokeLinejoin="miter" strokeLinecap="butt">
+                {/* isometric slabs, echoing the hero artwork */}
+                <path d="M150 40 L196 13 L242 40 L196 67 Z" />
+                <path d="M150 40 L150 54 L196 81 L196 67 Z" />
+                <path d="M242 40 L242 54 L196 81 L196 67 Z" />
+                <path d="M118 78 L164 51 L210 78 L164 105 Z" />
+                <path d="M118 78 L118 92 L164 119 L164 105 Z" />
+                <path d="M210 78 L210 92 L164 119 L164 105 Z" />
+                <g opacity=".55">
+                  <path d="M172 40 L196 26" />
+                  <path d="M184 47 L208 33" />
+                  <path d="M140 78 L164 64" />
+                  <path d="M152 85 L176 71" />
+                </g>
+                <path d="M8 132 L252 -6" strokeDasharray="5 7" opacity=".4" />
+              </g>
             </svg>
           </span>
+          <span className="mm-featured-title">{menu.featured.title}</span>
         </a>
       </div>
     </div>

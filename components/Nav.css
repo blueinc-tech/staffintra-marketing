@@ -294,23 +294,42 @@
 .mm-res-col { border-left: 1px dashed var(--line-strong); display: flex; flex-direction: column; }
 .mm-head--inline { background: var(--surface-2); border-right: 0; }
 
-.mm-featured { display: flex; flex-direction: column; gap: 9px; padding: 13px 16px; text-decoration: none; }
-.mm-featured:hover .mm-featured-title { color: var(--accent-ink); }
-.mm-featured-title {
-  font-family: var(--font-ui);
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: var(--ink);
-  line-height: 1.35;
-  transition: color 0.16s var(--ease);
-}
-.mm-featured-art {
+/* The artwork fills the card and the title sits over it, bottom-left. */
+.mm-featured {
+  position: relative;
   display: block;
+  margin: 13px 16px;
+  min-height: 118px;
   background: var(--accent-ink);
-  color: rgba(255, 255, 255, 0.4);
-  padding: 14px;
+  border-radius: 2px;
+  overflow: hidden;
+  text-decoration: none;
 }
-.mm-featured-art svg { width: 100%; height: auto; display: block; }
+.mm-featured-art { position: absolute; inset: 0; display: block; }
+.mm-featured-art svg {
+  position: absolute;
+  right: -6%;
+  top: -4%;
+  width: 92%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s var(--ease);
+}
+.mm-featured:hover .mm-featured-art svg { transform: translate(-4px, 4px); }
+
+.mm-featured-title {
+  position: relative;
+  z-index: 1;
+  display: block;
+  padding: 62px 14px 13px;
+  max-width: 76%;
+  font-family: var(--font-ui);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.32;
+  text-shadow: 0 1px 10px rgba(23, 23, 28, 0.45);
+}
 
 /* ---------- burger + mobile ---------- */
 .nav-burger {

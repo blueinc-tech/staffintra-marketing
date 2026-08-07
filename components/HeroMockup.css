@@ -192,8 +192,8 @@
   z-index: 3;
   width: 186px;
   padding: 5px;
-  background: #FFFFFF;
-  border: 1px solid var(--line-strong);
+  background: #E4E4E9;
+  border: 1px solid #CFCFD6;
   border-radius: 20px;
   box-shadow: 0 5px 16px rgba(23,23,28,.09), 0 22px 52px rgba(23,23,28,.15);
 }

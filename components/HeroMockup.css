@@ -120,7 +120,7 @@
 .hm-cell {
   display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
   gap: 1px; min-height: 30px; padding: 3px 5px; cursor: pointer;
-  border: 1px dashed var(--line-strong); border-radius: 2px;
+  border: 1px dotted var(--line-strong); border-radius: 2px;
   background: transparent; font-family: var(--font-product);
   transition: background .14s, border-color .14s;
 }
@@ -130,7 +130,7 @@
 .hm-cell.is-early { background: var(--tint-1); border: 1px solid var(--tint-2); color: var(--chrome-deep); }
 .hm-cell.is-late { background: var(--tint-2); border: 1px solid #C9BFF0; color: var(--chrome-deep); }
 .hm-cell.is-night { background: var(--chrome); border: 1px solid var(--chrome-deep); color: #fff; }
-.hm-cell.is-open { background: var(--warn-soft); border: 1px dashed var(--warm); color: var(--warm); }
+.hm-cell.is-open { background: var(--warn-soft); border: 1px dotted var(--warm); color: var(--warm); }
 
 .hm-rota-key { display: flex; gap: 11px; margin-top: 9px; flex-wrap: wrap; }
 .hm-rota-key span { display: inline-flex; align-items: center; gap: 4px; font-size: .58rem; color: var(--ink-2); }
@@ -138,7 +138,7 @@
 .hm-key-dot.is-early { background: var(--tint-1); border: 1px solid var(--tint-2); }
 .hm-key-dot.is-late { background: var(--tint-2); }
 .hm-key-dot.is-night { background: var(--chrome); }
-.hm-key-dot.is-open { background: var(--warn-soft); border: 1px dashed var(--warm); }
+.hm-key-dot.is-open { background: var(--warn-soft); border: 1px dotted var(--warm); }
 
 /* ---------------- people ---------------- */
 .hm-people-search {

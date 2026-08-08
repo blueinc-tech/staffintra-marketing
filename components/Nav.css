@@ -14,7 +14,7 @@
   border-bottom: 1px solid var(--line);
 }
 
-/* The page rails continue through the nav band, but dashed — they only go
+/* The page rails continue through the nav band, but dotted — they only go
    solid where they run alongside content. */
 .nav-root::before,
 .nav-root::after {
@@ -22,7 +22,9 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  border-left: 1px dashed var(--line-strong);
+  width: 1px;
+  background-image: var(--rule-v);
+  background-size: 1px var(--dot-step);
   pointer-events: none;
 }
 .nav-root::before { left: var(--rail); }
@@ -203,9 +205,9 @@
 
 /* Dividers run dashed vertically and solid horizontally, matching the
    reference's grid. Dashes read lighter, so they take the stronger line.
-   Group boundaries are solid; columns within a group are dashed. */
+   Group boundaries are solid; columns within a group are dotted. */
 .mm-cols { display: grid; grid-template-columns: repeat(var(--cols), var(--mm-col)); }
-.mm-col { border-right: 1px dashed var(--line-strong); }
+.mm-col { border-right: 1px dotted var(--line-strong); }
 .mm-col.is-group-end { border-right: 1px solid var(--line); }
 .mm-col:last-child { border-right: 0; }
 
@@ -258,7 +260,7 @@
   align-items: center;
   justify-content: center;
   padding: 14px 0;
-  border-right: 1px dashed var(--line-strong);
+  border-right: 1px dotted var(--line-strong);
   color: var(--accent);
 }
 .mm-row-mark svg { width: 21px; height: 21px; display: block; }
@@ -281,7 +283,7 @@
   flex-direction: column;
   gap: 6px;
   padding: 17px 18px;
-  border-right: 1px dashed var(--line-strong);
+  border-right: 1px dotted var(--line-strong);
 }
 .mm-intro strong {
   font-family: var(--font-ui);
@@ -312,7 +314,7 @@
   font-family: var(--font-ui); font-size: 0.78rem; color: var(--ink-2); line-height: 1.45;
 }
 
-.mm-res-col { border-left: 1px dashed var(--line-strong); display: flex; flex-direction: column; }
+.mm-res-col { border-left: 1px dotted var(--line-strong); display: flex; flex-direction: column; }
 .mm-head--inline { background: var(--surface-2); border-right: 0; }
 
 /* The artwork fills the card and the title sits over it, bottom-left. */

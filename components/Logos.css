@@ -9,9 +9,13 @@
 
 .logos {
   background: var(--surface);
-  padding: 46px 0 56px;
+  padding: 0 0 56px;
   overflow: hidden;
 }
+
+/* The gap between the hero's closing rule and the grid — the rails run down
+   through it and stop where the grid starts. */
+.logos-head { padding: 46px 0 30px; }
 
 .logos-label {
   text-align: center;
@@ -21,36 +25,42 @@
   text-transform: uppercase;
   letter-spacing: .1em;
   color: var(--ink-2);
-  margin-bottom: 30px;
+  margin-bottom: 0;
 }
 .count-inline { color: var(--accent); font-variant-numeric: tabular-nums; }
 
+/* Runs past the rails to both page edges, and carries the dotted rules that
+   close the band top and bottom across the full width. */
 .logos-band {
   display: grid;
   grid-template-columns: 1fr minmax(0, 1105px) 1fr;
   align-items: stretch;
+  margin-inline: calc(-1 * var(--rail));
+  background-image: var(--rule-h), var(--rule-h);
+  background-size: var(--dot-step) 1px;
+  background-position: left top, left bottom;
+  background-repeat: repeat-x;
 }
 
-/* Static — the animated variant of this hatch is used on buttons, not here. */
+/* Static — the animated variant of this hatch is used on buttons, not here.
+   Lighter than the rules so it reads as fill, not structure. */
 .logos-hatch {
   display: block;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
   background-image: repeating-linear-gradient(
     45deg,
-    var(--line-strong) 0 1px,
-    transparent 1px 10px
+    rgba(23, 23, 28, .06) 0 1px,
+    transparent 1px 11px
   );
 }
-.logos-hatch--l { border-right: 1px solid var(--line); }
-.logos-hatch--r { border-left: 1px solid var(--line); }
 
 .logos-grid {
   position: relative;
   display: grid;
   grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr));
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  /* Keeps the slide-in card inside the grid; the animation is unchanged. */
+  overflow: hidden;
 }
 
 .lg-cell {

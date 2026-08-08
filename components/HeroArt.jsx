@@ -31,7 +31,7 @@ export default function HeroArt() {
 
         {/* 2 — then the route across it, which keeps marching */}
         <g className="illo-b" style={{ '--s': 1 }}>
-          <polyline points="198.8,141.8 105.2,195.8 200.8,251 287.1,201.2 307.9,213.2" stroke="#4024C0" strokeWidth="2.4" strokeDasharray="9 7" className="illo-march" />
+          <polyline points="198.8,141.8 105.2,195.8 200.8,251 287.1,201.2 307.9,213.2" stroke="#4024C0" strokeWidth="2.4" strokeDasharray="2 6" className="illo-march" />
         </g>
 
         {/* 3 — the doorway */}
@@ -124,7 +124,7 @@ export default function HeroArt() {
 
         {/* 8 — the confirmation, last, and it keeps floating */}
         <g className="illo-b" style={{ '--s': 8 }}>
-          <line className="illo-march-b" x1="325.6" y1="85.4" x2="325.6" y2="104.6" stroke="#4024C0" strokeWidth="2" strokeDasharray="4 4" />
+          <line className="illo-march-b" x1="325.6" y1="85.4" x2="325.6" y2="104.6" stroke="#4024C0" strokeWidth="2" strokeDasharray="1.5 4.5" />
           <g className="illo-hover">
             <polygon points="296.5,68.6 354.6,102.2 354.6,68.6 296.5,35" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
             <polyline className="illo-tick" points="306.8,60.2 314.1,72.8 329.7,63.8" stroke="#4024C0" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />

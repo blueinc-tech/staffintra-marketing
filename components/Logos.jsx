@@ -73,9 +73,12 @@ export default function Logos() {
 
   return (
     <section className="logos" id="customers-strip">
-      <p className="logos-label">
-        Trusted by <CountUp className="count-inline" value={900} suffix="+" /> operations teams
-      </p>
+      {/* The rails carry on through this gap and stop at the grid. */}
+      <div className="logos-head has-rails">
+        <p className="logos-label">
+          Trusted by <CountUp className="count-inline" value={900} suffix="+" /> operations teams
+        </p>
+      </div>
 
       <div className="logos-band">
         <span className="logos-hatch logos-hatch--l" aria-hidden="true" />

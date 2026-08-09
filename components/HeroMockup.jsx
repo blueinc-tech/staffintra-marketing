@@ -402,7 +402,7 @@ function Phone() {
           <p className="hm-phone-h">Upcoming shift</p>
           <div className="hm-shift">
             <span className="hm-shift-time">07:00 · Early</span>
-            <strong>Northwind Care — Ward B</strong>
+            <strong>Northwind Care · Ward B</strong>
             <span className="hm-shift-addr">14 Mission Street, Leeds</span>
           </div>
           <button

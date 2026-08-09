@@ -15,7 +15,7 @@ export default function Cta() {
             <ul className="checklist light">
               <li>Guided demo, tailored to how your team works</li>
               <li>Pilot with one team free for 30 days</li>
-              <li>Import from spreadsheets — we help with setup</li>
+              <li>Import from spreadsheets, and we help with setup</li>
             </ul>
           </div>
           <DemoForm />

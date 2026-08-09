@@ -10,7 +10,7 @@ const PLANS = [
     yearly: '£2.50',
     unit: 'per person / month',
     tagline: 'Get the rota out of the spreadsheet.',
-    bestFor: 'One team leaving spreadsheets behind — usually 1–25 people',
+    bestFor: 'One team leaving spreadsheets behind, usually 1 to 25 people',
     cta: 'Pilot with one team',
     featured: false,
     features: [
@@ -18,7 +18,7 @@ const PLANS = [
       'Open shifts your team can claim from their phone, so gaps fill without a group chat',
       'Clock in by phone or kiosk, with timesheets ready for payroll',
       'Leave requests with balances and cover in view, so a fair answer takes seconds',
-      'Hours, absence, and labour cost — export anything in two clicks',
+      'Hours, absence, and labour cost, exported in two clicks',
       'Manager and staff roles, so everyone sees what they should',
       'Your logo and colours on the staff app, so it reads as your workspace',
     ],
@@ -29,14 +29,14 @@ const PLANS = [
     yearly: '£5',
     unit: 'per person / month',
     tagline: 'The whole week, handled in one place.',
-    bestFor: 'Where rota, leave, and payroll land on one desk — usually 26–100 people',
+    bestFor: 'Where rota, leave, and payroll land on one desk, usually 26 to 100 people',
     cta: 'Pilot with one team',
     featured: true,
     badge: 'Recommended for one busy site',
     features: [
       'Everything in Core',
       'Every team and site on one rota, with cover shown across them',
-      'Leave that knows your policy — accrual, carry-over, and bank holidays handled',
+      'Leave that knows your policy: accrual, carry-over, and bank holidays handled',
       'Onboarding journeys that route tasks to IT, payroll, and the hiring manager',
       'Policy sign-off tracked per person, with quiet nudges for anyone outstanding',
       'Branded emails and documents, so StaffIntra stays behind the scenes',
@@ -49,7 +49,7 @@ const PLANS = [
     yearly: '£7.50',
     unit: 'per person / month',
     tagline: 'Control and evidence across sites.',
-    bestFor: 'Several sites with audit and access to keep straight — usually 101–500 people',
+    bestFor: 'Several sites with audit and access to keep straight, usually 101 to 500 people',
     cta: 'Pilot with one team',
     featured: false,
     secondary: 'Book a walkthrough',
@@ -68,7 +68,7 @@ const ENTERPRISE = {
   name: 'Enterprise',
   price: 'Priced per group',
   tagline: 'Several organisations, one agreement.',
-  bestFor: 'Groups running several brands or regions — usually 500+ people',
+  bestFor: 'Groups running several brands or regions, usually 500+ people',
   cta: 'Talk to us',
   features: [
     'Everything in Complete',
@@ -91,7 +91,7 @@ const FAQ = [
   },
   {
     q: 'When would we move up a plan?',
-    a: 'When you add a second team or site, not when you cross a usage limit — it is a date you can see coming rather than a bill that surprises you. You can change plan at any time: moving up applies the same day and we charge the difference pro rata, and moving down starts at your next renewal.',
+    a: 'When you add a second team or site, not when you cross a usage limit. It is a date you can see coming rather than a bill that surprises you. You can change plan at any time: moving up applies the same day and we charge the difference pro rata, and moving down starts at your next renewal.',
   },
   {
     q: 'Where does the six hours a week come from?',
@@ -169,7 +169,7 @@ export default function Pricing() {
 
         <Reveal as="p" className="price-note">
           Free for 30 days on any plan, with no card, no minimum spend, and no setup fee. Import
-          from spreadsheets — we build your first rota with you. Sixty people on Plus is £360 a
+          from spreadsheets, and we build your first rota with you. Sixty people on Plus is £360 a
           month, or £300 a month paid for the year.
         </Reveal>
 

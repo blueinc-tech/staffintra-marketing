@@ -23,7 +23,7 @@ const FEATURES = [
   },
   {
     title: 'Reports & insights',
-    body: 'Hours, absence, and labour cost at a glance — export anything in two clicks.',
+    body: 'Hours, absence, and labour cost at a glance. Export anything in two clicks.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
         <path d="M4 19V10M10 19V5M16 19v-8M21 19H3" />
@@ -52,7 +52,7 @@ const FEATURES = [
   },
   {
     title: 'Integrations',
-    body: 'Connects to your payroll, HRIS, and calendar — data flows once, correctly.',
+    body: 'Connects to your payroll, HRIS, and calendar, so data flows once, correctly.',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
         <path d="M9 8V5a2 2 0 0 1 4 0v3M15 8v8a4 4 0 0 1-8 0v-2" />
@@ -70,7 +70,7 @@ export default function FeatureGrid() {
           <span className="kicker">And everything around it</span>
           <h2>Small features that add up to calm.</h2>
           <p>
-            The details that make the workspace feel like it was built for your team — down to
+            The details that make the workspace feel like it was built for your team, down to
             your logo and colours.
           </p>
         </Reveal>

@@ -9,7 +9,7 @@ const QUOTES = [
     avaClass: '',
   },
   {
-    text: "Approvals stopped being a pile in my inbox. I see the balance, the cover, and I decide in one tap. It's honestly boring now — in the best way.",
+    text: "Approvals stopped being a pile in my inbox. I see the balance, the cover, and I decide in one tap. It's honestly boring now, in the best way.",
     name: 'James Whitfield',
     role: 'HR manager · Cobalt Retail',
     ava: 'J',

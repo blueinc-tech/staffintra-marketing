@@ -16,7 +16,7 @@ export default function Stats() {
           <img src="/assets/StaffIntra_Logo_Mark_White.svg" alt="" width={36} height={36} />
           <h2>Teams run smoother on StaffIntra.</h2>
           <p>
-            Across care, retail, logistics, and hospitality — the pattern is the same: less
+            Across care, retail, logistics, and hospitality, the pattern is the same: less
             chasing, fewer surprises, calmer weeks.
           </p>
         </div>

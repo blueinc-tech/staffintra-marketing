@@ -85,7 +85,7 @@ export const PILLARS = [
     tone: 'b',
     headline: 'Approvals that don’t sit in inboxes.',
     body:
-      'Requests arrive with the context to decide — balances, cover, and policy — so a fair ' +
+      'Requests arrive with the context to decide: balances, cover, and policy. A fair ' +
       'answer takes seconds and nothing gets lost in email.',
     href: '#features',
     story: 'How a multi-site team brought approvals down from four days to the same shift',
@@ -156,7 +156,7 @@ export const PILLARS = [
     tone: 'c',
     headline: 'Day one, already sorted.',
     body:
-      'Turn new-hire chaos into a guided journey. Paperwork, sign-off, kit, and introductions — ' +
+      'Turn new-hire chaos into a guided journey. Paperwork, sign-off, kit, and introductions get ' +
       'sequenced automatically before anyone walks in.',
     href: '#features',
     story: null,
@@ -172,7 +172,7 @@ export const PILLARS = [
             { t: 'Contract signed', s: 'done' },
             { t: 'Policies acknowledged', s: 'done' },
             { t: 'Payroll details verified', s: 'done' },
-            { t: 'Meet your team — scheduled', s: 'current' },
+            { t: 'Meet your team · scheduled', s: 'current' },
             { t: 'First-week shadow shifts', s: '' },
           ],
         },

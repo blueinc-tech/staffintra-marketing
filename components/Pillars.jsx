@@ -48,37 +48,47 @@ export default function Pillars() {
   }, []);
 
   return (
-    <section className="pillars has-rails" id="product">
+    <section className="pillars" id="product">
       <div className="pillar-tabs-wrap">
-        <div className="pillar-tabs" role="tablist" aria-label="Product areas">
-          {PILLARS.map((p, i) => (
-            <button
-              key={p.id}
-              type="button"
-              role="tab"
-              aria-selected={i === active}
-              aria-controls={`pillar-${p.id}`}
-              className={`ptab${i === active ? ' is-on' : ''}`}
-              data-tone={p.tone}
-              onClick={() => goTo(i)}
-            >
-              <TabMark />
-              {p.name}
-            </button>
-          ))}
+        <div className="container">
+          <div className="pillar-tabs" role="tablist" aria-label="Product areas">
+            {/* One fill that travels, rather than three that switch on and off:
+                on the reference it slides between tabs and is inset from the
+                bar, so it reads as a button rather than a filled cell. */}
+            <span className="ptab-slide" style={{ '--i': active }} aria-hidden="true" />
+            {PILLARS.map((p, i) => (
+              <button
+                key={p.id}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                aria-controls={`pillar-${p.id}`}
+                className={`ptab${i === active ? ' is-on' : ''}`}
+                data-tone={p.tone}
+                onClick={() => goTo(i)}
+              >
+                <TabMark />
+                {p.name}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {PILLARS.map((p, i) => (
         <Fragment key={p.id}>
-          <div
-            className="pillar-anchor"
-            ref={(el) => {
-              panelsRef.current[i] = el;
-            }}
-          >
-            <Pillar pillar={p} />
+          <div className="container">
+            <div
+              className="pillar-anchor"
+              ref={(el) => {
+                panelsRef.current[i] = el;
+              }}
+            >
+              <Pillar pillar={p} />
+            </div>
           </div>
+          {/* Outside the container on purpose: the hatch is the one thing in
+              this section that runs past the frame to both page edges. */}
           <div className="pillar-hatch" aria-hidden="true" />
         </Fragment>
       ))}

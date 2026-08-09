@@ -25,7 +25,7 @@ const TILES = [
 
 const PLACEHOLDER_QUOTE = {
   quote:
-    'A short line from this customer about what changed — the kind of sentence an ' +
+    'A short line from this customer about what changed: the kind of sentence an ' +
     'operations lead would actually say, naming one thing that got easier.',
   name: 'Name, role',
   org: 'Organisation · sector',

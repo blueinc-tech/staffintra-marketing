@@ -19,12 +19,12 @@ export default function DemoForm() {
     const data = new FormData(e.currentTarget);
     const next = {};
     if (!String(data.get('name') || '').trim()) {
-      next.name = "We need a name to say hello properly — add yours and you're set.";
+      next.name = "We need a name to say hello properly. Add yours and you're set.";
     }
     const email = String(data.get('email') || '').trim();
     if (!email || !EMAIL_RE.test(email)) {
       next.email =
-        "That email doesn't look right — check for typos. Everything else you've typed is still here.";
+        "That email doesn't look right. Check for typos. Everything else you've typed is still here.";
     }
     setErrors(next);
     if (Object.keys(next).length === 0) setSubmitted(true);
@@ -45,7 +45,7 @@ export default function DemoForm() {
         <h3>Book a demo</h3>
         <div className="form-success" role="status" tabIndex={-1} ref={successRef}>
           <span className="fs-icon">✓</span>
-          <strong>Thanks — request received.</strong>
+          <strong>Thanks, request received.</strong>
           <span>You&apos;ll hear from us within one working day.</span>
         </div>
       </div>

@@ -7,34 +7,67 @@
      - a story band under a panel that has one
      - a diagonal hatch band closing each panel, full bleed past the rails
 
-   The rails run down the whole section, including through the hatch, so they
-   are pushed 1px into the gutter here — otherwise they would sit on top of the
-   coloured panels, which reach the rail exactly. */
+   The section is the width of the nav bar, not of the page, and its two side
+   lines are solid rather than dotted. They are drawn on .pillars at the
+   container's own content edge so one continuous line runs the whole section,
+   through the tab bar's border and on through the hatch. The page's dotted
+   rails stop above this section, at the customer band. */
 
 .pillars {
   position: relative;
   background: var(--surface);
 }
-.pillars.has-rails::before { left: -1px; }
-.pillars.has-rails::after { right: -1px; }
+.pillars::before,
+.pillars::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+  pointer-events: none;
+  z-index: 0;
+}
+.pillars::before { left: calc(max(0px, (100% - 1185px) / 2) + 40px); }
+.pillars::after { right: calc(max(0px, (100% - 1185px) / 2) + 40px); }
 
 /* ---------- sticky tab bar ---------- */
 
+/* The wrap stays transparent: only the bar itself is opaque, so the page keeps
+   scrolling visibly past it in the gutters either side. */
 .pillar-tabs-wrap {
   position: sticky;
   top: 64px; /* the nav's height */
   z-index: 40;
-  background: var(--surface);
 }
 
 .pillar-tabs {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   height: 72px;
+  background: var(--surface);
   border: 1px solid var(--line);
 }
 
+/* Inset from the bar top and bottom, so it reads as a button sitting in the
+   bar rather than a filled third of it. */
+.ptab-slide {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 0;
+  width: calc(100% / 3);
+  translate: calc(var(--i, 0) * 100%) 0;
+  background: var(--tint);
+  border-radius: 2px;
+  pointer-events: none;
+  transition: translate .32s cubic-bezier(.4, 0, .2, 1);
+}
+
 .ptab {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,12 +78,12 @@
   font-family: var(--font-ui);
   font-size: 1rem;
   font-weight: 400;
-  color: var(--ink);
+  color: var(--ink-2);
   cursor: pointer;
-  transition: background-color .22s var(--ease), color .22s var(--ease);
+  transition: color .22s var(--ease);
 }
-.ptab:hover { background: var(--surface-2); }
-.ptab.is-on { background: var(--tint); }
+.ptab:hover { color: var(--ink); }
+.ptab.is-on { color: var(--ink); }
 .ptab:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
 
 .pt-mark { width: 24px; height: 24px; flex-shrink: 0; }
@@ -64,12 +97,12 @@
 
 /* ---------- panel ---------- */
 
+/* Above the section's side lines, so the coloured visual covers the right-hand
+   one where the two meet rather than showing a hairline over the fill. */
 .pillar {
-  /* Own containment context, so --edge can be measured against this element
-     rather than against a grid area half its width. Deliberately not on
-     .pillars: containment there would put the sticky bar at risk. */
-  container-type: inline-size;
-  --edge: calc(max(0px, (100cqw - 1185px) / 2) + 40px);
+  position: relative;
+  z-index: 1;
+  --copy-pad: clamp(22px, 5.5vw, 78px);
 }
 
 .pillar-row {
@@ -81,7 +114,7 @@
 .pillar-copy {
   display: flex;
   flex-direction: column;
-  padding: 68px 56px 56px var(--edge);
+  padding: 68px 48px 56px var(--copy-pad);
 }
 
 .pillar-eyebrow {
@@ -105,10 +138,10 @@
 .pillar[data-tone='b'] .pe-chip { background: var(--warn-soft); color: var(--warn); }
 .pillar[data-tone='c'] .pe-chip { background: var(--ok-soft); color: var(--ok); }
 
-/* Runs from the page edge to the visual panel, under the eyebrow. */
+/* Spans the frame, from the left side line across to the visual panel. */
 .pillar-rule {
   height: 1px;
-  margin: 26px 0 46px calc(-1 * var(--edge) - var(--rail));
+  margin: 26px -48px 46px calc(-1 * var(--copy-pad));
   background-image: var(--rule-h);
   background-size: var(--dot-step) 1px;
   background-repeat: repeat-x;
@@ -371,7 +404,7 @@
   display: flex;
   align-items: center;
   gap: 30px;
-  padding: 22px var(--edge);
+  padding: 22px var(--copy-pad);
   border-top: 1px solid var(--line);
   text-decoration: none;
 }
@@ -420,7 +453,7 @@
 
 @media (max-width: 940px) {
   .pillar-row { grid-template-columns: minmax(0, 1fr); }
-  .pillar-copy { padding: 52px var(--edge) 40px; }
+  .pillar-copy { padding: 52px var(--copy-pad) 40px; }
   .pillar-steps { padding-top: 34px; }
   .pillar-visual { min-height: 420px; }
   .ptab { font-size: .875rem; gap: 8px; padding: 0 10px; }
@@ -440,5 +473,5 @@
 @media (prefers-reduced-motion: reduce) {
   .pv-stage { animation: none; }
   .pstep-ring .arc { animation: none; stroke-dashoffset: 0; }
-  .pl-turn, .ps-arrow, .ptab, .pstep { transition: none; }
+  .ptab-slide, .pl-turn, .ps-arrow, .ptab, .pstep { transition: none; }
 }

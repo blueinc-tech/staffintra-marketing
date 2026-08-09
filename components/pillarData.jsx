@@ -1,0 +1,221 @@
+/* The three product pillars, and the moments that play inside each panel.
+   Names and copy come straight from the nav taxonomy in navData.jsx, so the
+   menu and this section describe the same product rather than two guesses.
+
+   `tone` picks the panel surface and the eyebrow/tab tint. Large surfaces stay
+   in the purple family plus ink — the brand kit reserves saturated fills for
+   Brand Purple — while the small marks carry a per-pillar accent, which is how
+   the reference gives each pillar an identity.
+
+   Every moment is sample product data, deliberately generic: no customer
+   names, no organisations, nothing that reads as a claim about a real user. */
+
+export const PILLARS = [
+  {
+    id: 'scheduling',
+    name: 'Scheduling & shifts',
+    tone: 'a',
+    headline: 'Every shift, visible to everyone.',
+    body:
+      'Build the rota in minutes, not evenings. Drag shifts into place, catch clashes ' +
+      'before they happen, and publish to every phone at once.',
+    href: '#features',
+    story: 'How an operations team cut rota admin from a full evening to under an hour',
+    storyLabel: 'Customer story',
+    steps: [
+      {
+        label: 'Rota builder',
+        moment: {
+          shape: 'rota',
+          title: 'Week of 10 Aug',
+          chip: 'Publish',
+          rows: [
+            { day: 'Mon', shifts: [{ l: 0.06, w: 0.38, t: 'Morning', k: 'a' }, { l: 0.5, w: 0.42, t: 'Late', k: 'b' }] },
+            { day: 'Tue', shifts: [{ l: 0.06, w: 0.52, t: 'Open · claim', k: 'b' }, { l: 0.64, w: 0.3, t: 'Close', k: 'c' }] },
+            { day: 'Wed', shifts: [{ l: 0.14, w: 0.44, t: 'Morning', k: 'a' }] },
+            { day: 'Thu', shifts: [{ l: 0.06, w: 0.34, t: 'Early', k: 'c' }, { l: 0.46, w: 0.4, t: 'Overlap', k: 'warn' }] },
+            { day: 'Fri', shifts: [{ l: 0.22, w: 0.48, t: 'Floor team', k: 'b' }] },
+          ],
+        },
+      },
+      {
+        label: 'Open shifts',
+        moment: {
+          shape: 'list',
+          title: 'Open shifts',
+          meta: '3 unfilled this week',
+          rows: [
+            { name: 'Sat 15 Aug · 07:00–15:00', meta: 'Floor · 2 needed', chip: 'Claim', tone: 'accent' },
+            { name: 'Sun 16 Aug · 12:00–20:00', meta: 'Kitchen · 1 needed', chip: 'Claim', tone: 'accent' },
+            { name: 'Wed 19 Aug · 06:00–14:00', meta: 'Early · 1 needed', chip: 'Claimed', tone: 'ok' },
+          ],
+        },
+      },
+      {
+        label: 'Time tracking',
+        moment: {
+          shape: 'timer',
+          title: 'Clock in',
+          site: 'Riverside site · Floor team',
+          time: '4:24:42',
+          note: 'Verified on site',
+          action: 'Clock out',
+        },
+      },
+      {
+        label: 'Timesheets',
+        moment: {
+          shape: 'bars',
+          title: 'Timesheet · week of 10 Aug',
+          meta: 'Ready for approval',
+          rows: [
+            { label: 'Sofia Reyes', value: '38h 15m', p: 0.96 },
+            { label: 'Tunde Okafor', value: '32h 00m', p: 0.8 },
+            { label: 'Priya Sharma', value: '40h 30m', p: 1 },
+            { label: 'Kofi Mensah', value: '21h 45m', p: 0.54 },
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'leave',
+    name: 'Leave & approvals',
+    tone: 'b',
+    headline: 'Approvals that don’t sit in inboxes.',
+    body:
+      'Requests arrive with the context to decide — balances, cover, and policy — so a fair ' +
+      'answer takes seconds and nothing gets lost in email.',
+    href: '#features',
+    story: 'How a multi-site team brought approvals down from four days to the same shift',
+    storyLabel: 'Customer story',
+    steps: [
+      {
+        label: 'Leave requests',
+        moment: {
+          shape: 'list',
+          title: 'Requests',
+          meta: '2 waiting on you',
+          rows: [
+            { name: 'Sofia Reyes', meta: 'Annual leave · 12–14 Aug', chip: 'Approve', tone: 'ok' },
+            { name: 'Tunde Okafor', meta: 'Shift swap · Sat 15 Aug', chip: 'Approve', tone: 'ok' },
+            { name: 'Priya Sharma', meta: 'Overtime · approved just now', chip: 'Approved', tone: 'quiet' },
+          ],
+        },
+      },
+      {
+        label: 'Balances',
+        moment: {
+          shape: 'bars',
+          title: 'Balances · this year',
+          meta: 'Accrual and carry-over handled',
+          rows: [
+            { label: 'Sofia Reyes', value: '9 days left', p: 0.36 },
+            { label: 'Tunde Okafor', value: '14 days left', p: 0.56 },
+            { label: 'Priya Sharma', value: '3 days left', p: 0.12 },
+            { label: 'Kofi Mensah', value: '19 days left', p: 0.76 },
+          ],
+        },
+      },
+      {
+        label: 'Cover',
+        moment: {
+          shape: 'list',
+          title: 'Cover · 12–14 Aug',
+          meta: 'Every shift accounted for',
+          rows: [
+            { name: 'Thu 12 Aug · Late', meta: 'Covered by Kofi Mensah', chip: 'Set', tone: 'ok' },
+            { name: 'Fri 13 Aug · Morning', meta: 'Covered by Priya Sharma', chip: 'Set', tone: 'ok' },
+            { name: 'Sat 14 Aug · Floor', meta: 'Offered to 4 people', chip: 'Open', tone: 'warn' },
+          ],
+        },
+      },
+      {
+        label: 'Approvals inbox',
+        moment: {
+          shape: 'steps',
+          title: 'This week',
+          pct: '92%',
+          note: 'answered within a shift',
+          rows: [
+            { t: 'Annual leave · 12–14 Aug', s: 'done' },
+            { t: 'Shift swap · Sat 15 Aug', s: 'done' },
+            { t: 'Overtime · Fri 13 Aug', s: 'done' },
+            { t: 'Unpaid leave · 22 Aug', s: 'current' },
+            { t: 'Annual leave · 2–6 Sep', s: '' },
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'onboarding',
+    name: 'Onboarding journeys',
+    tone: 'c',
+    headline: 'Day one, already sorted.',
+    body:
+      'Turn new-hire chaos into a guided journey. Paperwork, sign-off, kit, and introductions — ' +
+      'sequenced automatically before anyone walks in.',
+    href: '#features',
+    story: null,
+    steps: [
+      {
+        label: 'Guided journeys',
+        moment: {
+          shape: 'steps',
+          title: 'Kofi Mensah · starts Monday',
+          pct: '80%',
+          note: 'Floor supervisor',
+          rows: [
+            { t: 'Contract signed', s: 'done' },
+            { t: 'Policies acknowledged', s: 'done' },
+            { t: 'Payroll details verified', s: 'done' },
+            { t: 'Meet your team — scheduled', s: 'current' },
+            { t: 'First-week shadow shifts', s: '' },
+          ],
+        },
+      },
+      {
+        label: 'Policy sign-off',
+        moment: {
+          shape: 'list',
+          title: 'Policies',
+          meta: '4 of 5 acknowledged',
+          rows: [
+            { name: 'Health & safety', meta: 'Signed 8 Aug', chip: 'Signed', tone: 'ok' },
+            { name: 'Code of conduct', meta: 'Signed 8 Aug', chip: 'Signed', tone: 'ok' },
+            { name: 'Data handling', meta: 'Sent 9 Aug', chip: 'Waiting', tone: 'warn' },
+          ],
+        },
+      },
+      {
+        label: 'Task routing',
+        moment: {
+          shape: 'list',
+          title: 'Tasks routed',
+          meta: 'Assigned automatically',
+          rows: [
+            { name: 'Create accounts & kit', meta: 'Routed to IT', chip: 'Done', tone: 'ok' },
+            { name: 'Add to payroll run', meta: 'Routed to Payroll', chip: 'Done', tone: 'ok' },
+            { name: 'Book induction', meta: 'Routed to Manager', chip: 'Today', tone: 'accent' },
+          ],
+        },
+      },
+      {
+        label: 'Documents',
+        moment: {
+          shape: 'list',
+          title: 'Documents',
+          meta: 'Stored against the record',
+          rows: [
+            { name: 'Signed contract', meta: 'PDF · 8 Aug', chip: 'Filed', tone: 'quiet' },
+            { name: 'Right to work', meta: 'Verified · 8 Aug', chip: 'Filed', tone: 'quiet' },
+            { name: 'Bank details', meta: 'Encrypted · 9 Aug', chip: 'Filed', tone: 'quiet' },
+          ],
+        },
+      },
+    ],
+  },
+];

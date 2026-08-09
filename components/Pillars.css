@@ -1,0 +1,444 @@
+/* Product pillars, modelled on the reference's tabbed showcase.
+
+   Anatomy, top to bottom:
+     - a sticky tab bar that parks under the nav and tracks scroll position
+     - three panels: copy left, a full-height coloured visual running out to
+       the right rail, and a sub-feature row that advances on a timer
+     - a story band under a panel that has one
+     - a diagonal hatch band closing each panel, full bleed past the rails
+
+   The rails run down the whole section, including through the hatch, so they
+   are pushed 1px into the gutter here — otherwise they would sit on top of the
+   coloured panels, which reach the rail exactly. */
+
+.pillars {
+  position: relative;
+  background: var(--surface);
+}
+.pillars.has-rails::before { left: -1px; }
+.pillars.has-rails::after { right: -1px; }
+
+/* ---------- sticky tab bar ---------- */
+
+.pillar-tabs-wrap {
+  position: sticky;
+  top: 64px; /* the nav's height */
+  z-index: 40;
+  background: var(--surface);
+}
+
+.pillar-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  height: 72px;
+  border: 1px solid var(--line);
+}
+
+.ptab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color .22s var(--ease), color .22s var(--ease);
+}
+.ptab:hover { background: var(--surface-2); }
+.ptab.is-on { background: var(--tint); }
+.ptab:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+
+.pt-mark { width: 24px; height: 24px; flex-shrink: 0; }
+/* The mark carries the pillar's accent; the label stays ink either way. */
+.ptab[data-tone='a'] .pt-mark { color: var(--accent); }
+.ptab[data-tone='b'] .pt-mark { color: var(--warn); }
+.ptab[data-tone='c'] .pt-mark { color: var(--ok); }
+
+/* Clears the nav and the tab bar when a tab scrolls its panel into view. */
+.pillar-anchor { scroll-margin-top: 136px; }
+
+/* ---------- panel ---------- */
+
+.pillar {
+  /* Own containment context, so --edge can be measured against this element
+     rather than against a grid area half its width. Deliberately not on
+     .pillars: containment there would put the sticky bar at risk. */
+  container-type: inline-size;
+  --edge: calc(max(0px, (100cqw - 1185px) / 2) + 40px);
+}
+
+.pillar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.pillar-copy {
+  display: flex;
+  flex-direction: column;
+  padding: 68px 56px 56px var(--edge);
+}
+
+.pillar-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-ui);
+  font-size: 1.0625rem;
+  color: var(--ink-2);
+}
+.pe-chip {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+.pe-glyph { width: 14px; height: 14px; display: block; }
+.pillar[data-tone='a'] .pe-chip { background: var(--accent-soft); color: var(--accent); }
+.pillar[data-tone='b'] .pe-chip { background: var(--warn-soft); color: var(--warn); }
+.pillar[data-tone='c'] .pe-chip { background: var(--ok-soft); color: var(--ok); }
+
+/* Runs from the page edge to the visual panel, under the eyebrow. */
+.pillar-rule {
+  height: 1px;
+  margin: 26px 0 46px calc(-1 * var(--edge) - var(--rail));
+  background-image: var(--rule-h);
+  background-size: var(--dot-step) 1px;
+  background-repeat: repeat-x;
+}
+
+.pillar-copy h2 {
+  font-size: clamp(1.85rem, 3vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -.022em;
+  max-width: 12ch;
+}
+.pillar-copy > p {
+  margin-top: 20px;
+  max-width: 40ch;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.pillar-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  margin-top: 26px;
+  font-family: var(--font-ui);
+  font-size: .9375rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.pl-turn { width: 12px; height: 12px; color: var(--ink-3-text); transition: translate .22s var(--ease); }
+.pillar-more:hover { color: var(--accent); }
+.pillar-more:hover .pl-turn { color: var(--accent); translate: 3px 0; }
+
+/* ---------- sub-feature carousel ---------- */
+
+.pillar-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 26px;
+  margin-top: auto;
+  padding-top: 48px;
+}
+.pstep {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: color .22s var(--ease);
+}
+.pstep:hover { color: var(--ink-2); }
+.pstep.is-on { color: var(--ink); }
+.pstep:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.pstep-ring { width: 16px; height: 16px; flex-shrink: 0; color: var(--accent); }
+/* Percentages and rotation inside an SVG need fill-box, or they resolve
+   against the viewport. Same rule as the hero illustration. */
+.pstep-ring .arc {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  rotate: -90deg;
+  stroke-dashoffset: var(--ring);
+  animation: pRing var(--dwell) linear forwards;
+}
+@keyframes pRing {
+  from { stroke-dashoffset: var(--ring); }
+  to { stroke-dashoffset: 0; }
+}
+
+/* ---------- the coloured visual ---------- */
+
+.pillar-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 500px;
+  padding: 44px 24px;
+  overflow: hidden;
+}
+/* Large surfaces stay in the purple family plus ink: the brand kit reserves
+   saturated fills for Brand Purple, so the per-pillar accent lives on the
+   small marks instead. */
+.pillar[data-tone='a'] .pillar-visual { background: var(--accent); }
+.pillar[data-tone='b'] .pillar-visual { background: var(--ink); }
+.pillar[data-tone='c'] .pillar-visual { background: var(--accent-ink); }
+
+.pv-texture {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, .17) 1px, transparent 1.15px);
+  background-size: 7px 7px;
+  pointer-events: none;
+}
+.pv-shape {
+  position: absolute;
+  inset: -20% -10%;
+  background:
+    linear-gradient(114deg, transparent 44%, rgba(255, 255, 255, .055) 44%),
+    linear-gradient(66deg, transparent 71%, rgba(255, 255, 255, .045) 71%);
+  pointer-events: none;
+}
+
+.pv-stage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  animation: pmIn .45s var(--ease) both;
+}
+@keyframes pmIn {
+  from { opacity: 0; translate: 0 12px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+/* ---------- moment card ---------- */
+
+.pm-card {
+  width: min(420px, 88%);
+  padding: 20px 22px 22px;
+  background: var(--surface);
+  border-radius: 2px;
+  font-family: var(--font-ui);
+}
+.pm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+.pm-title { font-size: .9375rem; font-weight: 600; color: var(--ink); }
+.pm-meta { font-size: .75rem; color: var(--ink-3-text); text-align: right; }
+.pm-meta--under { display: block; margin-top: 4px; font-size: .75rem; text-align: left; }
+.pm-pct { font-size: .9375rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+.pm-chip {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 2px;
+  font-size: .6875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.pm-chip--accent { background: var(--accent-soft); color: var(--accent-ink); }
+.pm-chip--ok { background: var(--ok-soft); color: var(--ok); }
+.pm-chip--warn { background: var(--warn-soft); color: var(--warn); }
+.pm-chip--quiet { background: var(--surface-2); color: var(--ink-3-text); }
+
+/* rota */
+.pm-rota { margin-top: 16px; display: flex; flex-direction: column; gap: 7px; }
+.pm-rota-row { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 10px; }
+.pm-day { font-size: .6875rem; color: var(--ink-3-text); }
+.pm-track { position: relative; height: 24px; background: var(--surface-2); border-radius: 2px; }
+.pm-shift {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--l);
+  width: var(--w);
+  display: flex;
+  align-items: center;
+  padding: 0 7px;
+  border-radius: 2px;
+  font-size: .625rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.pm-shift.k-a { background: var(--accent-soft); color: var(--accent-ink); }
+.pm-shift.k-b { background: var(--info-soft); color: var(--info); }
+.pm-shift.k-c { background: var(--ok-soft); color: var(--ok); }
+.pm-shift.k-warn { background: var(--warn-soft); color: var(--warn); }
+
+/* list */
+.pm-list { margin-top: 14px; display: flex; flex-direction: column; }
+.pm-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+.pm-row-txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.pm-row-txt strong { font-size: .8125rem; font-weight: 600; color: var(--ink); }
+.pm-row-txt span { font-size: .75rem; color: var(--ink-3-text); }
+
+/* timer */
+.pm-timer {
+  margin-top: 18px;
+  padding: 20px 0 18px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  background: var(--ok-soft);
+  border-radius: 2px;
+}
+.pm-clock {
+  font-family: var(--font-mono);
+  font-size: 1.9rem;
+  font-weight: 500;
+  color: var(--ok);
+  font-variant-numeric: tabular-nums;
+}
+.pm-note { display: inline-flex; align-items: center; gap: 7px; font-size: .75rem; color: var(--ok); }
+.pm-tick { display: grid; place-items: center; width: 14px; height: 14px; }
+.pm-tick svg { width: 12px; height: 12px; }
+.pm-action {
+  display: block;
+  margin-top: 14px;
+  padding: 11px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 2px;
+  text-align: center;
+  font-size: .8125rem;
+  font-weight: 500;
+}
+
+/* bars */
+.pm-bars { margin-top: 16px; display: flex; flex-direction: column; gap: 13px; }
+.pm-bar-row { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; align-items: center; gap: 11px; }
+.pm-bar-label { font-size: .75rem; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pm-bar { height: 6px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
+.pm-bar span { display: block; height: 100%; width: var(--p); background: var(--accent); border-radius: 2px; }
+.pm-bar-value { font-size: .6875rem; color: var(--ink-3-text); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* steps */
+.pm-steps { margin-top: 16px; display: flex; flex-direction: column; gap: 2px; }
+.pm-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: .8125rem;
+  color: var(--ink-3-text);
+}
+.pm-step-mark {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  font-size: .625rem;
+  color: var(--ink-3);
+}
+.pm-step-mark svg { width: 12px; height: 12px; }
+.pm-step.is-done { color: var(--ink); }
+.pm-step.is-done .pm-step-mark { background: var(--ok-soft); border-color: var(--ok-soft); color: var(--ok); }
+.pm-step.is-current { color: var(--ink); }
+.pm-step.is-current .pm-step-mark { background: var(--accent-soft); border-color: var(--accent-soft); color: var(--accent-ink); }
+
+/* ---------- story band ---------- */
+
+.pillar-story {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 22px var(--edge);
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+}
+.ps-label {
+  flex-shrink: 0;
+  font-family: var(--font-ui);
+  font-size: .6875rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3-text);
+}
+.ps-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.ps-arrow { width: 11px; height: 11px; color: var(--ink-3-text); transition: translate .22s var(--ease); }
+.pillar-story:hover .ps-text { color: var(--accent); }
+.pillar-story:hover .ps-arrow { color: var(--accent); translate: 2px -2px; }
+.pillar-story:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+
+/* ---------- hatch band ---------- */
+
+/* Full bleed past the rails, which is why .pillars must not clip its overflow. */
+.pillar-hatch {
+  height: 62px;
+  margin-inline: calc(-1 * var(--rail));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(23, 23, 28, .05) 0 1px,
+    transparent 1px 11px
+  );
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1080px) {
+  .pillar-copy { padding-right: 32px; }
+  .pillar-copy h2 { max-width: none; }
+}
+
+@media (max-width: 940px) {
+  .pillar-row { grid-template-columns: minmax(0, 1fr); }
+  .pillar-copy { padding: 52px var(--edge) 40px; }
+  .pillar-steps { padding-top: 34px; }
+  .pillar-visual { min-height: 420px; }
+  .ptab { font-size: .875rem; gap: 8px; padding: 0 10px; }
+  .pt-mark { width: 20px; height: 20px; }
+}
+
+@media (max-width: 620px) {
+  .pillar-tabs { height: 64px; }
+  .pillar-anchor { scroll-margin-top: 128px; }
+  .ptab { flex-direction: column; gap: 3px; font-size: .6875rem; line-height: 1.2; text-align: center; }
+  .pillar-story { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .pm-bar-row { grid-template-columns: 74px minmax(0, 1fr) auto; }
+}
+
+/* The reference ships no reduced-motion handling; this does. The carousel
+   stops advancing on its own and the ring shows as complete. */
+@media (prefers-reduced-motion: reduce) {
+  .pv-stage { animation: none; }
+  .pstep-ring .arc { animation: none; stroke-dashoffset: 0; }
+  .pl-turn, .ps-arrow, .ptab, .pstep { transition: none; }
+}

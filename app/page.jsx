@@ -1,7 +1,7 @@
 import Nav from '../components/Nav';
 import Hero from '../components/Hero';
 import Logos from '../components/Logos';
-import Splits from '../components/Splits';
+import Pillars from '../components/Pillars';
 import FeatureGrid from '../components/FeatureGrid';
 import Stats from '../components/Stats';
 import Pricing from '../components/Pricing';
@@ -16,7 +16,7 @@ export default function Home() {
       <main>
         <Hero />
         <Logos />
-        <Splits />
+        <Pillars />
         <FeatureGrid />
         <Stats />
         <Pricing />

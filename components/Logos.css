@@ -9,14 +9,13 @@
 
 /* No overflow clipping here — the band and its closing rule both have to
    reach past the page rails to the viewport edges. body handles overflow-x. */
+/* The bottom padding lives on the section, NOT on .logos-rails: the rails have
+   to stop on the band's bottom rule, not carry on into the white below it. */
 .logos {
   position: relative;
   background: var(--surface);
+  padding: 0 0 56px;
 }
-
-/* Carries the rails. Owns the section's bottom padding so the dotted line runs
-   all the way to the section's end rather than stopping at the band. */
-.logos-rails { padding-bottom: 56px; }
 
 /* Closes the hero band above: full page width, past the rails on both sides.
    It lives here rather than on .hero because .hero clips its own overflow. */

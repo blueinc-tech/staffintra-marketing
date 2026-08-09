@@ -66,6 +66,19 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 .has-rails::before{left:0}
 .has-rails::after{right:0}
 
+/* The page frame below the customer band: two SOLID lines at the container's
+   own content edge, so the framed sections are the width of the nav bar
+   rather than of the page. The dotted rails above stop at the customer band,
+   so the two systems never appear together. z-index 0 keeps the lines under
+   anything a section paints over them, like a full-height coloured panel. */
+.has-frame{position:relative}
+.has-frame::before,.has-frame::after{
+  content:"";position:absolute;top:0;bottom:0;width:1px;
+  background:var(--line);pointer-events:none;z-index:0;
+}
+.has-frame::before{left:calc(max(0px,(100% - 1185px)/2) + 40px)}
+.has-frame::after{right:calc(max(0px,(100% - 1185px)/2) + 40px)}
+
 /* A band's closing rule, carried past the rails to both page edges. It has to
    sit on an element whose ancestors do not clip — see .logos::before. */
 .band-edge{

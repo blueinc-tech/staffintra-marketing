@@ -13,23 +13,11 @@
    through the tab bar's border and on through the hatch. The page's dotted
    rails stop above this section, at the customer band. */
 
+/* The two side lines come from .has-frame in globals.css, shared with the
+   banner below so one unbroken line runs through both sections. */
 .pillars {
-  position: relative;
   background: var(--surface);
 }
-.pillars::before,
-.pillars::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--line);
-  pointer-events: none;
-  z-index: 0;
-}
-.pillars::before { left: calc(max(0px, (100% - 1185px) / 2) + 40px); }
-.pillars::after { right: calc(max(0px, (100% - 1185px) / 2) + 40px); }
 
 /* ---------- sticky tab bar ---------- */
 
@@ -50,19 +38,22 @@
   border: 1px solid var(--line);
 }
 
-/* Inset from the bar top and bottom, so it reads as a button sitting in the
-   bar rather than a filled third of it. */
+/* Inset from the bar top and bottom only, so it reads as a button sitting in
+   the bar rather than a filled third of it, and still meets the bar's own
+   edge on the first and last tab. Width and offset are set from measurement;
+   the third here is only what the first paint uses. */
 .ptab-slide {
   position: absolute;
   top: 6px;
   bottom: 6px;
   left: 0;
   width: calc(100% / 3);
-  translate: calc(var(--i, 0) * 100%) 0;
   background: var(--tint);
   border-radius: 2px;
   pointer-events: none;
-  transition: translate .32s cubic-bezier(.4, 0, .2, 1);
+  transition:
+    translate .32s cubic-bezier(.4, 0, .2, 1),
+    width .32s cubic-bezier(.4, 0, .2, 1);
 }
 
 .ptab {
@@ -236,11 +227,19 @@
 .pillar[data-tone='b'] .pillar-visual { background: var(--ink); }
 .pillar[data-tone='c'] .pillar-visual { background: var(--accent-ink); }
 
+/* The rough surface covers a diagonal region of the panel rather than all of
+   it, as on the reference: one large part reads as grit, the rest stays flat.
+   Two dot sizes on different pitches so it does not tile as a visible grid. */
 .pv-texture {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, .17) 1px, transparent 1.15px);
-  background-size: 7px 7px;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, .22) 1px, transparent 1.15px),
+    radial-gradient(rgba(255, 255, 255, .13) .7px, transparent .85px);
+  background-size: 7px 7px, 11px 9px;
+  background-position: 0 0, 3px 4px;
+  -webkit-mask-image: linear-gradient(108deg, #000 0 34%, transparent 34%);
+  mask-image: linear-gradient(108deg, #000 0 34%, transparent 34%);
   pointer-events: none;
 }
 .pv-shape {

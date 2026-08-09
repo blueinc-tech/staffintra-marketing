@@ -1,0 +1,97 @@
+/* Closing banner. Carries the same frame as the pillar section above it, so
+   the two solid side lines run on unbroken through both. */
+
+.workforce {
+  position: relative;
+  background: var(--surface);
+}
+
+/* Fine dot band that separates the hatch above from the banner. Full bleed,
+   like the hatch, so the two read as one boundary of two textures. */
+.grit-band {
+  height: 26px;
+  margin-inline: calc(-1 * var(--rail));
+  border-bottom: 1px solid var(--line);
+  background-color: var(--surface);
+  background-image:
+    radial-gradient(rgba(23, 23, 28, .30) .8px, transparent .9px),
+    radial-gradient(rgba(23, 23, 28, .20) .62px, transparent .72px);
+  background-size: 7px 7px, 11px 9px;
+  background-position: 0 0, 3px 4px;
+}
+
+.wf-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.wf-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 84px 48px 84px clamp(22px, 5.5vw, 78px);
+}
+.wf-copy h2 {
+  font-size: clamp(1.85rem, 3vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.022em;
+  max-width: 15ch;
+}
+.wf-copy .btn {
+  align-self: flex-start;
+  margin-top: 34px;
+}
+
+/* The drawing sits on a fine diamond grid, which runs to the frame's right
+   edge. Two crossed hatches rather than one: a square grid would read as
+   graph paper, the diamond reads as ground. */
+.wf-art {
+  display: grid;
+  place-items: center;
+  padding: 40px 28px;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(23, 23, 28, .045) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(-45deg, rgba(23, 23, 28, .045) 0 1px, transparent 1px 9px);
+}
+
+.wf-svg {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+}
+/* One hairline weight across every edge, mitred like the logo's corners. */
+.wf-block polygon {
+  stroke: var(--ink);
+  stroke-width: 1.1;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
+}
+.wf-ghost polygon {
+  fill: url(#wf-grit-faint);
+  fill-opacity: .5;
+  stroke: var(--ink-3);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Closes the banner across the full page width. */
+.wf-rule {
+  display: block;
+  height: 1px;
+  margin-inline: calc(-1 * var(--rail));
+  background: var(--line);
+}
+
+@media (max-width: 940px) {
+  .wf-row { grid-template-columns: minmax(0, 1fr); }
+  .wf-copy { padding: 56px clamp(22px, 5.5vw, 78px) 36px; }
+  .wf-copy h2 { max-width: none; }
+  .wf-art { padding: 28px 20px 44px; }
+}

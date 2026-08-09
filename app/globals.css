@@ -56,12 +56,15 @@ main{margin:0 var(--rail);position:relative;z-index:1}
   background-image:var(--rule-v);background-size:1px var(--dot-step);
   pointer-events:none;z-index:2;
 }
-.has-rails::before{left:-1px}
-.has-rails::after{right:-1px}
+/* Inside the box, not on its edge: .hero clips its overflow, so a rail at
+   -1px would be cut away entirely. */
+.has-rails::before{left:0}
+.has-rails::after{right:0}
 
-/* A band's closing rule, carried past the rails to both page edges. */
+/* A band's closing rule, carried past the rails to both page edges. It has to
+   sit on an element whose ancestors do not clip — see .logos::before. */
 .band-edge{
-  position:absolute;left:calc(-1*var(--rail));right:calc(-1*var(--rail));bottom:0;
+  position:absolute;left:calc(-1*var(--rail));right:calc(-1*var(--rail));
   height:1px;background:var(--line);pointer-events:none;z-index:3;
 }
 

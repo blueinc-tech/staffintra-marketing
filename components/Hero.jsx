@@ -66,9 +66,6 @@ export default function Hero() {
       </div>
 
       <HeroArt />
-
-      {/* Closes the band, running past the rails to both page edges. */}
-      <span className="band-edge" aria-hidden="true" />
     </section>
   );
 }

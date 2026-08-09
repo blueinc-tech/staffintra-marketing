@@ -7,10 +7,25 @@
        directions, over the neighbouring cells, 300ms
      - the cell itself does nothing on hover */
 
+/* No overflow clipping here — the band and its closing rule both have to
+   reach past the page rails to the viewport edges. body handles overflow-x. */
 .logos {
+  position: relative;
   background: var(--surface);
   padding: 0 0 56px;
-  overflow: hidden;
+}
+
+/* Closes the hero band above: full page width, past the rails on both sides.
+   It lives here rather than on .hero because .hero clips its own overflow. */
+.logos::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--rail));
+  right: calc(-1 * var(--rail));
+  height: 1px;
+  background: var(--line);
+  pointer-events: none;
 }
 
 /* The gap between the hero's closing rule and the grid — the rails run down
@@ -57,8 +72,7 @@
   position: relative;
   display: grid;
   grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr));
-  border-left: 1px solid var(--line);
-  border-right: 1px solid var(--line);
+  border: 1px solid var(--line);
   /* Keeps the slide-in card inside the grid; the animation is unchanged. */
   overflow: hidden;
 }

@@ -12,8 +12,11 @@
 .logos {
   position: relative;
   background: var(--surface);
-  padding: 0 0 56px;
 }
+
+/* Carries the rails. Owns the section's bottom padding so the dotted line runs
+   all the way to the section's end rather than stopping at the band. */
+.logos-rails { padding-bottom: 56px; }
 
 /* Closes the hero band above: full page width, past the rails on both sides.
    It lives here rather than on .hero because .hero clips its own overflow. */
@@ -28,8 +31,7 @@
   pointer-events: none;
 }
 
-/* The gap between the hero's closing rule and the grid — the rails run down
-   through it and stop where the grid starts. */
+/* The gap between the hero's closing rule and the grid. */
 .logos-head { padding: 46px 0 30px; }
 
 .logos-label {

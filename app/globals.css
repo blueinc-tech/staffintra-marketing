@@ -19,13 +19,16 @@
      off-white, and the width of the white gutters either side of the page. */
   --tint:#F6F4FD;
   --rail:48px;
-  /* One dotted-rule recipe for the whole site. Long dashes read as stitching;
-     a 1.5px tick every 5px reads as a rule. Used for rails, section edges and
-     every divider that used to be `dashed`. */
+  /* One dotted-rule recipe for the whole site: a 4.5px tick every 8px, so the
+     gap stays at 3.5px and only the tick changes. Used for rails, section edges
+     and every divider that used to be `dashed`. --rule-solid is the same ink
+     with no gaps, for the stretch of rail that runs beside the hero. */
   --dot:#C9C9D2;
-  --dot-step:5px;
-  --rule-v:linear-gradient(var(--dot) 1.5px,transparent 1.5px);
-  --rule-h:linear-gradient(90deg,var(--dot) 1.5px,transparent 1.5px);
+  --dot-len:4.5px;
+  --dot-step:8px;
+  --rule-v:linear-gradient(var(--dot) var(--dot-len),transparent var(--dot-len));
+  --rule-h:linear-gradient(90deg,var(--dot) var(--dot-len),transparent var(--dot-len));
+  --rule-solid:linear-gradient(var(--dot),var(--dot));
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -46,14 +49,16 @@ h4,h5{line-height:1.2}
 
 /* Page rails: white gutters down both edges, and the section backgrounds inset
    between them, so each band reads as sitting IN the page.
-   Rails belong to the banded sections, not the whole page — they run down the
-   hero and stop where the logo band starts. */
+   Rails belong to the banded sections, not the whole page — one continuous line
+   down each edge: solid for the length of the hero, then dotted from the hero's
+   bottom edge to the end of the customer band. A section sets --rail-line to
+   choose which; dotted is the default. */
 main{margin:0 var(--rail);position:relative;z-index:1}
 
 .has-rails{position:relative}
 .has-rails::before,.has-rails::after{
   content:"";position:absolute;top:0;bottom:0;width:1px;
-  background-image:var(--rule-v);background-size:1px var(--dot-step);
+  background-image:var(--rail-line,var(--rule-v));background-size:1px var(--dot-step);
   pointer-events:none;z-index:2;
 }
 /* Inside the box, not on its edge: .hero clips its overflow, so a rail at
@@ -116,6 +121,9 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 /* Flat tinted band, like the reference — no gradient, no grid overlay.
    The bottom padding is the room the illustration drops into. */
 .hero{position:relative;padding:104px 0 30px;overflow:hidden;background:var(--tint)}
+/* The rail runs solid for exactly the height of this section, then the customer
+   band picks it up as dotted. Same ink, so it reads as one line changing. */
+.hero{--rail-line:var(--rule-solid)}
 .hero-bg{display:none}
 
 /* Copy left, product visual bleeding off the right edge (clipped by .hero

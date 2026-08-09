@@ -73,74 +73,77 @@ export default function Logos() {
 
   return (
     <section className="logos" id="customers-strip">
-      {/* The rails carry on through this gap and stop at the grid. */}
-      <div className="logos-head has-rails">
-        <p className="logos-label">
-          Trusted by <CountUp className="count-inline" value={900} suffix="+" /> operations teams
-        </p>
-      </div>
-
-      <div className="logos-band">
-        <span className="logos-hatch logos-hatch--l" aria-hidden="true" />
-
-        <div className="logos-grid" style={{ '--cols': cols }}>
-          {visible.map((t, i) => {
-            const lastCol = (i + 1) % cols === 0;
-            const lastRow = Math.floor(i / cols) + 1 === rows;
-            // Row one drops in from above; rows below rise from underneath.
-            const below = i >= cols;
-            // Left half of a row opens rightwards, right half opens leftwards.
-            const left = i % cols < cols / 2;
-
-            return (
-              <div
-                key={t.id}
-                className={`lg-cell${lastCol ? ' is-last-col' : ''}${lastRow ? ' is-last-row' : ''}`}
-                onMouseEnter={() => setHovered(i)}
-                onMouseLeave={() => setHovered(null)}
-              >
-                <PlaceholderLogo />
-
-                {t.study ? (
-                  <a className="lg-link" href="#customers">
-                    <span className="lg-cta">
-                      <span className="lg-cta-clip">
-                        <span className="lg-cta-label">Case study</span>
-                      </span>
-                      <ArrowUpRight />
-                    </span>
-                    <span className="lg-sr">Read this customer&apos;s story</span>
-                  </a>
-                ) : null}
-
-                {/* Twice the cell in both directions, so it lands over its own
-                    row and the one beside it. Never takes the pointer. */}
-                {t.quote ? (
-                  <div
-                    aria-hidden="true"
-                    className={
-                      `lg-card${hovered === i ? ' is-open' : ''}` +
-                      `${below ? ' from-below' : ' from-above'}` +
-                      `${left ? ' to-right' : ' to-left'}` +
-                      `${lastCol ? ' has-edge' : ''}`
-                    }
-                  >
-                    <blockquote>“{PLACEHOLDER_QUOTE.quote}”</blockquote>
-                    <div className="lg-card-by">
-                      <span className="lg-avatar" />
-                      <div>
-                        <div className="lg-card-name">{PLACEHOLDER_QUOTE.name}</div>
-                        <div className="lg-card-role">{PLACEHOLDER_QUOTE.org}</div>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-            );
-          })}
+      {/* Wraps head AND band: the rails pick up the hero's line as dotted and
+          carry it to the bottom of the section, so they can't stop at the grid. */}
+      <div className="logos-rails has-rails">
+        <div className="logos-head">
+          <p className="logos-label">
+            Trusted by <CountUp className="count-inline" value={900} suffix="+" /> operations teams
+          </p>
         </div>
 
-        <span className="logos-hatch logos-hatch--r" aria-hidden="true" />
+        <div className="logos-band">
+          <span className="logos-hatch logos-hatch--l" aria-hidden="true" />
+
+          <div className="logos-grid" style={{ '--cols': cols }}>
+            {visible.map((t, i) => {
+              const lastCol = (i + 1) % cols === 0;
+              const lastRow = Math.floor(i / cols) + 1 === rows;
+              // Row one drops in from above; rows below rise from underneath.
+              const below = i >= cols;
+              // Left half of a row opens rightwards, right half opens leftwards.
+              const left = i % cols < cols / 2;
+
+              return (
+                <div
+                  key={t.id}
+                  className={`lg-cell${lastCol ? ' is-last-col' : ''}${lastRow ? ' is-last-row' : ''}`}
+                  onMouseEnter={() => setHovered(i)}
+                  onMouseLeave={() => setHovered(null)}
+                >
+                  <PlaceholderLogo />
+
+                  {t.study ? (
+                    <a className="lg-link" href="#customers">
+                      <span className="lg-cta">
+                        <span className="lg-cta-clip">
+                          <span className="lg-cta-label">Case study</span>
+                        </span>
+                        <ArrowUpRight />
+                      </span>
+                      <span className="lg-sr">Read this customer&apos;s story</span>
+                    </a>
+                  ) : null}
+
+                  {/* Twice the cell in both directions, so it lands over its own
+                      row and the one beside it. Never takes the pointer. */}
+                  {t.quote ? (
+                    <div
+                      aria-hidden="true"
+                      className={
+                        `lg-card${hovered === i ? ' is-open' : ''}` +
+                        `${below ? ' from-below' : ' from-above'}` +
+                        `${left ? ' to-right' : ' to-left'}` +
+                        `${lastCol ? ' has-edge' : ''}`
+                      }
+                    >
+                      <blockquote>“{PLACEHOLDER_QUOTE.quote}”</blockquote>
+                      <div className="lg-card-by">
+                        <span className="lg-avatar" />
+                        <div>
+                          <div className="lg-card-name">{PLACEHOLDER_QUOTE.name}</div>
+                          <div className="lg-card-role">{PLACEHOLDER_QUOTE.org}</div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+
+          <span className="logos-hatch logos-hatch--r" aria-hidden="true" />
+        </div>
       </div>
     </section>
   );

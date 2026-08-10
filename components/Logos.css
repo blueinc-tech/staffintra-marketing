@@ -78,13 +78,16 @@
   overflow: hidden;
 }
 
+/* The bottom padding is not decoration: it is the lane the "case study" label
+   wipes into. Centring the lockup in the reduced box lifts it clear, so the
+   label reveals onto white instead of onto the wordmark. */
 .lg-cell {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 98px;
-  padding: 24px 18px;
+  min-height: 110px;
+  padding: 22px 16px 32px;
   background: var(--surface);
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -103,13 +106,16 @@
   color: var(--ink-3);
   pointer-events: none;
 }
-.lg-mark { width: 19px; height: 19px; flex-shrink: 0; }
+.lg-mark { width: 17px; height: 17px; flex-shrink: 0; }
+/* 11px keeps the longest name on one line inside a 148px cell; at 13px
+   "Harmattan Logistics" alone overran it. */
 .lg-name {
+  min-width: 0;
   font-family: var(--font-display);
-  font-size: .8125rem;
+  font-size: .6875rem;
   font-weight: 600;
-  letter-spacing: -.006em;
-  line-height: 1.15;
+  letter-spacing: -.004em;
+  line-height: 1.2;
   color: var(--ink-2);
 }
 

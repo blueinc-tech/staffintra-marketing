@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './HeroMockup.css';
 
 /* The product surface in the hero, rebuilt to the real Home screen rather than
@@ -53,7 +53,15 @@ const ICal = () => <Ico><rect x="3.5" y="4.8" width="13" height="11.7" rx="2" {.
 const ILeave = () => <Ico d="M3.5 11.5 16.5 6.2l-2 5.6-4.6 1.3-1.6 3-1-3.6Z" />;
 const IFolder = () => <Ico><path d="M3.2 6.4a1.6 1.6 0 0 1 1.6-1.6h2.6l1.6 2h5.2a1.6 1.6 0 0 1 1.6 1.6v5.6a1.6 1.6 0 0 1-1.6 1.6H4.8a1.6 1.6 0 0 1-1.6-1.6Z" {...s} /></Ico>;
 const IPeople = () => <Ico><circle cx="8" cy="7.6" r="2.6" {...s} /><path d="M3.4 15.6a4.8 4.8 0 0 1 9.2 0M13.4 5.4a2.6 2.6 0 0 1 0 4.9M14.4 15.6a4.4 4.4 0 0 0-1.2-3" {...s} /></Ico>;
-const IGear = () => <Ico><circle cx="10" cy="10" r="2.6" {...s} /><path d="M10 2.8v1.6M10 15.6v1.6M2.8 10h1.6M15.6 10h1.6M4.9 4.9l1.2 1.2M13.9 13.9l1.2 1.2M15.1 4.9l-1.2 1.2M6.1 13.9l-1.2 1.2" {...s} /></Ico>;
+/* Was a gear drawn as a ring with eight radial spokes, which is the same
+   shape as ISun at this size and rendered as a sun everywhere it was used.
+   A workspace is layers, and a gear at 12px cannot be told from a sun at all,
+   so Tools takes sliders instead. */
+const ILayers = () => <Ico><path d="M10 3.2 3.4 6.6 10 10l6.6-3.4Z" {...s} /><path d="M3.4 10 10 13.4 16.6 10M3.4 13.4 10 16.8l6.6-3.4" {...s} /></Ico>;
+const ISliders = () => <Ico><path d="M3.2 7.2h8.2M15.2 7.2h1.6M3.2 12.8h1.6M8.6 12.8h8.2" {...s} /><circle cx="13.4" cy="7.2" r="1.8" {...s} /><circle cx="6.4" cy="12.8" r="1.8" {...s} /></Ico>;
+const IInbox = () => <Ico><path d="M3.4 11.2V6a1.4 1.4 0 0 1 1.4-1.4h10.4A1.4 1.4 0 0 1 16.6 6v5.2" {...s} /><path d="M3.4 11.2h3.4l1 2h4.4l1-2h3.4v2.8a1.4 1.4 0 0 1-1.4 1.4H4.8a1.4 1.4 0 0 1-1.4-1.4Z" {...s} /></Ico>;
+const IChart = () => <Ico d="M5.2 15.2V9.4M10 15.2V5.2M14.8 15.2v-4.2M3.2 16.8h13.6" />;
+const IMega = () => <Ico><path d="M4.4 8.4v3a1 1 0 0 0 1 1h1.7l5.3 3.3V4.1L7.1 7.4H5.4a1 1 0 0 0-1 1Z" {...s} /><path d="M15 7.8a3.2 3.2 0 0 1 0 4.4" {...s} /></Ico>;
 const IDoc = () => <Ico><path d="M5.4 3.4h6l3.2 3.2v10H5.4Z" {...s} /><path d="M11.4 3.4v3.2h3.2M7.8 10h4.4M7.8 12.8h3" {...s} /></Ico>;
 const IDown = () => <Ico d="M10 4.5v8M6.4 9.2 10 12.8l3.6-3.6M4.8 15.6h10.4" />;
 const IHome = () => <Ico d="M3.6 9 10 3.8 16.4 9v6.6a1 1 0 0 1-1 1H4.6a1 1 0 0 1-1-1Z" />;
@@ -67,10 +75,10 @@ const PEOPLE = [
 ];
 
 const RECENT = [
-  { name: 'StaffIntra Workspace', when: 'opened just now', I: IGear },
-  { name: 'Attendance', when: 'opened 10m ago', I: IDoc },
-  { name: 'Rota · week of 10 Aug', when: 'opened 28m ago', I: IDoc },
-  { name: 'StaffIntra Workspace', when: 'opened 1h ago', I: IGear },
+  { name: 'StaffIntra Workspace', when: 'opened just now', I: ILayers },
+  { name: 'Attendance', when: 'opened 10m ago', I: IClock },
+  { name: 'Rota · week of 10 Aug', when: 'opened 28m ago', I: ICal },
+  { name: 'Approvals queue', when: 'opened 1h ago', I: ICheck },
 ];
 
 const WORK = [
@@ -103,12 +111,29 @@ const TEAM = [
   { k: 'Not in yet', n: 1, c: 'd' },
 ];
 
-/* Sidebar, in the real app's grouping. */
+/* Sidebar, in the real app's grouping. Each row carries its own icon rather
+   than a grey placeholder square. */
 const SIDE = [
-  { items: [{ t: 'Home', on: true }, { t: 'Inbox', n: 26 }] },
-  { lab: 'Work', items: [{ t: 'Workspaces' }, { t: 'Case management' }, { t: 'Productivity' }, { t: 'Announcements' }] },
-  { lab: 'People', items: [{ t: 'HR' }, { t: 'Staff lifecycle' }, { t: 'Attendance' }, { t: 'Approvals' }] },
-  { lab: 'Platform', items: [{ t: 'Tools' }] },
+  { items: [{ t: 'Home', I: IHome, on: true }, { t: 'Inbox', I: IInbox, n: 26 }] },
+  {
+    lab: 'Work',
+    items: [
+      { t: 'Workspaces', I: ILayers },
+      { t: 'Case management', I: IFolder },
+      { t: 'Productivity', I: IChart },
+      { t: 'Announcements', I: IMega },
+    ],
+  },
+  {
+    lab: 'People',
+    items: [
+      { t: 'HR', I: IPeople },
+      { t: 'Staff lifecycle', I: IRefresh },
+      { t: 'Attendance', I: IClock },
+      { t: 'Approvals', I: ICheck },
+    ],
+  },
+  { lab: 'Platform', items: [{ t: 'Tools', I: ISliders }] },
 ];
 
 /* One asset per theme; the light one is purple on white, the dark one white. */
@@ -164,24 +189,28 @@ export default function HeroMockup() {
   const [dark, setDark] = useState(false);
   const [side, setSide] = useState(true);
   const [atTop, setAtTop] = useState(true);
+  const scrollRef = useRef(null);
   const maxH = Math.max(...WEEK.map((w) => w.h)) || 1;
 
-  /* The phone is only right where the hero is. Once the page moves off the
-     top it drops away, and it comes back when you return to the start. */
+  /* Tied to the DASHBOARD's own scroll, not the page's. The phone sits over
+     the dashboard, so it gets out of the way as soon as you scroll the screen
+     underneath it, and returns when that screen is back at its start. */
   useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return undefined;
     let frame = 0;
     const measure = () => {
       frame = 0;
-      setAtTop(window.scrollY < 60);
+      setAtTop(el.scrollTop < 24);
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(measure);
     };
     measure();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    el.addEventListener('scroll', onScroll, { passive: true });
     return () => {
       if (frame) cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
+      el.removeEventListener('scroll', onScroll);
     };
   }, []);
 
@@ -213,7 +242,7 @@ export default function HeroMockup() {
                   {g.lab ? <span className="hm-s-lab">{g.lab}</span> : null}
                   {g.items.map((it) => (
                     <span className={`hm-s-item${it.on ? ' is-on' : ''}`} key={it.t}>
-                      <i />
+                      <it.I />
                       {it.t}
                       {it.n ? <b>{it.n}</b> : null}
                     </span>
@@ -271,7 +300,7 @@ export default function HeroMockup() {
           <span className="hm-clock"><IClock />Clock In</span>
         </div>
 
-        <div className="hm-scroll">
+        <div className="hm-scroll" ref={scrollRef}>
           <div className="hm-greet">
             <div>
               <h3>Good afternoon, Fortune</h3>

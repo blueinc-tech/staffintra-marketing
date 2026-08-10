@@ -110,10 +110,10 @@
   padding: 4px 6px; border-radius: 4px;
   font-size: .52rem; color: var(--d-ink-2); white-space: nowrap;
 }
-.hm-s-item i { width: 9px; height: 9px; border-radius: 2px; background: var(--d-line); flex-shrink: 0; }
+.hm-s-item svg { width: 12px; height: 12px; flex-shrink: 0; color: var(--d-ink-3); }
 .hm-s-item b { margin-left: auto; padding: 0 4px; border-radius: 6px; background: var(--d-accent); color: #fff; font-size: .4rem; }
 .hm-s-item.is-on { background: var(--d-accent-soft); color: var(--d-accent); font-weight: 500; }
-.hm-s-item.is-on i { background: var(--d-accent); }
+.hm-s-item.is-on svg { color: var(--d-accent); }
 
 .hm-side-foot { margin-top: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 10px; }
 .hm-s-theme {

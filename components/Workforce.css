@@ -61,25 +61,15 @@
 .wf-svg {
   display: block;
   width: 100%;
-  max-width: 520px;
+  max-width: 470px;
   height: auto;
 }
-/* One hairline weight across every edge, mitred like the logo's corners. */
-.wf-block polygon {
-  stroke: var(--ink);
-  stroke-width: 1.1;
-  stroke-linejoin: miter;
-  vector-effect: non-scaling-stroke;
-}
-.wf-ghost polygon {
-  fill: url(#wf-grit-faint);
-  fill-opacity: .5;
-  stroke: var(--ink-3);
-  stroke-width: 1;
-  stroke-dasharray: 3 3;
-  stroke-linejoin: miter;
-  vector-effect: non-scaling-stroke;
-}
+/* Three weights across the field: brand, warm accent, and open. The open
+   groups are thinner as well as lighter, which is what pushes them back. */
+.wa-accent { color: var(--accent); }
+.wa-warm { color: var(--warn); }
+.wa-open { color: var(--line-strong); }
+.wa-open path { stroke-width: 2.4; }
 
 /* Closes the banner across the full page width. */
 .wf-rule {

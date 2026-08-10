@@ -1,28 +1,24 @@
-import { boxFaces } from './iso';
+import { ELBOW, BARS, STROKE } from './weave';
 
-/* The small isometric chip that sits above a feature heading. Same camera as
-   every other drawing on the site, just one block instead of a scene: a light
-   top, the tone on the face turned to the lower left, and a paler version of
-   it on the face turned to the lower right. */
+/* The chip above a feature heading. Built from the Weave like every other
+   mark here: an elbow on a tinted tile, turned a different way per tone.
+   It used to be an isometric block, which is the reference's device. */
 
-const BOX = { x0: 0, x1: 1.4, y0: 0, y1: 1.4, z0: 0, z1: 0.5 };
-
-const TONES = {
-  accent: ['var(--accent-soft)', 'var(--accent)', 'var(--info)'],
-  info: ['var(--info-soft)', 'var(--info)', 'var(--accent-soft)'],
-  warn: ['var(--warn-soft)', 'var(--warn)', 'var(--warn-soft)'],
-  ok: ['var(--ok-soft)', 'var(--ok)', 'var(--ok-soft)'],
+const SPIN = { accent: 0, info: 90, warn: 180, ok: 270 };
+const TINT = {
+  accent: ['var(--accent-soft)', 'var(--accent)'],
+  info: ['var(--info-soft)', 'var(--info)'],
+  warn: ['var(--warn-soft)', 'var(--warn)'],
+  ok: ['var(--ok-soft)', 'var(--ok)'],
 };
 
-export function ChipMark({ tone = 'accent' }) {
-  const f = boxFaces(BOX);
-  const [top, left, right] = TONES[tone] ?? TONES.accent;
+export function ChipMark({ tone = 'accent', straight = false }) {
+  const [bg, ink] = TINT[tone] ?? TINT.accent;
   return (
-    <svg className="chip-mark" viewBox="-60 -27 120 96" fill="none" aria-hidden="true">
-      <g stroke="var(--ink)" strokeWidth="1.4" strokeLinejoin="miter">
-        <polygon points={f.top} fill={top} />
-        <polygon points={f.right} fill={right} />
-        <polygon points={f.left} fill={left} />
+    <svg className="chip-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+      <rect x="0" y="0" width="40" height="40" rx="2" fill={bg} />
+      <g transform={`translate(8 8) rotate(${SPIN[tone] ?? 0} 12 12)`} {...STROKE} stroke={ink}>
+        {(straight ? BARS : ELBOW).map((d) => <path key={d} d={d} />)}
       </g>
     </svg>
   );

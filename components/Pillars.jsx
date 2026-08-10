@@ -105,7 +105,7 @@ export default function Pillars() {
                   data-tone={p.tone}
                   onClick={() => goTo(i)}
                 >
-                  <TabMark />
+                  <TabMark tone={p.tone} />
                   {p.name}
                 </button>
               ))}

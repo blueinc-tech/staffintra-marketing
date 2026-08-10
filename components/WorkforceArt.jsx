@@ -1,77 +1,49 @@
-/* Isometric drawing for the closing banner. Projection comes from iso.js, so
-   this shares a camera with the hero kiosk and the platform panel.
+import { ELBOW, STROKE } from './weave';
 
-   Face treatment follows the reference's system rather than its artwork:
-   the top face is flat white, the face turned to the lower left carries a
-   solid brand colour, and the face turned to the lower right is stippled.
-   That stipple is the "rough surface" — it is what stops the large flat
-   parts from reading as plain vector shapes.
+/* Art for the closing banner, built from the logo rather than from isometric
+   solids. Solids on a 30-degree axis are the reference's signature, and
+   borrowing them was the wrong call.
 
-   The subject is our own: two beams crossing in a lap, which is the Weave's
-   idea in three dimensions, with a third beam ghosted in the position it has
-   not been placed into yet.
+   Six of the mark's own elbows on a grid, each a half turn from its
+   neighbours, spaced four units tighter than their box so the strokes of one
+   run into the gaps of the next. Two elbows carry brand colour and one carries
+   the warm accent; the rest are drawn open. That is what gives the field a
+   front and a back without needing a shadow to say so. */
 
-   Blocks are drawn back to front. The crossing beam sits a full block height
-   above the one it crosses, so painting order alone gives correct occlusion
-   and no face has to be clipped. */
+const BOX = 24;
+const S = 2;
+const STEP = 44; // 48 wide, overlapped by 4
 
-import { boxFaces as faces } from './iso';
+const TONES = ['open', 'accent', 'open', 'warm', 'open', 'accent'];
 
-function Block({ tone, ...box }) {
-  const f = faces(box);
-  return (
-    <g className="wf-block">
-      <polygon points={f.top} fill="var(--surface)" />
-      <polygon points={f.right} fill="url(#wf-grit)" />
-      <polygon points={f.left} fill={tone} />
-    </g>
-  );
-}
-
-function GhostBlock(box) {
-  const f = faces(box);
-  return (
-    <g className="wf-ghost">
-      <polygon points={f.top} />
-      <polygon points={f.right} />
-      <polygon points={f.left} />
-    </g>
-  );
-}
+const GROUPS = Array.from({ length: 6 }, (_, i) => {
+  const c = i % 3;
+  const r = Math.floor(i / 3);
+  return {
+    key: i,
+    x: c * STEP,
+    y: r * STEP,
+    spin: (r + c) % 2 ? 180 : 0,
+    tone: TONES[i],
+  };
+});
 
 export default function WorkforceArt() {
   return (
     <svg
       className="wf-svg"
-      viewBox="-246 -15 424 214"
+      viewBox={`-5 -5 ${2 * STEP + BOX * S + 10} ${STEP + BOX * S + 10}`}
       fill="none"
       role="img"
-      aria-label="Two beams crossing in a lap joint, with a third shown in outline beside them"
+      aria-label="A field of the StaffIntra weave, each group turned against its neighbours"
     >
-      <defs>
-        {/* Four dots at four weights on an 8px tile: regular enough to tile
-            without seams, irregular enough not to read as a grid. */}
-        <pattern id="wf-grit" width="8" height="8" patternUnits="userSpaceOnUse">
-          <rect width="8" height="8" fill="var(--surface)" />
-          <circle cx="1.7" cy="2.1" r=".95" fill="var(--ink)" opacity=".30" />
-          <circle cx="5.6" cy="4.6" r=".80" fill="var(--ink)" opacity=".24" />
-          <circle cx="3.5" cy="6.9" r=".62" fill="var(--ink)" opacity=".18" />
-          <circle cx="6.9" cy="1.1" r=".50" fill="var(--ink)" opacity=".14" />
-        </pattern>
-        <pattern id="wf-grit-faint" width="8" height="8" patternUnits="userSpaceOnUse">
-          <rect width="8" height="8" fill="var(--surface)" />
-          <circle cx="1.7" cy="2.1" r=".8" fill="var(--ink-3)" opacity=".28" />
-          <circle cx="5.6" cy="4.6" r=".62" fill="var(--ink-3)" opacity=".2" />
-        </pattern>
-      </defs>
-
-      {/* The unplaced piece, set to the left and level with the joint. */}
-      {GhostBlock({ x0: -1.0, x1: 2.2, y0: 3.7, y1: 4.9, z0: 0, z1: 0.9 })}
-      {/* Brand Purple runs the long lower-left face; a beam along +x is the
-          only orientation that turns a long face toward the colour side. */}
-      <Block x0={0} x1={5.4} y0={1.6} y1={2.8} z0={0} z1={0.9} tone="var(--accent)" />
-      {/* Seated on top of it, not hovering: z starts where the other ends. */}
-      <Block x0={3.4} x1={4.6} y0={0.4} y1={4.2} z0={0.9} z1={1.8} tone="var(--warn)" />
+      {GROUPS.map((g) => (
+        <g key={g.key} className={`wa-${g.tone}`} transform={`translate(${g.x} ${g.y}) scale(${S})`}>
+          <g transform={`rotate(${g.spin} 12 12)`} {...STROKE}>
+            {ELBOW.map((d) => <path key={d} d={d} />)}
+          </g>
+        </g>
+      ))}
     </svg>
   );
 }

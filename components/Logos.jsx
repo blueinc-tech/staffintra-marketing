@@ -26,55 +26,55 @@ const MARKS = {
 
 const TILES = [
   {
-    id: 'sabi', name: 'Sabi Foods', mark: 'a', study: true,
+    id: 'sabi', name: 'Sabi Foods', s: 'd7', mark: 'a', study: true,
     quote: 'We used to publish the rota on Friday night and spend Saturday fixing it. It goes out on Wednesday now, and it holds.',
     person: 'Amara Balogun', role: 'Head of Operations', org: 'Sabi Foods · Grocery', img: 'amara',
   },
   {
-    id: 'harmattan', name: 'Harmattan Logistics', mark: 'e', study: true,
+    id: 'harmattan', name: 'Harmattan', s: 'u4c', mark: 'e', study: true,
     quote: 'Drivers clock in from the yard and the hours land in payroll the same day. That used to be a week of chasing paper.',
     person: 'Tunde Adeyemi', role: 'Depot Manager', org: 'Harmattan Logistics · Freight', img: 'tunde',
   },
-  { id: 'gongola', name: 'Gongola Energy', mark: 'c', study: false },
+  { id: 'gongola', name: 'Gongola', s: 'm5c', mark: 'c', study: false },
   {
-    id: 'zuma', name: 'Zuma Care Group', mark: 'd', study: true,
+    id: 'zuma', name: 'Zuma Care', s: 'd5', mark: 'd', study: true,
     quote: 'Cover for a called-in sick shift takes four minutes. It used to take the whole morning and three phone calls.',
     person: 'Hannah Eze', role: 'Registered Manager', org: 'Zuma Care Group · Care', img: 'hannah',
   },
   {
-    id: 'adire', name: 'Adire Textiles', mark: 'b', study: true,
+    id: 'adire', name: 'Adire', s: 'u6', mark: 'b', study: true,
     quote: 'Approvals stopped living in my inbox. I can see the balance and the cover on the same screen, so I just decide.',
     person: 'David Okonkwo', role: 'Plant Supervisor', org: 'Adire Textiles · Manufacturing', img: 'david',
   },
   {
-    id: 'lekki', name: 'Lekki Hospitality', mark: 'f', study: true,
+    id: 'lekki', name: 'Lekki Group', s: 'd4', mark: 'f', study: true,
     quote: 'Sixty seasonal starters onboarded in a week, and not one of them turned up without a signed contract.',
     person: 'Priya Nwosu', role: 'People Lead', org: 'Lekki Hospitality · Hotels', img: 'priya',
   },
   {
-    id: 'palmline', name: 'Palmline Grocers', mark: 'a', study: true,
+    id: 'palmline', name: 'Palmline', s: 'u4c', mark: 'a', study: true,
     quote: 'I can see what the week costs before I publish it. That single thing changed how we build the rota.',
     person: 'Marcus Ibeh', role: 'Regional Manager', org: 'Palmline Grocers · Retail', img: 'marcus',
   },
-  { id: 'obi', name: 'Obi & Sons', mark: 'd', study: false },
-  { id: 'kanto', name: 'Kanto Retail', mark: 'b', study: false },
+  { id: 'obi', name: 'Obi & Sons', s: 'd7', mark: 'd', study: false },
+  { id: 'kanto', name: 'Kanto', s: 'm4', mark: 'b', study: false },
   {
-    id: 'terracotta', name: 'Terracotta Hotels', mark: 'c', study: true,
+    id: 'terracotta', name: 'Terracotta', s: 'd5', mark: 'c', study: true,
     quote: 'Open shifts fill themselves now. The group chat has gone back to being a group chat.',
     person: 'Sofia Adeniran', role: 'Front of House Manager', org: 'Terracotta Hotels · Hospitality', img: 'sofia',
   },
   {
-    id: 'wazobia', name: 'Wazobia Health', mark: 'e', study: true,
+    id: 'wazobia', name: 'Wazobia', s: 'u7', mark: 'e', study: true,
     quote: 'One record for hours, leave, and pay. We stopped reconciling three systems at the end of every month.',
     person: 'John Okafor', role: 'Finance Director', org: 'Wazobia Health · Clinics', img: 'john',
   },
-  { id: 'rivers', name: 'Rivers Freight', mark: 'f', study: false },
+  { id: 'rivers', name: 'Rivers', s: 'u4c', mark: 'f', study: false },
 ];
 
 /* Mark plus wordmark, the way a real lockup sits. Drawn rather than fetched. */
 function CompanyLogo({ tile }) {
   return (
-    <span className="lg-logo">
+    <span className="lg-logo" data-s={tile.s}>
       <svg className="lg-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinejoin="miter" strokeLinecap="butt" aria-hidden="true">
         {MARKS[tile.mark]}
       </svg>

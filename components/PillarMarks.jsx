@@ -1,45 +1,32 @@
-/* Marks for the pillar section.
+import { ELBOW, BARS, STROKE } from './weave';
 
-   TabMark is a pair of isometric blocks, drawn on the same 0.577 axis ratio as
-   the hero kiosk so the two illustrations belong to one drawing system. The
-   lower block is drawn last because in isometric the nearer solid occludes.
-   Colour comes from currentColor, so each tab tints its own mark. */
+/* Marks for the pillar section, built from the Weave rather than from
+   isometric blocks. Each pillar gets the same elbow at a different quarter
+   turn, so the three read as one family that has been rotated rather than
+   three unrelated icons. Colour comes from currentColor, so each tab tints
+   its own mark. */
 
-function Cube({ x, y, s = 5, d = 4 }) {
-  const w = s * 0.577; // 30° axis, same as the hero illustration
-  const top = `${x},${y} ${x + s},${y + w} ${x},${y + w * 2} ${x - s},${y + w}`;
-  const left = `${x - s},${y + w} ${x},${y + w * 2} ${x},${y + w * 2 + d} ${x - s},${y + w + d}`;
-  const right = `${x + s},${y + w} ${x},${y + w * 2} ${x},${y + w * 2 + d} ${x + s},${y + w + d}`;
-  return (
-    <g stroke="currentColor" strokeWidth="0.9" strokeLinejoin="miter">
-      <polygon points={top} fill="#fff" />
-      <polygon points={left} fill="currentColor" fillOpacity=".92" />
-      <polygon points={right} fill="currentColor" fillOpacity=".5" />
-    </g>
-  );
-}
+const SPIN = { a: 0, b: 90, c: 270 };
 
-export function TabMark() {
+export function TabMark({ tone = 'a' }) {
   return (
     <svg className="pt-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <Cube x={9} y={3.5} />
-      <Cube x={15} y={10.5} />
+      <g transform={`rotate(${SPIN[tone] ?? 0} 12 12)`} {...STROKE}>
+        {ELBOW.map((d) => <path key={d} d={d} />)}
+      </g>
     </svg>
   );
 }
 
-/* The eyebrow chip glyph. Three shapes so the pillars stay distinguishable
-   without relying on colour alone. */
-const GLYPHS = {
-  a: <rect x="3.5" y="3.5" width="7" height="7" fill="currentColor" />,
-  b: <polygon points="7,2.6 11.4,7 7,11.4 2.6,7" fill="currentColor" />,
-  c: <polygon points="7,2.8 11.5,10.6 2.5,10.6" fill="currentColor" />,
-};
-
+/* The eyebrow chip. Same motif at chip scale: two pillars turn, one runs
+   straight, so they stay tellable apart without relying on colour. */
 export function EyebrowGlyph({ tone }) {
+  const straight = tone === 'b';
   return (
-    <svg className="pe-glyph" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      {GLYPHS[tone] ?? GLYPHS.a}
+    <svg className="pe-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <g transform={`rotate(${SPIN[tone] ?? 0} 12 12)`} {...STROKE} strokeWidth="3.8">
+        {(straight ? BARS : ELBOW).map((d) => <path key={d} d={d} />)}
+      </g>
     </svg>
   );
 }

@@ -4,49 +4,87 @@ import { useEffect, useState } from 'react';
 import CountUp from './CountUp';
 import './Logos.css';
 
-// Deliberately not real customers and not invented ones — each tile is an
-// obvious placeholder until real logos and stories are supplied.
-// `study` marks the tiles that will carry a case study; those get the arrow.
-// `quote` marks the ones that will also carry a testimonial card on hover.
-const TILES = [
-  { id: 1, study: false, quote: false },
-  { id: 2, study: false, quote: false },
-  { id: 3, study: true, quote: true },
-  { id: 4, study: true, quote: true },
-  { id: 5, study: true, quote: true },
-  { id: 6, study: true, quote: true },
-  { id: 7, study: true, quote: true },
-  { id: 8, study: false, quote: false },
-  { id: 9, study: false, quote: false },
-  { id: 10, study: true, quote: true },
-  { id: 11, study: true, quote: true },
-  { id: 12, study: true, quote: true },
-];
+/* Twelve customers, filled in as asked.
 
-const PLACEHOLDER_QUOTE = {
-  quote:
-    'A short line from this customer about what changed: the kind of sentence an ' +
-    'operations lead would actually say, naming one thing that got easier.',
-  name: 'Name, role',
-  org: 'Organisation · sector',
+   These companies are invented and their marks are drawn here, not borrowed.
+   Real logos are somebody else's trademark and putting one in a customer band
+   is a claim that they use the product, so those stay out until there is a
+   name to put in. Everything below is clearly a stand-in with a real shape,
+   which is what the band needs to be judged as a design.
+
+   `study` marks the tiles that carry a case study; those get the arrow and a
+   testimonial on hover. */
+
+const MARKS = {
+  a: <path d="M3 19 12 4l9 15Zm4.6-3h8.8" strokeWidth="1.6" />,
+  b: <path d="M4 7h16M4 12h11M4 17h16" strokeWidth="1.8" />,
+  c: <path d="M12 3.4a8.6 8.6 0 1 0 0 17.2 8.6 8.6 0 0 0 0-17.2ZM5 15h14" strokeWidth="1.6" />,
+  d: <path d="M12 3 21 12l-9 9-9-9Zm0 5.4L7.4 12l4.6 3.6L16.6 12Z" strokeWidth="1.6" />,
+  e: <path d="m4 15 5-6 5 6M10 9l5-6 5 6" strokeWidth="1.8" />,
+  f: <path d="M20.6 12a8.6 8.6 0 1 1-4.3-7.45M15 12h6.4" strokeWidth="1.6" />,
 };
 
-/* A neutral stand-in mark: no wordmark, no invented brand. */
-function PlaceholderLogo() {
+const TILES = [
+  {
+    id: 'sabi', name: 'Sabi Foods', mark: 'a', study: true,
+    quote: 'We used to publish the rota on Friday night and spend Saturday fixing it. It goes out on Wednesday now, and it holds.',
+    person: 'Amara Balogun', role: 'Head of Operations', org: 'Sabi Foods · Grocery', img: 'amara',
+  },
+  {
+    id: 'harmattan', name: 'Harmattan Logistics', mark: 'e', study: true,
+    quote: 'Drivers clock in from the yard and the hours land in payroll the same day. That used to be a week of chasing paper.',
+    person: 'Tunde Adeyemi', role: 'Depot Manager', org: 'Harmattan Logistics · Freight', img: 'tunde',
+  },
+  { id: 'gongola', name: 'Gongola Energy', mark: 'c', study: false },
+  {
+    id: 'zuma', name: 'Zuma Care Group', mark: 'd', study: true,
+    quote: 'Cover for a called-in sick shift takes four minutes. It used to take the whole morning and three phone calls.',
+    person: 'Hannah Eze', role: 'Registered Manager', org: 'Zuma Care Group · Care', img: 'hannah',
+  },
+  {
+    id: 'adire', name: 'Adire Textiles', mark: 'b', study: true,
+    quote: 'Approvals stopped living in my inbox. I can see the balance and the cover on the same screen, so I just decide.',
+    person: 'David Okonkwo', role: 'Plant Supervisor', org: 'Adire Textiles · Manufacturing', img: 'david',
+  },
+  {
+    id: 'lekki', name: 'Lekki Hospitality', mark: 'f', study: true,
+    quote: 'Sixty seasonal starters onboarded in a week, and not one of them turned up without a signed contract.',
+    person: 'Priya Nwosu', role: 'People Lead', org: 'Lekki Hospitality · Hotels', img: 'priya',
+  },
+  {
+    id: 'palmline', name: 'Palmline Grocers', mark: 'a', study: true,
+    quote: 'I can see what the week costs before I publish it. That single thing changed how we build the rota.',
+    person: 'Marcus Ibeh', role: 'Regional Manager', org: 'Palmline Grocers · Retail', img: 'marcus',
+  },
+  { id: 'obi', name: 'Obi & Sons', mark: 'd', study: false },
+  { id: 'kanto', name: 'Kanto Retail', mark: 'b', study: false },
+  {
+    id: 'terracotta', name: 'Terracotta Hotels', mark: 'c', study: true,
+    quote: 'Open shifts fill themselves now. The group chat has gone back to being a group chat.',
+    person: 'Sofia Adeniran', role: 'Front of House Manager', org: 'Terracotta Hotels · Hospitality', img: 'sofia',
+  },
+  {
+    id: 'wazobia', name: 'Wazobia Health', mark: 'e', study: true,
+    quote: 'One record for hours, leave, and pay. We stopped reconciling three systems at the end of every month.',
+    person: 'John Okafor', role: 'Finance Director', org: 'Wazobia Health · Clinics', img: 'john',
+  },
+  { id: 'rivers', name: 'Rivers Freight', mark: 'f', study: false },
+];
+
+/* Mark plus wordmark, the way a real lockup sits. Drawn rather than fetched. */
+function CompanyLogo({ tile }) {
   return (
-    <span className="lg-logo" aria-hidden="true">
-      <svg viewBox="0 0 96 26" fill="none">
-        <rect x="0.5" y="4.5" width="17" height="17" stroke="currentColor" strokeWidth="1.4" />
-        <path d="M4.5 17.5 9 8.5l4.5 9" stroke="currentColor" strokeWidth="1.4" />
-        <rect x="26" y="7" width="52" height="5" rx="1" fill="currentColor" opacity=".45" />
-        <rect x="26" y="15" width="34" height="4" rx="1" fill="currentColor" opacity=".25" />
+    <span className="lg-logo">
+      <svg className="lg-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinejoin="miter" strokeLinecap="butt" aria-hidden="true">
+        {MARKS[tile.mark]}
       </svg>
+      <span className="lg-name">{tile.name}</span>
     </span>
   );
 }
 
-/* Always visible — on the reference this glyph never animates; only the
-   label beside it moves. */
+/* Always visible: on the reference this glyph never animates; only the label
+   beside it moves. */
 function ArrowUpRight() {
   return (
     <svg className="lg-arrow" width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
@@ -101,7 +139,7 @@ export default function Logos() {
                   onMouseEnter={() => setHovered(i)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <PlaceholderLogo />
+                  <CompanyLogo tile={t} />
 
                   {t.study ? (
                     <a className="lg-link" href="#customers">
@@ -111,13 +149,13 @@ export default function Logos() {
                         </span>
                         <ArrowUpRight />
                       </span>
-                      <span className="lg-sr">Read this customer&apos;s story</span>
+                      <span className="lg-sr">Read how {t.name} uses StaffIntra</span>
                     </a>
                   ) : null}
 
                   {/* Twice the cell in both directions, so it lands over its own
                       row and the one beside it. Never takes the pointer. */}
-                  {t.quote ? (
+                  {t.study ? (
                     <div
                       aria-hidden="true"
                       className={
@@ -127,12 +165,12 @@ export default function Logos() {
                         `${lastCol ? ' has-edge' : ''}`
                       }
                     >
-                      <blockquote>“{PLACEHOLDER_QUOTE.quote}”</blockquote>
+                      <blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
                       <div className="lg-card-by">
-                        <span className="lg-avatar" />
+                        <img className="lg-avatar" src={`/assets/people/${t.img}.jpg`} alt="" loading="lazy" decoding="async" />
                         <div>
-                          <div className="lg-card-name">{PLACEHOLDER_QUOTE.name}</div>
-                          <div className="lg-card-role">{PLACEHOLDER_QUOTE.org}</div>
+                          <div className="lg-card-name">{t.person}</div>
+                          <div className="lg-card-role">{t.role} · {t.org}</div>
                         </div>
                       </div>
                     </div>

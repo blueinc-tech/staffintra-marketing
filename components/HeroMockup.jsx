@@ -68,10 +68,12 @@ const IHome = () => <Ico d="M3.6 9 10 3.8 16.4 9v6.6a1 1 0 0 1-1 1H4.6a1 1 0 0 1
 
 /* ---------------- data ---------------- */
 
+/* Filenames must match public/assets/people; p1 and p2 never existed and were
+   404ing behind the initials fallback. */
 const PEOPLE = [
   { initials: 'TS', tone: 'a', img: null },
-  { initials: 'AO', tone: 'b', img: 'p1' },
-  { initials: 'CN', tone: 'c', img: 'p2' },
+  { initials: 'AO', tone: 'b', img: 'amara' },
+  { initials: 'TA', tone: 'c', img: 'tunde' },
 ];
 
 const RECENT = [

@@ -92,9 +92,26 @@
 .lg-cell.is-last-col { border-right: 0; }
 .lg-cell.is-last-row { border-bottom: 0; }
 
-/* The mark never reacts — on the reference the cell has no hover state at all. */
-.lg-logo { display: block; width: 100%; max-width: 104px; color: var(--ink-3); pointer-events: none; }
-.lg-logo svg { width: 100%; height: auto; display: block; }
+/* The mark never reacts: on the reference the cell has no hover state at all.
+   A lockup, not a picture — mark beside wordmark, both in one ink, so twelve
+   invented brands still read as one tidy band rather than twelve styles. */
+.lg-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  color: var(--ink-3);
+  pointer-events: none;
+}
+.lg-mark { width: 19px; height: 19px; flex-shrink: 0; }
+.lg-name {
+  font-family: var(--font-display);
+  font-size: .8125rem;
+  font-weight: 600;
+  letter-spacing: -.006em;
+  line-height: 1.15;
+  color: var(--ink-2);
+}
 
 /* --- the corner affordance --- */
 .lg-link {
@@ -180,6 +197,7 @@
 .lg-card-by { display: flex; align-items: center; gap: 11px; margin-top: 14px; }
 .lg-avatar {
   width: 40px; height: 40px; flex-shrink: 0; border-radius: 2px;
+  object-fit: cover; display: block;
   background: var(--accent-soft);
 }
 .lg-card-name {

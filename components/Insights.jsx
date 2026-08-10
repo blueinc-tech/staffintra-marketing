@@ -15,10 +15,12 @@ const POSTS = [
   { id: 6, tone: 'c', title: 'Rota clinic: a live session for operations leads', tags: ['Event', 'Online'] },
 ];
 
+/* Line art, not chunky glyphs: at a heavy stroke these read as a blob sitting
+   on a colour block. Thin and repeated, they read as a drawn cover. */
 const COVERS = [
-  <path key="a" d="M12 74V26M34 86V14M56 74V26M78 86V14M100 74V26" strokeWidth="7" />,
-  <path key="b" d="M10 78h80M10 58h60M10 38h80M10 18h44" strokeWidth="7" />,
-  <path key="c" d="M14 82 50 18l36 64M30 60h40" strokeWidth="7" />,
+  <path key="a" d="M6 70V22M22 82V10M38 70V22M54 82V10M70 70V22M86 82V10M6 46h80" strokeWidth="2.2" />,
+  <path key="b" d="M4 74h88M4 58h62M4 42h88M4 26h48M20 74V26M62 74V26" strokeWidth="2.2" />,
+  <path key="c" d="M8 82 34 26l26 40 24-32M8 82h80M34 26v56M60 66v16" strokeWidth="2.2" />,
 ];
 
 export default function Insights() {

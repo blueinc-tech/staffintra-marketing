@@ -19,16 +19,17 @@
   background: var(--tint);
 }
 
+/* Sized off the panel's height, not a fixed width: on the reference these run
+   the full height of the band and sit half off each edge. */
 .cc-art {
   position: absolute;
   top: 50%;
-  width: clamp(240px, 26vw, 420px);
-  height: auto;
-  translate: 0 -50%;
+  height: 122%;
+  width: auto;
   pointer-events: none;
 }
-.cc-art--l { left: 0; translate: -28% -50%; }
-.cc-art--r { right: 0; translate: 28% -50%; scale: -1 1; }
+.cc-art--l { left: 0; translate: -30% -50%; }
+.cc-art--r { right: 0; translate: 30% -50%; scale: -1 1; }
 .cc-art polygon {
   stroke: var(--line-strong);
   stroke-width: 1;

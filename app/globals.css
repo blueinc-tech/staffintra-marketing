@@ -387,11 +387,14 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 .turn-link:hover{color:var(--accent)}
 .turn-link:hover svg{color:var(--accent);translate:3px 0}
 
-/* A full-width bordered bar used to close a band: "next story", "view all". */
+/* A full-width bordered bar used to close a band: "next story", "meet the
+   team". The reference hatches the inside of these rather than leaving them
+   plain, which is what stops them reading as an empty input field. */
 .band-bar{
   position:relative;display:flex;align-items:center;justify-content:center;
   min-height:62px;padding:14px 22px;border:1px solid var(--line);
-  background:var(--surface);overflow:hidden;
+  background-color:var(--surface);overflow:hidden;
+  background-image:repeating-linear-gradient(45deg,rgba(23,23,28,.045) 0 1px,transparent 1px 11px);
   font-family:var(--font-ui);font-size:1rem;color:var(--ink);text-decoration:none;
 }
 .band-bar span{position:relative;z-index:1}

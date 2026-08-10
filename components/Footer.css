@@ -35,11 +35,18 @@
   color: var(--ink-2);
 }
 
+/* A dotted rule divides the brand column from the links, as well as the two
+   at the page edges. */
 .foot-cols {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(20px, 3vw, 44px);
   align-items: start;
+  padding-left: clamp(20px, 2.6vw, 40px);
+  background-image: var(--rule-v);
+  background-size: 1px var(--dot-step);
+  background-repeat: repeat-y;
+  background-position: left top;
 }
 .foot-col { display: flex; flex-direction: column; gap: 11px; }
 .foot-col h4,

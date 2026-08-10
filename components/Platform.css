@@ -54,6 +54,16 @@
   vector-effect: non-scaling-stroke;
 }
 
+/* Runs the box's closing rule out to both page edges. */
+.plat-close {
+  display: block;
+  height: 1px;
+  margin-inline: calc(-1 * var(--rail));
+  background-image: var(--rule-h);
+  background-size: var(--dot-step) 1px;
+  background-repeat: repeat-x;
+}
+
 .plat-stack { display: grid; grid-template-rows: 1fr 1fr; }
 .plat-item {
   display: flex;

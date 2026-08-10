@@ -66,6 +66,10 @@ export default function Platform() {
             </div>
           </div>
         </div>
+
+        {/* The box's bottom rule carries on past the frame as a dotted line,
+            which is how the reference closes a boxed section. */}
+        <span className="plat-close" aria-hidden="true" />
       </div>
     </section>
   );

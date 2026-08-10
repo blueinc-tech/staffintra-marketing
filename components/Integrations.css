@@ -1,7 +1,13 @@
 /* The one dark band on the page. It stops at the page rails rather than going
    full bleed, which is what sets it apart from the hatch bands above it. */
 
-.integrations { position: relative; background: var(--surface); padding: 0 0 clamp(56px, 7vw, 92px); }
+/* The dark band needs air above it as well as below: without the top padding
+   it butts straight into the platform box. */
+.integrations {
+  position: relative;
+  background: var(--surface);
+  padding: clamp(64px, 9vw, 150px) 0 clamp(56px, 7vw, 92px);
+}
 
 .int-panel {
   background: var(--ink);
@@ -14,8 +20,8 @@
 .int-head .sec-eyebrow { color: rgba(255, 255, 255, .5); }
 .int-head h2 {
   margin: 26px auto 0;
-  max-width: 22ch;
-  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  max-width: 26ch;
+  font-size: clamp(1.5rem, 2.2vw, 1.95rem);
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -.022em;
@@ -70,16 +76,7 @@
   border: 1px solid rgba(255, 255, 255, .14);
   border-radius: 2px;
 }
-.int-mark { width: 30px; height: 30px; color: rgba(255, 255, 255, .82); }
-.int-bars { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 92px; }
-.int-bars span {
-  display: block;
-  height: 5px;
-  width: var(--w);
-  border-radius: 1px;
-  background: rgba(255, 255, 255, .28);
-}
-.int-bars span:last-child { background: rgba(255, 255, 255, .16); }
+.int-mark { width: 44px; height: 44px; color: rgba(255, 255, 255, .8); }
 
 /* --- category tabs --- */
 

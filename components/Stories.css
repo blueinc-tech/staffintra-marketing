@@ -1,5 +1,9 @@
-/* Customer stories. One card at a time, advancing on a dwell, with the bar
-   underneath doubling as the timer and the next control. */
+/* Customer stories. One story at a time on a dwell, with the bar beneath
+   doubling as the timer and the next control.
+
+   A story is TWO panels with a gutter between them, not one bordered card,
+   and both halves are toned together: one story runs light, the next runs
+   deep and inverts its copy and its chips. */
 
 .stories { position: relative; background: var(--surface); }
 .stories-all { margin-top: 30px; }
@@ -7,7 +11,7 @@
 .story {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  border: 1px solid var(--line);
+  gap: 24px;
   animation: storyIn .5s var(--ease) both;
 }
 @keyframes storyIn {
@@ -15,23 +19,43 @@
   to { opacity: 1; translate: 0 0; }
 }
 
+/* --- the tone pairs --- */
+
+.story[data-tone='light'] .story-copy { background: var(--surface-2); }
+.story[data-tone='light'] .story-visual { background: var(--accent-soft); }
+.story[data-tone='light'] .story-cut { background: var(--accent); color: var(--accent); }
+
+.story[data-tone='deep'] .story-copy { background: var(--accent); }
+.story[data-tone='deep'] .story-visual { background: var(--tint); }
+.story[data-tone='deep'] .story-cut { background: var(--accent-ink); color: var(--accent-ink); }
+
+.story[data-tone='ink'] .story-copy { background: var(--ink); }
+.story[data-tone='ink'] .story-visual { background: var(--accent-soft); }
+.story[data-tone='ink'] .story-cut { background: var(--ink); color: var(--ink); }
+
+/* Everything in a deep panel inverts together, rather than each rule guessing
+   at its own colour. */
+.story[data-tone='deep'] .story-copy,
+.story[data-tone='ink'] .story-copy { --on: #fff; --on-2: rgba(255, 255, 255, .72); --on-3: rgba(255, 255, 255, .55); --on-fill: rgba(255, 255, 255, .13); }
+.story-copy { --on: var(--ink); --on-2: var(--ink-2); --on-3: var(--ink-3-text); --on-fill: var(--surface); }
+
 .story-copy {
   display: flex;
   flex-direction: column;
   padding: 44px 48px 40px;
-  background: var(--surface-2);
+  color: var(--on);
 }
-.story-mark { display: block; width: 76px; height: 22px; color: var(--ink); }
+.story-mark { display: block; width: 76px; height: 22px; color: var(--on); }
 
 .story-tag {
   align-self: flex-start;
   margin-top: 30px;
   padding: 5px 11px;
   border-radius: 2px;
-  background: var(--line);
+  background: var(--on-fill);
   font-family: var(--font-ui);
   font-size: .75rem;
-  color: var(--ink-2);
+  color: var(--on-2);
 }
 .story-copy h3 {
   margin-top: 18px;
@@ -40,8 +64,12 @@
   font-weight: 600;
   line-height: 1.24;
   letter-spacing: -.014em;
+  color: var(--on);
 }
-.story-copy .turn-link { margin-top: 22px; }
+.story-copy .turn-link { margin-top: 22px; color: var(--on); }
+.story-copy .turn-link svg { color: var(--on-3); }
+.story-copy .turn-link:hover,
+.story-copy .turn-link:hover svg { color: var(--on); }
 
 .story-meta { margin-top: auto; padding-top: 48px; }
 .story-label {
@@ -51,63 +79,63 @@
   font-weight: 500;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--ink-3-text);
+  color: var(--on-3);
 }
 .story-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 22px; }
 .story-chips:last-child { margin-bottom: 0; }
 .story-chip {
   padding: 6px 11px;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: 2px;
-  background: var(--surface);
+  background: var(--on-fill);
   font-family: var(--font-ui);
   font-size: .8125rem;
-  color: var(--ink);
+  color: var(--on);
 }
+.story[data-tone='light'] .story-chip { border-color: var(--line); }
 
-/* --- the coloured half --- */
+/* --- the wash half --- */
 
 .story-visual {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: 440px;
+  min-height: 460px;
   overflow: hidden;
 }
-.story[data-tone='a'] .story-visual { background: var(--accent); }
-.story[data-tone='b'] .story-visual { background: var(--ink); }
-.story[data-tone='c'] .story-visual { background: var(--accent-ink); }
 
-/* The cross-hatch the reference lays over this panel. */
+/* The diamond cross-hatch the reference lays over this panel. */
 .story-weave {
   position: absolute;
   inset: 0;
   background-image:
-    repeating-linear-gradient(45deg, rgba(255, 255, 255, .07) 0 1px, transparent 1px 10px),
-    repeating-linear-gradient(-45deg, rgba(255, 255, 255, .05) 0 1px, transparent 1px 10px);
+    repeating-linear-gradient(45deg, rgba(23, 23, 28, .07) 0 1px, transparent 1px 10px),
+    repeating-linear-gradient(-45deg, rgba(23, 23, 28, .06) 0 1px, transparent 1px 10px);
 }
 
-/* The reference masks a photograph into this cut hexagon. Ours carries the
-   Weave instead, on a lighter panel of the same colour. */
 .story-cut {
   position: relative;
   display: grid;
   place-items: center;
-  width: min(64%, 330px);
+  width: min(66%, 340px);
   aspect-ratio: 1 / 1;
-  background: rgba(255, 255, 255, .1);
-  color: rgba(255, 255, 255, .6);
   clip-path: polygon(0 18%, 22% 0, 100% 14%, 100% 82%, 78% 100%, 0 86%);
 }
-.story-cut svg { width: 46%; height: auto; display: block; }
+.story-art { width: 68%; height: auto; display: block; }
+.story-art polygon {
+  stroke: rgba(255, 255, 255, .74);
+  stroke-width: 1.2;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
+}
 
 /* --- the dwell bar --- */
 
+/* Sits clear of the story, not flush against it. */
 .story-next {
   display: flex;
   width: 100%;
-  margin-top: -1px;
-  border: 1px solid var(--line);
+  margin-top: 24px;
   cursor: pointer;
 }
 .story-progress {
@@ -122,7 +150,7 @@
 @keyframes storyFill { to { width: 100%; } }
 
 @media (max-width: 940px) {
-  .story { grid-template-columns: minmax(0, 1fr); }
+  .story { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .story-copy { padding: 32px 26px 30px; }
   .story-meta { padding-top: 32px; }
   .story-visual { min-height: 320px; }

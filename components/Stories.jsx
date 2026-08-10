@@ -2,16 +2,22 @@
 
 import { useEffect, useRef, useState } from 'react';
 import CountUp from './CountUp';
+import StoryArt from './StoryArt';
 import { TurnArrow } from './PillarMarks';
 import './Stories.css';
 
 /* Placeholder stories: a sector, a generic outcome, and profile chips. No
    organisation is named and none is implied, per the same rule the customer
-   band follows. Real stories drop straight into this shape. */
+   band follows. Real stories drop straight into this shape.
+
+   `tone` sets a PAIR of surfaces, not one. On the reference both halves of a
+   story are toned together and a dark half inverts its copy and its chips;
+   one story runs light and the next runs deep. Ours keeps the pairs inside
+   the purple family plus ink. */
 const STORIES = [
   {
     id: 'care',
-    tone: 'a',
+    tone: 'light',
     sector: 'Care',
     headline: 'How a care group cut rota admin from a full evening to under an hour',
     profile: ['120 people', '3 sites', 'Payroll export', 'Agency cover'],
@@ -19,7 +25,7 @@ const STORIES = [
   },
   {
     id: 'retail',
-    tone: 'b',
+    tone: 'deep',
     sector: 'Retail',
     headline: 'How a multi-site retailer brought approvals down to the same shift',
     profile: ['340 people', '12 stores', 'Open shifts', 'Bank holidays'],
@@ -27,7 +33,7 @@ const STORIES = [
   },
   {
     id: 'hospitality',
-    tone: 'c',
+    tone: 'ink',
     sector: 'Hospitality',
     headline: 'How a hospitality group onboarded 60 seasonal starters in one week',
     profile: ['60 starters', 'Right to work', 'Onboarding journeys'],
@@ -124,15 +130,14 @@ export default function Stories() {
             </div>
           </div>
 
-          {/* The reference runs a customer video here. We have none, so the
-              cut panel carries a mark rather than a play button that would
-              promise something that does not exist. */}
+          {/* The reference masks a customer video in here. We have none, and
+              an empty colour block is not a design, so the cut carries a
+              drawing rather than a play button promising something that does
+              not exist. */}
           <div className="story-visual">
             <span className="story-weave" aria-hidden="true" />
             <span className="story-cut" aria-hidden="true">
-              <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
-                <path d="M18 84V36M40 96V24M62 84V36M84 96V24M106 84V36" stroke="currentColor" strokeWidth="7" strokeLinecap="butt" />
-              </svg>
+              <StoryArt />
             </span>
           </div>
         </article>

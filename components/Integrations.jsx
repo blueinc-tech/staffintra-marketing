@@ -22,16 +22,14 @@ const MARKS = [
   <path key="e" d="M5 12a7 7 0 0 1 14 0 7 7 0 0 1-14 0zM12 5v14" stroke="currentColor" strokeWidth="1.5" fill="none" />,
 ];
 
+/* One mark, nothing else. An earlier version put two grey bars under it as a
+   stand-in wordmark, which read as a skeleton loader rather than a logo. */
 function Tile({ index }) {
   return (
     <span className="int-tile">
       <svg className="int-mark" viewBox="0 0 24 24" aria-hidden="true">
         {MARKS[index % MARKS.length]}
       </svg>
-      <span className="int-bars" aria-hidden="true">
-        <span style={{ '--w': '100%' }} />
-        <span style={{ '--w': `${58 + ((index * 13) % 34)}%` }} />
-      </span>
     </span>
   );
 }

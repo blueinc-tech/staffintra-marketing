@@ -21,15 +21,15 @@ const STORIES = [
     sector: 'Care',
     headline: 'How a care group cut rota admin from a full evening to under an hour',
     profile: ['120 people', '3 sites', 'Payroll export', 'Agency cover'],
-    where: ['North West', 'Yorkshire'],
+    where: ['Lagos', 'Ogun'],
   },
   {
     id: 'retail',
     tone: 'deep',
     sector: 'Retail',
     headline: 'How a multi-site retailer brought approvals down to the same shift',
-    profile: ['340 people', '12 stores', 'Open shifts', 'Bank holidays'],
-    where: ['London', 'South East'],
+    profile: ['340 people', '12 stores', 'Open shifts', 'Public holidays'],
+    where: ['Abuja', 'Kaduna'],
   },
   {
     id: 'hospitality',
@@ -37,7 +37,7 @@ const STORIES = [
     sector: 'Hospitality',
     headline: 'How a hospitality group onboarded 60 seasonal starters in one week',
     profile: ['60 starters', 'Right to work', 'Onboarding journeys'],
-    where: ['Scotland', 'North East'],
+    where: ['Rivers', 'Akwa Ibom'],
   },
 ];
 

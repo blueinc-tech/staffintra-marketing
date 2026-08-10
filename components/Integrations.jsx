@@ -89,6 +89,11 @@ export default function Integrations() {
             </header>
 
             <div className="int-board">
+              {/* The real mark, laid over the hub rather than drawn into the
+                  SVG. The hub is dead centre of the viewBox, so 50%/50% puts
+                  the logo on it exactly at any width, and this avoids the
+                  inconsistent sizing an external SVG gets inside <image>. */}
+              <img className="ib-logo" src="/assets/StaffIntra_Logo_Mark_White.svg" alt="StaffIntra" />
               <svg viewBox={`0 0 ${BOARD.w} ${BOARD.h}`} role="img" aria-label={`${active.label} systems wired into StaffIntra`}>
                 {/* Lines first, so every tile sits on top of its own wire. */}
                 <g className="ib-wires" key={active.id}>
@@ -121,10 +126,6 @@ export default function Integrations() {
                     width={HUB.w}
                     height={HUB.h}
                     rx="2"
-                  />
-                  <path
-                    className="ib-weave"
-                    d="M282 150v30M296 144v42M310 150v30M324 144v42M338 150v30"
                   />
                 </g>
               </svg>

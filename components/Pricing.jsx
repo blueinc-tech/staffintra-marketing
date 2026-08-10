@@ -6,8 +6,8 @@ import Reveal from './Reveal';
 const PLANS = [
   {
     name: 'Core',
-    monthly: '£3',
-    yearly: '£2.50',
+    monthly: '₦1,500',
+    yearly: '₦1,250',
     unit: 'per person / month',
     tagline: 'Get the rota out of the spreadsheet.',
     bestFor: 'One team leaving spreadsheets behind, usually 1 to 25 people',
@@ -25,8 +25,8 @@ const PLANS = [
   },
   {
     name: 'Plus',
-    monthly: '£6',
-    yearly: '£5',
+    monthly: '₦3,000',
+    yearly: '₦2,500',
     unit: 'per person / month',
     tagline: 'The whole week, handled in one place.',
     bestFor: 'Where rota, leave, and payroll land on one desk, usually 26 to 100 people',
@@ -36,7 +36,7 @@ const PLANS = [
     features: [
       'Everything in Core',
       'Every team and site on one rota, with cover shown across them',
-      'Leave that knows your policy: accrual, carry-over, and bank holidays handled',
+      'Leave that knows your policy: accrual, carry-over, and public holidays handled',
       'Onboarding journeys that route tasks to IT, payroll, and the hiring manager',
       'Policy sign-off tracked per person, with quiet nudges for anyone outstanding',
       'Branded emails and documents, so StaffIntra stays behind the scenes',
@@ -45,8 +45,8 @@ const PLANS = [
   },
   {
     name: 'Complete',
-    monthly: '£9',
-    yearly: '£7.50',
+    monthly: '₦4,500',
+    yearly: '₦3,750',
     unit: 'per person / month',
     tagline: 'Control and evidence across sites.',
     bestFor: 'Several sites with audit and access to keep straight, usually 101 to 500 people',
@@ -169,8 +169,8 @@ export default function Pricing() {
 
         <Reveal as="p" className="price-note">
           Free for 30 days on any plan, with no card, no minimum spend, and no setup fee. Import
-          from spreadsheets, and we build your first rota with you. Sixty people on Plus is £360 a
-          month, or £300 a month paid for the year.
+          from spreadsheets, and we build your first rota with you. Sixty people on Plus is
+          ₦180,000 a month, or ₦150,000 a month paid for the year.
         </Reveal>
 
         {/* Quoted rather than published, so it sits outside the toggleable row. */}

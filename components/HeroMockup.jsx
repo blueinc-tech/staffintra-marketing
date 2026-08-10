@@ -93,19 +93,19 @@ const RANGES = {
 
 const COST = {
   '3 months': [
-    { site: 'Northwind Care', pct: 82, value: '£184k' },
-    { site: 'Harbor & Lane', pct: 61, value: '£137k' },
-    { site: 'Brightline', pct: 44, value: '£98k' },
+    { site: 'Ikeja site', pct: 82, value: '₦18.4m' },
+    { site: 'Lekki site', pct: 61, value: '₦13.7m' },
+    { site: 'Yaba site', pct: 44, value: '₦9.8m' },
   ],
   '6 months': [
-    { site: 'Northwind Care', pct: 74, value: '£352k' },
-    { site: 'Harbor & Lane', pct: 66, value: '£271k' },
-    { site: 'Brightline', pct: 39, value: '£186k' },
+    { site: 'Ikeja site', pct: 74, value: '₦35.2m' },
+    { site: 'Lekki site', pct: 66, value: '₦27.1m' },
+    { site: 'Yaba site', pct: 39, value: '₦18.6m' },
   ],
   '12 months': [
-    { site: 'Northwind Care', pct: 88, value: '£702k' },
-    { site: 'Harbor & Lane', pct: 57, value: '£534k' },
-    { site: 'Brightline', pct: 48, value: '£391k' },
+    { site: 'Ikeja site', pct: 88, value: '₦70.2m' },
+    { site: 'Lekki site', pct: 57, value: '₦53.4m' },
+    { site: 'Yaba site', pct: 48, value: '₦39.1m' },
   ],
 };
 
@@ -402,7 +402,7 @@ function Phone() {
           <p className="hm-phone-h">Upcoming shift</p>
           <div className="hm-shift">
             <span className="hm-shift-time">07:00 · Early</span>
-            <strong>Northwind Care · Ward B</strong>
+            <strong>Ikeja site · Floor B</strong>
             <span className="hm-shift-addr">14 Mission Street, Leeds</span>
           </div>
           <button

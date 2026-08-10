@@ -78,7 +78,21 @@
 
 /* --- the board --- */
 
+.int-board { position: relative; }
 .int-board svg { display: block; width: 100%; height: auto; }
+
+/* The hub sits at the centre of the board's viewBox, so 50%/50% lands on it
+   at every width. Width is a share of the board, so it scales with it. */
+.ib-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 12.5%;
+  height: auto;
+  translate: -50% -50%;
+  pointer-events: none;
+}
 
 .ib-wire {
   fill: none;
@@ -114,13 +128,6 @@
 }
 
 .ib-hub rect { fill: var(--accent); stroke: none; }
-.ib-weave {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 5;
-  stroke-linecap: butt;
-  opacity: .92;
-}
 
 @media (max-width: 940px) {
   .int-grid { grid-template-columns: minmax(0, 1fr); gap: 34px; }

@@ -116,7 +116,7 @@ export default function DemoForm() {
           </select>
         </div>
       </div>
-      <button className="btn btn-primary btn-lg btn-block btn-swap" type="submit">
+      <button className="btn btn-primary btn-lg btn-swap" type="submit">
         <span className="swap">
           <span>Book my demo</span>
           <span aria-hidden="true">Book my demo</span>

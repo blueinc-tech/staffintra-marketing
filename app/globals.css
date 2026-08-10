@@ -95,12 +95,12 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   font-family:var(--font-display);font-weight:700;font-size:.95rem;
-  padding:10px 20px;border-radius:var(--r-md);border:1px solid transparent;
+  padding:10px 20px;border-radius:9999px;border:1px solid transparent;
   cursor:pointer;transition:transform .18s var(--ease),box-shadow .18s var(--ease),background .18s,border-color .18s,color .18s;
   white-space:nowrap;
 }
-.btn-lg{padding:14px 24px;font-size:1.02rem;border-radius:var(--r-md)}
-.btn-block{width:100%}
+.btn-lg{padding:14px 24px;font-size:1.02rem;border-radius:9999px}
+.btn-block{width:auto}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-primary:hover{background:var(--accent-ink)}
 .btn-primary:active{transform:translateY(0)}
@@ -122,10 +122,10 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 /* ---------- Nav ----------
    Layout and interaction live in components/PillNav.css (React Bits PillNav).
    Only the site-specific CTA sizing belongs here. */
-/* Reference header buttons: Inter 15px / 500, 12x18 padding, 2px radius. */
+/* Reference header buttons: Inter 15px / 500, 12x18 padding, pill radius. */
 .btn-nav{
   font-family:var(--font-ui);font-weight:500;font-size:15px;line-height:1.15;
-  padding:12px 18px;border-radius:var(--r-md);
+  padding:12px 18px;border-radius:9999px;
 }
 .btn-nav-ghost{background:rgba(23,23,28,.05);color:var(--ink)}
 .btn-nav-ghost:hover{background:rgba(23,23,28,.09)}
@@ -613,7 +613,7 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 .price-unit{font-size:.85rem;color:var(--ink-3-text)}
 .price-best{font-size:.82rem;color:var(--ink-3-text)}
 
-.price-card .btn{width:100%}
+.price-card .btn{width:auto}
 .price-caption{font-size:.78rem;color:var(--ink-3-text);text-align:center;margin-top:10px}
 .price-link{
   display:block;text-align:center;margin-top:8px;
@@ -671,7 +671,7 @@ main{margin:0 var(--rail);position:relative;z-index:1}
   .pricing-faq{grid-template-columns:minmax(0,1fr);gap:22px}
   .enterprise{grid-template-columns:minmax(0,1fr);max-width:460px;margin-left:auto;margin-right:auto;padding:26px}
   .enterprise-features{columns:1}
-  .enterprise-cta .btn{width:100%}
+  .enterprise-cta .btn{width:auto}
 }
 
 /* ---------- Testimonials ---------- */

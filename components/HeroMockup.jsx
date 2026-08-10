@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './HeroMockup.css';
 
 /* The product surface in the hero, rebuilt to the real Home screen rather than
@@ -9,15 +9,17 @@ import './HeroMockup.css';
    and announcements, and the right rail of quick actions, team today and
    celebrations.
 
-   Four deliberate departures from the screenshots:
-     - main area only. The sidebar and the icon rail are dropped, because at
-       this width their text would land near 6px
+   Three deliberate departures from the screenshots:
+     - the far-left icon rail is dropped; the sidebar itself is here, and it
+       collapses from the panel button in the top bar
      - branded StaffIntra, not the org that built it
      - populated and clocked in. The real capture is an empty account showing
        "Could not load your work"; a marketing hero should not show the
        product failing
-     - the dark-mode switch moves from the sidebar into the top bar, since the
-       sidebar is not on screen to hold it
+
+   The dark-mode switch sits in the sidebar where the real one does. A second
+   copy appears in the top bar only while the sidebar is collapsed, so the
+   control is never both duplicated and never lost.
 
    Every teal and green in the original is a purple here. The four team-today
    segments are three steps of purple plus grey, so they stay tellable apart
@@ -54,6 +56,7 @@ const IPeople = () => <Ico><circle cx="8" cy="7.6" r="2.6" {...s} /><path d="M3.
 const IGear = () => <Ico><circle cx="10" cy="10" r="2.6" {...s} /><path d="M10 2.8v1.6M10 15.6v1.6M2.8 10h1.6M15.6 10h1.6M4.9 4.9l1.2 1.2M13.9 13.9l1.2 1.2M15.1 4.9l-1.2 1.2M6.1 13.9l-1.2 1.2" {...s} /></Ico>;
 const IDoc = () => <Ico><path d="M5.4 3.4h6l3.2 3.2v10H5.4Z" {...s} /><path d="M11.4 3.4v3.2h3.2M7.8 10h4.4M7.8 12.8h3" {...s} /></Ico>;
 const IDown = () => <Ico d="M10 4.5v8M6.4 9.2 10 12.8l3.6-3.6M4.8 15.6h10.4" />;
+const IHome = () => <Ico d="M3.6 9 10 3.8 16.4 9v6.6a1 1 0 0 1-1 1H4.6a1 1 0 0 1-1-1Z" />;
 
 /* ---------------- data ---------------- */
 
@@ -100,6 +103,24 @@ const TEAM = [
   { k: 'Not in yet', n: 1, c: 'd' },
 ];
 
+/* Sidebar, in the real app's grouping. */
+const SIDE = [
+  { items: [{ t: 'Home', on: true }, { t: 'Inbox', n: 26 }] },
+  { lab: 'Work', items: [{ t: 'Workspaces' }, { t: 'Case management' }, { t: 'Productivity' }, { t: 'Announcements' }] },
+  { lab: 'People', items: [{ t: 'HR' }, { t: 'Staff lifecycle' }, { t: 'Attendance' }, { t: 'Approvals' }] },
+  { lab: 'Platform', items: [{ t: 'Tools' }] },
+];
+
+/* One asset per theme; the light one is purple on white, the dark one white. */
+function Logo({ className = '' }) {
+  return (
+    <>
+      <img className={`hm-logo hm-logo--l ${className}`.trim()} src="/assets/StaffIntra_Logo_Horizontal_Purple.svg" alt="StaffIntra" />
+      <img className={`hm-logo hm-logo--d ${className}`.trim()} src="/assets/StaffIntra_Logo_Horizontal_White.svg" alt="" aria-hidden="true" />
+    </>
+  );
+}
+
 /* ---------------- pieces ---------------- */
 
 function Ava({ p, className = '' }) {
@@ -141,14 +162,101 @@ function Donut({ done, total }) {
 
 export default function HeroMockup() {
   const [dark, setDark] = useState(false);
+  const [side, setSide] = useState(true);
+  const [atTop, setAtTop] = useState(true);
   const maxH = Math.max(...WEEK.map((w) => w.h)) || 1;
+
+  /* The phone is only right where the hero is. Once the page moves off the
+     top it drops away, and it comes back when you return to the start. */
+  useEffect(() => {
+    let frame = 0;
+    const measure = () => {
+      frame = 0;
+      setAtTop(window.scrollY < 60);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+    measure();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
+
+  const themeBtn = (
+    <button
+      type="button"
+      className="hm-ico hm-ico--btn hm-theme"
+      onClick={() => setDark((d) => !d)}
+      aria-pressed={dark}
+      title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+    >
+      {dark ? <ISun /> : <IMoon />}
+    </button>
+  );
 
   return (
     <div className="hm">
-      <div className="hm-dash" data-theme={dark ? 'dark' : 'light'}>
+      <div className="hm-dash" data-theme={dark ? 'dark' : 'light'} data-side={side ? '' : undefined}>
+        {/* Width animates to zero; the inner column keeps its own width so the
+            content never reflows mid-collapse. */}
+        <aside className="hm-side">
+          <div className="hm-side-in">
+            <div className="hm-side-top"><Logo /></div>
+
+            <div className="hm-side-nav">
+              {SIDE.map((g, i) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <div key={g.lab ?? i}>
+                  {g.lab ? <span className="hm-s-lab">{g.lab}</span> : null}
+                  {g.items.map((it) => (
+                    <span className={`hm-s-item${it.on ? ' is-on' : ''}`} key={it.t}>
+                      <i />
+                      {it.t}
+                      {it.n ? <b>{it.n}</b> : null}
+                    </span>
+                  ))}
+                </div>
+              ))}
+            </div>
+
+            <div className="hm-side-foot">
+              <button
+                type="button"
+                className="hm-s-theme"
+                onClick={() => setDark((d) => !d)}
+                aria-pressed={dark}
+              >
+                <IMoon />
+                Dark mode
+                <span className="hm-switch" data-on={dark ? '' : undefined} />
+              </button>
+              <span className="hm-upgrade">Upgrade plan</span>
+              <span className="hm-user">
+                <Ava p={{ initials: 'FS', tone: 'a' }} />
+                <span>
+                  <strong>Fortune Stephen</strong>
+                  <em>Full Stack Developer</em>
+                </span>
+              </span>
+            </div>
+          </div>
+        </aside>
+
+        <div className="hm-body">
         {/* Sticky, so it stays put while the screen scrolls under it. */}
         <div className="hm-top">
-          <span className="hm-ico"><IPanel /></span>
+          <button
+            type="button"
+            className="hm-ico hm-ico--btn"
+            onClick={() => setSide((v) => !v)}
+            aria-pressed={side}
+            title={side ? 'Hide sidebar' : 'Show sidebar'}
+          >
+            <IPanel />
+          </button>
           <span className="hm-search"><ISearch />Search anything<kbd>⌘K</kbd></span>
           <span className="hm-pill"><ITarget />My Work</span>
           <span className="hm-stack">
@@ -158,15 +266,8 @@ export default function HeroMockup() {
           <span className="hm-in">11 in today</span>
           <span className="hm-ico"><IHelp /></span>
           <span className="hm-ico hm-ico--bell"><IBell /><i>9+</i></span>
-          <button
-            type="button"
-            className="hm-ico hm-ico--btn"
-            onClick={() => setDark((d) => !d)}
-            aria-pressed={dark}
-            title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {dark ? <ISun /> : <IMoon />}
-          </button>
+          {/* Only visible while the sidebar is collapsed; see the stylesheet. */}
+          {themeBtn}
           <span className="hm-clock"><IClock />Clock In</span>
         </div>
 
@@ -322,23 +423,37 @@ export default function HeroMockup() {
             </div>
           </div>
         </div>
+        </div>
 
         <span className="hm-fab" aria-hidden="true"><IDown /></span>
       </div>
 
-      <Phone dark={dark} />
+      <Phone dark={dark} hide={!atTop} />
     </div>
   );
 }
 
-/* The same Home screen at phone width: the strip stacks to two rows, the
-   right rail folds under, and the top bar keeps only what fits. */
-function Phone({ dark }) {
+const P_TABS = [
+  { t: 'Home', I: IHome, on: true },
+  { t: 'Rota', I: ICal },
+  { t: 'Time', I: IClock },
+  { t: 'Team', I: IPeople },
+];
+
+/* The same Home screen at phone width: the strip folds to a clock card plus
+   two tiles, the right rail stacks under, and a tab bar closes the frame.
+   The brand sits in the top bar as the mark, not as the word. */
+function Phone({ dark, hide }) {
   return (
-    <div className="hm-phone" data-theme={dark ? 'dark' : 'light'} aria-hidden="true">
+    <div
+      className="hm-phone"
+      data-theme={dark ? 'dark' : 'light'}
+      data-hide={hide ? '' : undefined}
+      aria-hidden="true"
+    >
       <div className="hm-phone-in">
         <div className="hm-p-top">
-          <span className="hm-p-brand">StaffIntra</span>
+          <Logo className="hm-p-logo" />
           <span className="hm-ico hm-ico--bell"><IBell /><i>9+</i></span>
         </div>
 
@@ -371,15 +486,6 @@ function Phone({ dark }) {
           </div>
 
           <div className="hm-p-card">
-            <h5>Quick actions</h5>
-            <div className="hm-quick">
-              {QUICK.slice(0, 4).map((q) => (
-                <span className="hm-q" key={q.t}><q.I />{q.t}</span>
-              ))}
-            </div>
-          </div>
-
-          <div className="hm-p-card">
             <h5>Team today<span className="hm-chip">11 of 15</span></h5>
             <div className="hm-team">
               <Donut done={11} total={15} />
@@ -394,6 +500,15 @@ function Phone({ dark }) {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="hm-p-tabs">
+          {P_TABS.map((t) => (
+            <span className={`hm-p-tab${t.on ? ' is-on' : ''}`} key={t.t}>
+              <t.I />
+              {t.t}
+            </span>
+          ))}
         </div>
       </div>
     </div>

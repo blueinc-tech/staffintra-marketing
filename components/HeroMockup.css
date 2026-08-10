@@ -56,7 +56,6 @@
 .hm-dash {
   position: relative;
   display: flex;
-  flex-direction: column;
   background: var(--d-bg);
   border: 1px solid var(--d-line);
   border-radius: 6px 0 0 6px;
@@ -70,6 +69,88 @@
 
 .hm-i { width: 14px; height: 14px; flex-shrink: 0; }
 .hm-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.hm-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+/* ---------------- sidebar ---------------- */
+
+/* Only the width animates. The inner column keeps its own fixed width, so the
+   labels never rewrap while the panel is closing. */
+.hm-side {
+  width: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--d-card);
+  border-right: 1px solid var(--d-line);
+  transition: width .38s cubic-bezier(.4, 0, .2, 1);
+}
+.hm-dash[data-side] .hm-side { width: 152px; }
+.hm-side-in {
+  width: 152px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 11px 10px;
+  font-family: var(--font-ui);
+}
+.hm-side-top { padding: 2px 2px 12px; }
+.hm-logo { height: 15px; width: auto; display: block; }
+.hm-dash[data-theme='light'] .hm-logo--d,
+.hm-phone[data-theme='light'] .hm-logo--d { display: none; }
+.hm-dash[data-theme='dark'] .hm-logo--l,
+.hm-phone[data-theme='dark'] .hm-logo--l { display: none; }
+
+.hm-side-nav { display: flex; flex-direction: column; gap: 9px; min-height: 0; overflow: hidden; }
+.hm-s-lab {
+  display: block; margin: 4px 0 3px 6px;
+  font-size: .42rem; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--d-ink-3);
+}
+.hm-s-item {
+  display: flex; align-items: center; gap: 7px;
+  padding: 4px 6px; border-radius: 4px;
+  font-size: .52rem; color: var(--d-ink-2); white-space: nowrap;
+}
+.hm-s-item i { width: 9px; height: 9px; border-radius: 2px; background: var(--d-line); flex-shrink: 0; }
+.hm-s-item b { margin-left: auto; padding: 0 4px; border-radius: 6px; background: var(--d-accent); color: #fff; font-size: .4rem; }
+.hm-s-item.is-on { background: var(--d-accent-soft); color: var(--d-accent); font-weight: 500; }
+.hm-s-item.is-on i { background: var(--d-accent); }
+
+.hm-side-foot { margin-top: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 10px; }
+.hm-s-theme {
+  display: flex; align-items: center; gap: 7px;
+  padding: 4px 6px; border: 0; background: none; cursor: pointer;
+  font-family: var(--font-ui); font-size: .52rem; color: var(--d-ink-2);
+}
+.hm-s-theme svg { width: 12px; height: 12px; }
+.hm-switch {
+  margin-left: auto; position: relative;
+  width: 20px; height: 11px; border-radius: 6px; background: var(--d-line);
+  transition: background-color .25s var(--ease);
+}
+.hm-switch::after {
+  content: ''; position: absolute; top: 1.5px; left: 1.5px;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--d-card);
+  transition: translate .25s cubic-bezier(.4, 0, .2, 1);
+}
+.hm-switch[data-on] { background: var(--d-accent); }
+.hm-switch[data-on]::after { translate: 9px 0; }
+
+.hm-upgrade {
+  display: block; padding: 7px; border-radius: 5px;
+  background: var(--d-accent); color: #fff;
+  font-size: .52rem; font-weight: 500; text-align: center; white-space: nowrap;
+}
+.hm-user {
+  display: flex; align-items: center; gap: 7px;
+  padding: 6px; border-radius: 5px; border: 1px solid var(--d-line); min-width: 0;
+}
+.hm-user span { min-width: 0; }
+.hm-user strong { display: block; font-size: .5rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hm-user em { display: block; font-size: .42rem; font-style: normal; color: var(--d-ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* The top bar's copy of the switch only exists while the sidebar is away. */
+.hm-theme { display: none; }
+.hm-dash:not([data-side]) .hm-theme { display: inline-grid; }
 
 /* ---------------- top bar ---------------- */
 
@@ -322,12 +403,15 @@
   border: 1px solid #CFCFD6;
   border-radius: 20px;
   box-shadow: 0 5px 16px rgba(23, 23, 28, .09), 0 22px 52px rgba(23, 23, 28, .15);
+  transition: opacity .38s var(--ease), translate .38s var(--ease);
 }
 .hm-phone[data-theme='dark'] { background: #23262D; border-color: #333844; }
+/* Away as soon as the page leaves the top, back when it returns. */
+.hm-phone[data-hide] { opacity: 0; translate: -18px 14px; pointer-events: none; }
 .hm-phone-in {
   display: flex;
   flex-direction: column;
-  height: 316px;
+  height: 404px;
   border-radius: 15px;
   overflow: hidden;
   background: var(--d-bg);
@@ -337,8 +421,24 @@
   display: flex; align-items: center; justify-content: space-between;
   padding: 9px 11px; background: var(--d-card); border-bottom: 1px solid var(--d-line);
 }
-.hm-p-brand { font-size: .62rem; font-weight: 700; letter-spacing: -.01em; }
+.hm-p-logo { height: 13px; }
 .hm-p-scroll { flex: 1; min-height: 0; overflow: hidden; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+
+/* Tab bar closes the frame, which is what makes it read as an app rather
+   than a cropped page. */
+.hm-p-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 6px 4px 8px;
+  background: var(--d-card);
+  border-top: 1px solid var(--d-line);
+}
+.hm-p-tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-family: var(--font-ui); font-size: .4rem; color: var(--d-ink-3);
+}
+.hm-p-tab svg { width: 13px; height: 13px; }
+.hm-p-tab.is-on { color: var(--d-accent); font-weight: 600; }
 
 .hm-p-greet strong { display: block; font-size: .62rem; font-weight: 700; letter-spacing: -.01em; }
 .hm-p-greet em { display: block; margin-top: 2px; font-family: var(--font-ui); font-size: .46rem; font-style: normal; color: var(--d-ink-3); }
@@ -373,5 +473,8 @@
 .hm-p-card .hm-legend { font-size: .44rem; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hm-dash { transition: none; }
+  .hm-dash, .hm-side, .hm-switch, .hm-switch::after { transition: none; }
+  /* The phone still leaves and returns; it just does not travel to do it. */
+  .hm-phone { transition: opacity .01ms; }
+  .hm-phone[data-hide] { translate: none; }
 }

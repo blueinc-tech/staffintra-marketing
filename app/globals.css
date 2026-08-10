@@ -133,7 +133,7 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 /* ---------- Hero ---------- */
 /* Flat tinted band, like the reference — no gradient, no grid overlay.
    The bottom padding is the room the illustration drops into. */
-.hero{position:relative;padding:104px 0 30px;overflow:hidden;background:var(--tint)}
+.hero{position:relative;padding:128px 0 52px;overflow:hidden;background:var(--tint)}
 /* The rail runs solid for exactly the height of this section, then the customer
    band picks it up as dotted. Same ink, so it reads as one line changing. */
 .hero{--rail-line:var(--rule-solid)}
@@ -147,15 +147,16 @@ main{margin:0 var(--rail);position:relative;z-index:1}
   gap:clamp(20px,2.4vw,36px);align-items:start;text-align:left;
   padding-top:34px;
 }
-/* Reserves the band the illustration sits in, so it is never crowded out. */
-.hero-copy{padding-bottom:clamp(150px,20vw,230px)}
+/* Reserves the band the illustration sits in, so it is never crowded out.
+   Deeper than it needs to be on purpose: the section was reading cramped. */
+.hero-copy{padding-bottom:clamp(196px,25vw,300px)}
 .hero-visual{position:relative;z-index:2;min-width:0}
 
 /* Sits in the cleared band below the copy and to the left of the phone, on the
    section's ground plane — the shadow is what reads as "further back". */
 .hero-art{
   /* -12px trims only the empty floor below the drawing's lowest vertex. */
-  position:absolute;left:15%;bottom:-12px;z-index:0;
+  position:absolute;left:5%;bottom:-12px;z-index:0;
   width:min(400px,31vw);pointer-events:none;
   filter:drop-shadow(0 16px 22px rgba(23,23,28,.12));
 }

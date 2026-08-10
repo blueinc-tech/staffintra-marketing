@@ -278,83 +278,8 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 .anim-in{opacity:0;transform:translateY(18px);animation:rise .8s var(--ease) forwards;animation-delay:calc(var(--d,0)*.09s + .05s)}
 @keyframes rise{to{opacity:1;transform:none}}
 
-/* ---------- Mockup ---------- */
-/* Extends past the container so it reads as a window into the product;
-   .hero's overflow:hidden clips the bleed, so no horizontal scroll. */
-.mockup{position:relative;width:calc(100% + 130px);margin-top:0}
-.mockup-window{
-  /* The mockup depicts the product, so it stays on the product face. */
-  font-family:var(--font-product);
-  display:flex;background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--r-lg);box-shadow:var(--shadow-lg);overflow:hidden;text-align:left;
-}
-.mockup-sidebar{
-  width:64px;flex-shrink:0;background:var(--surface-2);border-right:1px solid var(--line);
-  display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px 0;
-}
-.mockup-sidebar img{width:26px;height:26px;margin-bottom:8px}
-.msb-item{width:30px;height:30px;border-radius:var(--r-sm);background:var(--line)}
-.msb-item.active{background:var(--accent-soft);outline:2px solid rgba(64,36,192,.35)}
-.mockup-main{flex:1;padding:20px 22px;min-width:0}
-.mockup-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.m-title{font-family:var(--font-product);font-weight:700;font-size:1.02rem}
-.m-sub{font-size:.8rem;color:var(--ink-3);font-weight:600}
-.m-avatar{
-  width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-family:var(--font-product);font-weight:700;font-size:.85rem;
-}
-.mockup-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);grid-template-rows:auto auto;gap:12px}
-.m-card{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 16px;box-shadow:var(--shadow-sm)}
-.m-schedule{grid-row:span 2}
-.m-card-head{
-  font-family:var(--font-product);font-weight:600;font-size:.7rem;text-transform:uppercase;
-  letter-spacing:.07em;color:var(--ink-3);margin-bottom:12px;
-}
-.m-shift{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.m-time{font-family:var(--font-mono);font-weight:500;font-size:.72rem;color:var(--ink-2);width:42px;flex-shrink:0}
-.m-bar{
-  display:block;width:var(--w,60%);padding:6px 10px;border-radius:var(--r-sm);
-  font-size:.72rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.bar-a{background:var(--accent-soft);color:var(--accent-ink)}
-.bar-b{background:var(--info-soft);color:var(--info)}
-.bar-c{background:var(--ok-soft);color:var(--ok)}
-.bar-d{background:var(--warn-soft);color:var(--warn)}
-.m-req{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
-.m-req:last-child{border-bottom:none}
-.m-req.done{opacity:.55}
-.m-req-txt{display:flex;flex-direction:column;min-width:0}
-.m-req-txt strong{font-size:.78rem;font-weight:600}
-.m-req-txt span{font-size:.7rem;color:var(--ink-3)}
-.m-chip{
-  font-family:var(--font-product);font-weight:600;font-size:.7rem;
-  padding:4px 10px;border-radius:var(--r-md);white-space:nowrap;flex-shrink:0;
-}
-.chip-ok{background:var(--ok-soft);color:var(--ok)}
-.chip-done{background:var(--surface-2);color:var(--ink-3)}
-.chip-plain{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
-.chip-purple{background:var(--accent);color:#fff}
-.m-clock-time{font-family:var(--font-mono);font-weight:500;font-size:1.5rem;color:var(--ink);letter-spacing:-.01em}
-.m-clock-sub{font-size:.72rem;color:var(--ink-3);margin-top:2px}
-
-/* Floating toasts on the mockup */
-.mockup-float{
-  font-family:var(--font-product);
-  position:absolute;display:flex;align-items:center;gap:10px;
-  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
-  padding:10px 14px;box-shadow:var(--shadow-md);text-align:left;
-}
-.mockup-float strong{display:block;font-family:var(--font-product);font-size:.8rem;font-weight:700}
-.mockup-float span{font-size:.72rem;color:var(--ink-3)}
-.mf-icon{
-  width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:.85rem;flex-shrink:0;
-}
-.mf-icon.ok{background:var(--ok-soft);color:var(--ok)}
-.mf-icon.info{background:var(--accent-soft)}
-.mf-1{top:36px;right:-14px;animation:float 5.5s ease-in-out infinite}
-.mf-2{bottom:48px;left:-18px;animation:float 6.5s ease-in-out .8s infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+/* The old static-prototype mockup styles lived here. The hero product UI is
+   now components/HeroMockup.css; none of those rules were referenced. */
 
 /* Logo band lives in components/Logos.css */
 
@@ -770,10 +695,8 @@ main{margin:0 var(--rail);position:relative;z-index:1}
   .hero-inner{grid-template-columns:minmax(0,1fr);text-align:center;justify-items:center}
   .hero-sub{max-width:34em}
   .hero-ctas{justify-content:center}
-  .mockup{width:100%;margin-top:44px}
 }
 @media (max-width:760px){
-  .mockup-grid{grid-template-columns:minmax(0,1fr)}
   .m-schedule{grid-row:auto}
   .mf-1{right:6px;top:-16px}
   .mf-2{left:6px;bottom:-14px}

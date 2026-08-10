@@ -14,26 +14,9 @@
   border-bottom: 1px solid var(--line);
 }
 
-/* The page rails continue through the nav band, but dotted — they only go
-   solid where they run alongside content. */
-.nav-root::before,
-.nav-root::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background-image: var(--rule-v);
-  background-size: 1px var(--dot-step);
-  pointer-events: none;
-}
-.nav-root::before { left: var(--rail); }
-.nav-root::after { right: var(--rail); }
-
-@media (max-width: 900px) {
-  .nav-root::before,
-  .nav-root::after { display: none; }
-}
+/* The page rails used to carry on through the nav band as dashes. They are
+   gone: the bar reads cleaner without them, and the rails now start at the
+   hero where they have content to run alongside. */
 
 .nav-bar {
   max-width: 1185px;

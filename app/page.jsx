@@ -3,13 +3,20 @@ import Hero from '../components/Hero';
 import Logos from '../components/Logos';
 import Pillars from '../components/Pillars';
 import Workforce from '../components/Workforce';
-import FeatureGrid from '../components/FeatureGrid';
-import Stats from '../components/Stats';
+import Stories from '../components/Stories';
+import Platform from '../components/Platform';
+import Integrations from '../components/Integrations';
+import Support from '../components/Support';
+import Insights from '../components/Insights';
 import Pricing from '../components/Pricing';
-import Quotes from '../components/Quotes';
+import CloseCta from '../components/CloseCta';
 import Cta from '../components/Cta';
 import Footer from '../components/Footer';
 
+/* Section order follows the reference, with pricing kept because we were asked
+   for it and the demo form kept because the brief is lead generation. The old
+   Splits, FeatureGrid, Stats and Quotes sections are superseded by Pillars,
+   Platform and Stories; their files are still on disk but no longer rendered. */
 export default function Home() {
   return (
     <>
@@ -19,10 +26,13 @@ export default function Home() {
         <Logos />
         <Pillars />
         <Workforce />
-        <FeatureGrid />
-        <Stats />
+        <Stories />
+        <Platform />
+        <Integrations />
+        <Support />
+        <Insights />
         <Pricing />
-        <Quotes />
+        <CloseCta />
         <Cta />
       </main>
       <Footer />

@@ -64,62 +64,73 @@ export default function Pillars() {
   }, []);
 
   return (
-    <section className="pillars has-frame" id="product">
-      <div className="pillar-tabs-wrap">
-        <div className="container">
-          <div className="pillar-tabs" role="tablist" aria-label="Product areas">
-            {/* One fill that travels, rather than three that switch on and off:
-                on the reference it slides between tabs and is inset from the
-                bar top and bottom, so it reads as a button rather than a
-                filled cell. It is never inset from the ends. */}
-            <span
-              className="ptab-slide"
-              aria-hidden="true"
-              style={
-                slide.width
-                  ? { width: `${slide.width}px`, translate: `${slide.left}px 0` }
-                  : undefined
-              }
-            />
-            {PILLARS.map((p, i) => (
-              <button
-                key={p.id}
-                ref={(el) => {
-                  tabsRef.current[i] = el;
-                }}
-                type="button"
-                role="tab"
-                aria-selected={i === active}
-                aria-controls={`pillar-${p.id}`}
-                className={`ptab${i === active ? ' is-on' : ''}`}
-                data-tone={p.tone}
-                onClick={() => goTo(i)}
-              >
-                <TabMark />
-                {p.name}
-              </button>
-            ))}
-          </div>
-        </div>
+    <section className="pillars" id="product">
+      <div className="container">
+        <header className="sec-head">
+          <span className="sec-eyebrow">Products</span>
+          <h2>Connect your people, your rota, and your payroll.</h2>
+        </header>
       </div>
 
-      {PILLARS.map((p, i) => (
-        <Fragment key={p.id}>
+      {/* The frame's side lines start at the tab bar, not at the section top:
+          the header sits on open white above them. */}
+      <div className="pillars-frame has-frame">
+        <div className="pillar-tabs-wrap">
           <div className="container">
-            <div
-              className="pillar-anchor"
-              ref={(el) => {
-                panelsRef.current[i] = el;
-              }}
-            >
-              <Pillar pillar={p} />
+            <div className="pillar-tabs" role="tablist" aria-label="Product areas">
+              {/* One fill that travels, rather than three that switch on and
+                  off: on the reference it slides between tabs and is inset
+                  from the bar top and bottom, so it reads as a button rather
+                  than a filled cell. It is never inset from the ends. */}
+              <span
+                className="ptab-slide"
+                aria-hidden="true"
+                style={
+                  slide.width
+                    ? { width: `${slide.width}px`, translate: `${slide.left}px 0` }
+                    : undefined
+                }
+              />
+              {PILLARS.map((p, i) => (
+                <button
+                  key={p.id}
+                  ref={(el) => {
+                    tabsRef.current[i] = el;
+                  }}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === active}
+                  aria-controls={`pillar-${p.id}`}
+                  className={`ptab${i === active ? ' is-on' : ''}`}
+                  data-tone={p.tone}
+                  onClick={() => goTo(i)}
+                >
+                  <TabMark />
+                  {p.name}
+                </button>
+              ))}
             </div>
           </div>
-          {/* Outside the container on purpose: the hatch is the one thing in
-              this section that runs past the frame to both page edges. */}
-          <div className="pillar-hatch" aria-hidden="true" />
-        </Fragment>
-      ))}
+        </div>
+
+        {PILLARS.map((p, i) => (
+          <Fragment key={p.id}>
+            <div className="container">
+              <div
+                className="pillar-anchor"
+                ref={(el) => {
+                  panelsRef.current[i] = el;
+                }}
+              >
+                <Pillar pillar={p} />
+              </div>
+            </div>
+            {/* Outside the container on purpose: the hatch is the one thing in
+                this section that runs past the frame to both page edges. */}
+            <div className="pillar-hatch" aria-hidden="true" />
+          </Fragment>
+        ))}
+      </div>
     </section>
   );
 }

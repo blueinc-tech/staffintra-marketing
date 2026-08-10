@@ -1,0 +1,92 @@
+/* Insights and events. The row is wider than the page and travels sideways as
+   the section scrolls up, which is how the reference reveals the far cards
+   without a scrollbar. Under reduced motion it becomes an ordinary horizontal
+   scroller instead, so the far cards stay reachable. */
+
+.insights {
+  position: relative;
+  background: var(--surface);
+  padding: clamp(56px, 7vw, 96px) 0 clamp(64px, 8vw, 104px);
+  overflow: hidden;
+}
+
+.ins-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 26px;
+  width: max-content;
+  padding-left: max(40px, calc((100% - 1185px) / 2 + 40px));
+  will-change: translate;
+}
+
+.insights[data-static] { overflow-x: auto; }
+.insights[data-static] .ins-track { will-change: auto; }
+
+.ins-head { width: 210px; flex-shrink: 0; padding-top: 6px; }
+.ins-head h2 {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.022em;
+}
+.ins-head .turn-link { margin-top: 20px; }
+
+.ins-card {
+  display: flex;
+  flex-direction: column;
+  width: 384px;
+  flex-shrink: 0;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+
+.ins-cover {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 210px;
+  overflow: hidden;
+}
+.ins-card[data-tone='a'] .ins-cover { background: var(--accent); color: rgba(255, 255, 255, .5); }
+.ins-card[data-tone='b'] .ins-cover { background: var(--ink); color: rgba(255, 255, 255, .42); }
+.ins-card[data-tone='c'] .ins-cover { background: var(--accent-ink); color: rgba(255, 255, 255, .5); }
+.ins-weave {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, .07) 0 1px, transparent 1px 10px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, .05) 0 1px, transparent 1px 10px);
+}
+.ins-cover svg { position: relative; width: 108px; height: 108px; }
+
+.ins-card h3 {
+  margin-top: 22px;
+  font-size: 1.1875rem;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -.008em;
+  color: var(--ink);
+  transition: color .22s var(--ease);
+}
+.ins-card:hover h3 { color: var(--accent); }
+
+.ins-tags { display: flex; gap: 8px; margin-top: 18px; }
+.ins-tag {
+  padding: 6px 11px;
+  border-radius: 2px;
+  background: var(--surface-2);
+  font-family: var(--font-ui);
+  font-size: .8125rem;
+  color: var(--ink-2);
+}
+
+@media (max-width: 940px) {
+  .ins-card { width: 300px; }
+  .ins-cover { height: 168px; }
+  .ins-head { width: 170px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ins-card h3 { transition: none; }
+}

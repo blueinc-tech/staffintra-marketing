@@ -1,0 +1,84 @@
+/* One workspace, every piece in place: a lead feature over a drawing on the
+   left, two stacked features on the right, inside one bordered box. */
+
+.platform { position: relative; background: var(--surface); }
+
+.plat-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  border: 1px solid var(--line);
+}
+
+.plat-lead {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 46px 48px 0;
+  border-right: 1px solid var(--line);
+  /* The drawing runs out of the panel rather than being fitted into it. */
+  overflow: hidden;
+}
+.plat-lead h3 {
+  font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -.012em;
+}
+.plat-lead p {
+  margin-top: 16px;
+  max-width: 42ch;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.plat-lead .turn-link { margin-top: 24px; }
+
+.plat-art {
+  display: block;
+  width: 108%;
+  height: auto;
+  margin: 26px -4% -6%;
+}
+/* Fills are set on the polygons themselves; only the line weight is here. */
+.pa-plate polygon {
+  stroke: var(--ink);
+  stroke-opacity: .34;
+  stroke-width: 1;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
+}
+.pa-guide line {
+  stroke: var(--ink);
+  stroke-opacity: .16;
+  stroke-width: 1;
+  stroke-dasharray: 5 6;
+  vector-effect: non-scaling-stroke;
+}
+
+.plat-stack { display: grid; grid-template-rows: 1fr 1fr; }
+.plat-item {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 48px 44px;
+}
+.plat-item + .plat-item { border-top: 1px solid var(--line); }
+.chip-mark { display: block; width: 52px; height: auto; }
+.plat-item h3 {
+  margin-top: 22px;
+  font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.plat-item p {
+  margin-top: 14px;
+  max-width: 44ch;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.plat-item .turn-link { margin-top: 22px; }
+
+@media (max-width: 940px) {
+  .plat-box { grid-template-columns: minmax(0, 1fr); }
+  .plat-lead { padding: 32px 26px 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  .plat-item { padding: 30px 26px 34px; }
+}

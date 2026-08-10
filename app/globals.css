@@ -358,6 +358,45 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 
 /* Logo band lives in components/Logos.css */
 
+/* ---------- Section header ---------- */
+/* A label, then a large headline, both flush to the frame's left line. Copy
+   *inside* a framed panel is indented from that line; the header never is.
+   The space above it is deliberate and large: it is what separates one
+   section's argument from the last one's. */
+.sec-head{padding:clamp(84px,10vw,162px) 0 clamp(56px,7vw,103px)}
+.sec-head--tight{padding-bottom:clamp(36px,4vw,58px)}
+.sec-eyebrow{
+  display:block;font-family:var(--font-ui);font-weight:500;font-size:.8125rem;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3-text);
+}
+.sec-head h2{
+  margin-top:34px;max-width:18ch;
+  font-size:clamp(2rem,3.8vw,3.2rem);font-weight:700;line-height:1.08;letter-spacing:-.024em;
+}
+.sec-head--mid{text-align:center}
+.sec-head--mid h2{margin-inline:auto}
+.sec-lede{margin-top:20px;max-width:52ch;font-size:1.0625rem;line-height:1.5;color:var(--ink-2)}
+.sec-head--mid .sec-lede{margin-inline:auto}
+
+/* The turn arrow link used under every feature block. */
+.turn-link{
+  display:inline-flex;align-items:center;gap:10px;align-self:flex-start;
+  font-family:var(--font-ui);font-size:.9375rem;color:var(--ink);text-decoration:none;
+}
+.turn-link svg{width:12px;height:12px;color:var(--ink-3-text);transition:translate .22s var(--ease)}
+.turn-link:hover{color:var(--accent)}
+.turn-link:hover svg{color:var(--accent);translate:3px 0}
+
+/* A full-width bordered bar used to close a band: "next story", "view all". */
+.band-bar{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  min-height:62px;padding:14px 22px;border:1px solid var(--line);
+  background:var(--surface);overflow:hidden;
+  font-family:var(--font-ui);font-size:1rem;color:var(--ink);text-decoration:none;
+}
+.band-bar span{position:relative;z-index:1}
+.band-bar:hover{color:var(--accent)}
+
 /* ---------- Sections ---------- */
 .section-head{max-width:640px;margin:0 auto 56px;text-align:center}
 .kicker{
@@ -701,24 +740,7 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 .form-success strong{font-family:var(--font-ui);font-weight:700;font-size:1.02rem}
 .form-success span{font-size:.85rem;color:var(--ink-2)}
 
-/* ---------- Footer ---------- */
-.footer{background:var(--ink);color:rgba(255,255,255,.75);padding:64px 0 30px}
-.footer-top{display:flex;gap:clamp(40px,6vw,100px);justify-content:space-between;flex-wrap:wrap;margin-bottom:48px}
-.footer-brand img{height:24px;width:auto;margin-bottom:14px}
-.footer-brand p{font-size:.9rem;color:rgba(255,255,255,.65)}
-.footer-cols{display:flex;gap:clamp(32px,5vw,72px);flex-wrap:wrap}
-.f-col{display:flex;flex-direction:column;gap:10px}
-.f-col h4{
-  font-family:var(--font-ui);font-size:.72rem;font-weight:600;text-transform:uppercase;
-  letter-spacing:.08em;color:rgba(255,255,255,.6);margin-bottom:4px;
-}
-.f-col a{font-size:.88rem;color:rgba(255,255,255,.72);transition:color .15s}
-.f-col a:hover{color:#fff}
-.footer-bottom{
-  border-top:1px solid rgba(255,255,255,.12);padding-top:24px;
-  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  font-size:.8rem;color:rgba(255,255,255,.62);
-}
+/* Footer styles live in components/Footer.css. */
 
 /* ---------- Scroll reveal ---------- */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:calc(var(--d,0)*.08s)}
@@ -755,7 +777,6 @@ main{margin:0 var(--rail);position:relative;z-index:1}
   .feature-grid{grid-template-columns:minmax(0,1fr)}
   .form-grid{grid-template-columns:minmax(0,1fr)}
   .stats-nums{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
-  .footer-top{flex-direction:column}
 }
 @media (max-width:420px){
   .stats-nums{grid-template-columns:minmax(0,1fr)}

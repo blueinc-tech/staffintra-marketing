@@ -1,12 +1,5 @@
-/* Isometric drawing for the closing banner.
-
-   Same projection as the hero kiosk, so the two illustrations belong to one
-   drawing system: a 30° axis pair, dy/dx = tan 30° = 0.577.
-
-     A  half the width of a plan cell
-     B  half its height, A * tan(30°)
-     C  one unit of height, equal to the projected length of the plan axes,
-        so a 1×1×1 block reads as a true cube
+/* Isometric drawing for the closing banner. Projection comes from iso.js, so
+   this shares a camera with the hero kiosk and the platform panel.
 
    Face treatment follows the reference's system rather than its artwork:
    the top face is flat white, the face turned to the lower left carries a
@@ -22,21 +15,7 @@
    above the one it crosses, so painting order alone gives correct occlusion
    and no face has to be clipped. */
 
-const A = 40;
-const B = 23.094;
-const C = 46.188;
-
-const p = (x, y, z) => `${((x - y) * A).toFixed(2)},${((x + y) * B - z * C).toFixed(2)}`;
-
-/* The three faces a box turns toward this camera: the top, the +x face on the
-   lower right, and the +y face on the lower left. The other three are behind. */
-function faces({ x0, x1, y0, y1, z0, z1 }) {
-  return {
-    top: `${p(x0, y0, z1)} ${p(x1, y0, z1)} ${p(x1, y1, z1)} ${p(x0, y1, z1)}`,
-    right: `${p(x1, y0, z1)} ${p(x1, y1, z1)} ${p(x1, y1, z0)} ${p(x1, y0, z0)}`,
-    left: `${p(x0, y1, z1)} ${p(x1, y1, z1)} ${p(x1, y1, z0)} ${p(x0, y1, z0)}`,
-  };
-}
+import { boxFaces as faces } from './iso';
 
 function Block({ tone, ...box }) {
   const f = faces(box);

@@ -1,0 +1,59 @@
+/* Closing statement. A tinted panel that stops at the page rails, with a
+   diagonal hatch showing in the gutters either side of it, and a large stepped
+   form half off each edge. */
+
+.close-cta {
+  position: relative;
+  background: var(--surface);
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(23, 23, 28, .05) 0 1px,
+    transparent 1px 11px
+  );
+}
+
+.cc-panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(80px, 10vw, 148px) 0;
+  background: var(--tint);
+}
+
+.cc-art {
+  position: absolute;
+  top: 50%;
+  width: clamp(240px, 26vw, 420px);
+  height: auto;
+  translate: 0 -50%;
+  pointer-events: none;
+}
+.cc-art--l { left: 0; translate: -28% -50%; }
+.cc-art--r { right: 0; translate: 28% -50%; scale: -1 1; }
+.cc-art polygon {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
+}
+
+.cc-copy { position: relative; z-index: 1; text-align: center; }
+.cc-copy h2 {
+  max-width: 17ch;
+  margin: 0 auto;
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -.024em;
+}
+.cc-copy p {
+  max-width: 46ch;
+  margin: 22px auto 0;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.cc-copy .btn { margin-top: 34px; }
+
+@media (max-width: 940px) {
+  .cc-art { display: none; }
+}

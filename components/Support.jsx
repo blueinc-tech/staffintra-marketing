@@ -1,4 +1,5 @@
-import { CoverageArt, SetupArt } from './SupportArt';
+import NigeriaMap from './NigeriaMap';
+import { SetupArt } from './SupportArt';
 import './Support.css';
 
 /* Label in its own narrow column at the frame's edge, everything else in a
@@ -16,13 +17,13 @@ export default function Support() {
 
             <div className="sup-cards">
               <article className="sup-card">
-                <h3>UK-based support</h3>
+                <h3>Support across the country</h3>
                 <p>
-                  Our support team answers from the UK, with hands-on onboarding and training,
-                  and fast replies by phone, email, or in-app chat.
+                  Our team answers locally, with hands-on onboarding and training, and fast
+                  replies by phone, email, or in-app chat wherever your sites are.
                 </p>
                 <div className="sup-art">
-                  <CoverageArt />
+                  <NigeriaMap />
                 </div>
               </article>
 

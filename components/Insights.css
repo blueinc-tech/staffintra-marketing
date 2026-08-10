@@ -1,35 +1,49 @@
-/* Insights and events. The row is wider than the page and travels sideways as
-   the section scrolls up, which is how the reference reveals the far cards
-   without a scrollbar. Under reduced motion it becomes an ordinary horizontal
-   scroller instead, so the far cards stay reachable. */
+/* Insights and events. A real horizontal scroll container: it moves only when
+   the reader scrolls it sideways, drags it, or tabs through it. Page scroll
+   does not touch it. */
 
 .insights {
   position: relative;
   background: var(--surface);
   padding: clamp(56px, 7vw, 96px) 0 clamp(64px, 8vw, 104px);
-  overflow: hidden;
+}
+
+.ins-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: clamp(28px, 3.5vw, 44px);
+}
+.ins-head h2 {
+  font-size: clamp(1.6rem, 2.8vw, 2.35rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -.024em;
 }
 
 .ins-track {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  cursor: grab;
+  /* The scrollbar is redundant next to six visible cards and it sits under
+     the row's baseline rule, so it is hidden rather than styled. */
+  scrollbar-width: none;
+}
+.ins-track::-webkit-scrollbar { display: none; }
+.ins-track:active { cursor: grabbing; }
+
+.ins-row {
   display: flex;
   align-items: flex-start;
   gap: 26px;
   width: max-content;
-  padding-left: max(40px, calc((100% - 1185px) / 2 + 40px));
-  will-change: translate;
+  /* Lines the first card up with the container, and lets the last one clear
+     the right edge. */
+  padding-inline: max(40px, calc((100% - 1185px) / 2 + 40px));
 }
-
-.insights[data-static] { overflow-x: auto; }
-.insights[data-static] .ins-track { will-change: auto; }
-
-.ins-head { width: 210px; flex-shrink: 0; padding-top: 6px; }
-.ins-head h2 {
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -.022em;
-}
-.ins-head .turn-link { margin-top: 20px; }
 
 .ins-card {
   display: flex;
@@ -39,7 +53,10 @@
   padding-bottom: 22px;
   border-bottom: 1px solid var(--line);
   text-decoration: none;
+  scroll-snap-align: start;
 }
+/* Dragging must not start a text selection or an image drag. */
+.ins-card, .ins-card * { user-select: none; -webkit-user-drag: none; }
 
 .ins-cover {
   position: relative;
@@ -58,7 +75,7 @@
     repeating-linear-gradient(45deg, rgba(255, 255, 255, .07) 0 1px, transparent 1px 10px),
     repeating-linear-gradient(-45deg, rgba(255, 255, 255, .05) 0 1px, transparent 1px 10px);
 }
-.ins-cover svg { position: relative; width: 108px; height: 108px; }
+.ins-cover svg { position: relative; width: 132px; height: 132px; }
 
 .ins-card h3 {
   margin-top: 22px;
@@ -70,6 +87,7 @@
   transition: color .22s var(--ease);
 }
 .ins-card:hover h3 { color: var(--accent); }
+.ins-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
 .ins-tags { display: flex; gap: 8px; margin-top: 18px; }
 .ins-tag {
@@ -84,9 +102,9 @@
 @media (max-width: 940px) {
   .ins-card { width: 300px; }
   .ins-cover { height: 168px; }
-  .ins-head { width: 170px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .ins-card h3 { transition: none; }
+  .ins-track { scroll-behavior: auto; }
 }

@@ -138,15 +138,21 @@
   margin-top: 24px;
   cursor: pointer;
 }
-.story-progress {
+/* Scoped under .story-next deliberately. `.band-bar span` sets position:
+   relative for the label, and at equal weight it was beating a bare
+   .story-progress rule, which dropped the fill back into the flow: it then
+   grew from 0 to 100% width and shoved the label across the bar. It is an
+   overlay, and it has to out-specify the label rule to stay one. */
+.story-next .story-progress {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
   width: 0;
+  z-index: 0;
   background: var(--surface-2);
 }
-.story-progress[data-run] { animation: storyFill var(--dwell) linear forwards; }
+.story-next .story-progress[data-run] { animation: storyFill var(--dwell) linear forwards; }
 @keyframes storyFill { to { width: 100%; } }
 
 @media (max-width: 940px) {
@@ -158,5 +164,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .story { animation: none; }
-  .story-progress { animation: none; width: 0; }
+  .story-next .story-progress { animation: none; width: 0; }
 }

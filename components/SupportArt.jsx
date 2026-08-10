@@ -1,53 +1,9 @@
 import { boxFaces } from './iso';
 
-/* Two visuals for the support cards.
-
-   The reference puts a shaded map of the United States in the first one. A map
-   of a country we do not claim to be in would be a fabricated claim, so ours
-   is a coverage grid instead: honest about being a diagram, and in the same
-   geometric language as the rest of the site. Weights are fixed, not random,
-   because this renders on the server and a random fill would not match on
-   rehydration. */
-
-const COLS = 11;
-const WEIGHTS = [
-  1, 2, 2, 3, 2, 1, 2, 3, 2, 1, 1,
-  2, 3, 4, 3, 2, 3, 4, 3, 2, 2, 1,
-  1, 3, 4, 5, 4, 3, 4, 5, 3, 2, 1,
-  2, 2, 3, 4, 5, 4, 3, 4, 3, 2, 2,
-  1, 2, 2, 3, 3, 3, 4, 3, 2, 2, 1,
-  1, 1, 2, 2, 3, 2, 2, 2, 2, 1, 1,
-];
-const STEP = 26;
-const SIZE = 21;
-
-export function CoverageArt() {
-  return (
-    <svg
-      className="sup-grid"
-      viewBox={`0 0 ${COLS * STEP} ${(WEIGHTS.length / COLS) * STEP}`}
-      fill="none"
-      role="img"
-      aria-label="Coverage across the country, shown as a weighted grid"
-    >
-      {WEIGHTS.map((w, i) => (
-        <rect
-          // eslint-disable-next-line react/no-array-index-key
-          key={i}
-          x={(i % COLS) * STEP}
-          y={Math.floor(i / COLS) * STEP}
-          width={SIZE}
-          height={SIZE}
-          fill="var(--accent)"
-          fillOpacity={0.09 + w * 0.15}
-        />
-      ))}
-    </svg>
-  );
-}
-
 /* Two slabs handed across, which is the shape of a managed setup: your records
-   on one, ours on the other. Same camera as every other drawing here. */
+   on one, ours on the other. Same camera as every other drawing on the site.
+
+   The coverage visual that used to live here has moved to NigeriaMap. */
 const SLAB_A = { x0: 0, x1: 3.4, y0: 0, y1: 1.4, z0: 0, z1: 0.62 };
 const SLAB_B = { x0: 0.7, x1: 4.1, y0: 2.0, y1: 3.4, z0: 0, z1: 0.62 };
 
@@ -83,3 +39,5 @@ export function SetupArt() {
     </svg>
   );
 }
+
+export default SetupArt;

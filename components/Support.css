@@ -52,7 +52,7 @@
   padding-top: 34px;
   min-height: 260px;
 }
-.sup-grid { width: min(100%, 300px); height: auto; display: block; }
+.ng-map { width: min(100%, 320px); height: auto; display: block; }
 .sup-slabs { width: min(100%, 300px); height: auto; display: block; }
 .sup-slab polygon {
   stroke: var(--ink);

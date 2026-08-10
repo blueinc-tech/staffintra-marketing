@@ -30,6 +30,15 @@
 }
 .cc-art--l { left: 0; translate: -30% -50%; }
 .cc-art--r { right: 0; translate: 30% -50%; scale: -1 1; }
+
+/* Hovering the button draws the two forms in a little, as though the piece
+   were about to seat. :has() keeps this in CSS; where it is unsupported the
+   forms simply stay put. */
+.cc-art { transition: translate .5s cubic-bezier(.22, .61, .36, 1); }
+.cc-panel:has(.btn:hover) .cc-art--l,
+.cc-panel:has(.btn:focus-visible) .cc-art--l { translate: -25% -50%; }
+.cc-panel:has(.btn:hover) .cc-art--r,
+.cc-panel:has(.btn:focus-visible) .cc-art--r { translate: 25% -50%; }
 .cc-art polygon {
   stroke: var(--line-strong);
   stroke-width: 1;

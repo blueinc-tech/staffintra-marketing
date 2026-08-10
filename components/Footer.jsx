@@ -89,7 +89,9 @@ function LinkList({ links }) {
 export default function Footer() {
   return (
     <footer className="footer">
-      <div className="container">
+      {/* Full page width, not the nav bar's: the footer is the one block that
+          is allowed to use the whole page. */}
+      <div className="foot-wrap">
         <div className="foot-top">
           <div className="foot-brand">
             <img

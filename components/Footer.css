@@ -18,12 +18,15 @@
   background-size: 1px var(--dot-step);
   pointer-events: none;
 }
-.footer::before { left: calc(max(0px, (100% - 1185px) / 2) + 40px); }
-.footer::after { right: calc(max(0px, (100% - 1185px) / 2) + 40px); }
+/* Rails sit at the page edge here, not at the nav bar's width. */
+.footer::before { left: clamp(20px, 3vw, 44px); }
+.footer::after { right: clamp(20px, 3vw, 44px); }
+
+.foot-wrap { padding: 0 clamp(34px, 5vw, 72px); }
 
 .foot-top {
   display: grid;
-  grid-template-columns: minmax(0, 240px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
   gap: clamp(32px, 5vw, 72px);
 }
 .foot-brand img { height: 26px; width: auto; display: block; }

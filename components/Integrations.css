@@ -1,8 +1,7 @@
-/* The one dark band on the page. It stops at the page rails rather than going
-   full bleed, which is what sets it apart from the hatch bands above it. */
+/* The one dark band on the page. Copy on the left, a wiring board on the
+   right: six systems routed into one hub, with a pulse running each line.
+   The categories rewire the board rather than filter a carousel. */
 
-/* The dark band needs air above it as well as below: without the top padding
-   it butts straight into the platform box. */
 .integrations {
   position: relative;
   background: var(--surface);
@@ -12,24 +11,29 @@
 .int-panel {
   background: var(--ink);
   color: #fff;
-  padding: clamp(56px, 7vw, 88px) 0 clamp(40px, 4vw, 56px);
-  overflow: hidden;
+  padding: clamp(48px, 6vw, 76px) 0;
 }
 
-.int-head { text-align: center; }
+.int-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: clamp(32px, 5vw, 68px);
+  align-items: center;
+}
+
 .int-head .sec-eyebrow { color: rgba(255, 255, 255, .5); }
 .int-head h2 {
-  margin: 26px auto 0;
-  max-width: 26ch;
-  font-size: clamp(1.5rem, 2.2vw, 1.95rem);
+  margin-top: 22px;
+  max-width: 18ch;
+  font-size: clamp(1.55rem, 2.4vw, 2.1rem);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.12;
   letter-spacing: -.022em;
   color: #fff;
 }
 .int-head p {
-  margin: 18px auto 0;
-  max-width: 54ch;
+  margin-top: 18px;
+  max-width: 46ch;
   font-size: 1.0625rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, .66);
@@ -37,7 +41,7 @@
 .btn-light {
   display: inline-flex;
   align-items: center;
-  margin-top: 30px;
+  margin-top: 28px;
   padding: 12px 18px;
   border-radius: 2px;
   background: var(--surface);
@@ -49,67 +53,81 @@
 }
 .btn-light:hover { background: var(--surface-2); }
 
-/* --- the moving row --- */
-
-.int-track { --gap: 22px; margin-top: clamp(40px, 5vw, 64px); overflow: hidden; }
-.int-row {
-  display: flex;
-  gap: var(--gap);
-  width: max-content;
-  animation: intScroll 42s linear infinite;
-}
-/* Half the track plus half a gap is exactly where the duplicate lines up. */
-@keyframes intScroll {
-  to { translate: calc(-50% - var(--gap) / 2) 0; }
-}
-.int-track:hover .int-row { animation-play-state: paused; }
-
-.int-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 236px;
-  height: 132px;
-  flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, .14);
-  border-radius: 2px;
-}
-.int-mark { width: 44px; height: 44px; color: rgba(255, 255, 255, .8); }
-
 /* --- category tabs --- */
 
-/* Full-cell fill here, unlike the pillar bar: the reference insets one and
-   not the other, and on a dark panel the inset reads as a gap rather than a
-   button. */
 .int-tabs {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  max-width: 700px;
-  margin: clamp(36px, 4vw, 54px) auto 0;
-  border: 1px solid rgba(255, 255, 255, .16);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: clamp(30px, 3.5vw, 44px);
 }
 .int-tab {
-  padding: 18px 10px;
-  border: 0;
+  padding: 10px 15px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 2px;
   background: transparent;
   font-family: var(--font-ui);
-  font-size: .9375rem;
+  font-size: .875rem;
   color: rgba(255, 255, 255, .62);
   cursor: pointer;
-  transition: background-color .22s var(--ease), color .22s var(--ease);
+  transition: background-color .22s var(--ease), color .22s var(--ease), border-color .22s var(--ease);
 }
-.int-tab:hover { color: #fff; background: rgba(255, 255, 255, .06); }
-.int-tab.is-on { color: #fff; background: rgba(255, 255, 255, .1); }
-.int-tab:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+.int-tab:hover { color: #fff; border-color: rgba(255, 255, 255, .34); }
+.int-tab.is-on { color: var(--ink); background: #fff; border-color: #fff; }
+.int-tab:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
-@media (max-width: 700px) {
-  .int-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .int-tile { width: 178px; height: 112px; }
+/* --- the board --- */
+
+.int-board svg { display: block; width: 100%; height: auto; }
+
+.ib-wire {
+  fill: none;
+  stroke: rgba(255, 255, 255, .22);
+  stroke-width: 1;
+  stroke-dasharray: 4 5;
+}
+/* One short dash travelling the full length of the same route. The offset is
+   negative so it runs from the system into the hub, which is the direction
+   the copy describes. */
+.ib-pulse {
+  fill: none;
+  stroke: var(--info);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 16 620;
+  stroke-dashoffset: 636;
+  animation: ibPulse 3.4s linear infinite;
+  animation-delay: var(--d, 0s);
+}
+@keyframes ibPulse { to { stroke-dashoffset: 0; } }
+
+.ib-node rect {
+  fill: rgba(255, 255, 255, .045);
+  stroke: rgba(255, 255, 255, .16);
+  stroke-width: 1;
+}
+.ib-node text {
+  fill: rgba(255, 255, 255, .82);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  text-anchor: middle;
+}
+
+.ib-hub rect { fill: var(--accent); stroke: none; }
+.ib-weave {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 5;
+  stroke-linecap: butt;
+  opacity: .92;
+}
+
+@media (max-width: 940px) {
+  .int-grid { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+  .int-head h2 { max-width: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .int-row { animation: none; }
+  .ib-pulse { animation: none; opacity: 0; }
   .int-tab { transition: none; }
 }

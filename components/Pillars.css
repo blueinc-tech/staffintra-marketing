@@ -272,22 +272,30 @@
 
 /* ---------- moment card ---------- */
 
-/* Footage fills the panel edge to edge rather than floating on it. The stage
-   goes static so the video's containing block is .pillar-visual itself, which
-   is what lets inset:0 reach past the panel's padding. Cover, not contain:
-   the source is square and the panel is not, so contain would put back the
-   empty bands this is meant to remove. */
-.pv-stage--full { position: static; }
-.pm-video {
+/* Footage fills the panel edge to edge rather than floating on it.
+
+   The STAGE is what gets positioned, not the video. Making the stage static
+   put it in the in-flow paint layer, which is below .pv-texture and
+   .pv-shape — both absolutely positioned, so both paint after it — and the
+   video went under them. An absolutely positioned stage sits in the same
+   layer as those overlays and, being later in the DOM, over them.
+
+   Cover, not contain: the source is square and the panel is not, so contain
+   would put back the empty bands this is meant to remove. */
+.pv-stage--full {
   position: absolute;
   inset: 0;
   z-index: 2;
+  width: auto;
+  display: block;
+}
+.pm-video {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  background: var(--surface);
+  background: var(--accent-ink);
 }
 
 .pm-card {

@@ -168,7 +168,10 @@ function Video({ m }) {
       muted
       loop
       playsInline
-      preload="none"
+      /* metadata, not none: with none the element has no frame AND some
+         browsers skip the poster too, so the panel can sit empty until play
+         starts. Metadata is a few KB and guarantees something to paint. */
+      preload="metadata"
       aria-label={m.alt}
     />
   );

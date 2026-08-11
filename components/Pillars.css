@@ -266,6 +266,17 @@
 
 /* ---------- moment card ---------- */
 
+/* Footage sits square and unframed on the panel; the recording brings its own
+   window chrome, so a card round it would be a border on a border. */
+.pm-video {
+  display: block;
+  width: min(430px, 90%);
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+  background: var(--surface);
+  object-fit: cover;
+}
+
 .pm-card {
   width: min(420px, 88%);
   padding: 20px 22px 22px;

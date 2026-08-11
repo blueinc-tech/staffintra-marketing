@@ -1,8 +1,15 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+
 /* One product moment: the white card that sits on the coloured panel.
 
-   Five shapes cover all twelve moments, which is how the reference works too —
-   the card chrome never changes, only what is inside it. Adding a moment is a
-   data change in pillarData.jsx, not a new component. */
+   Five drawn shapes cover eleven of the twelve moments — the card chrome never
+   changes, only what is inside it, so adding one is a data change in
+   pillarData.jsx rather than a new component.
+
+   The twelfth is real footage of the rota builder, which needs no card around
+   it and gets its own treatment below. */
 
 function Rota({ m }) {
   return (
@@ -128,11 +135,53 @@ function Steps({ m }) {
   );
 }
 
-const SHAPES = { rota: Rota, list: List, timer: Timer, bars: Bars, steps: Steps };
+/* Real product footage. It only plays while it is on screen, and it is not
+   fetched at all until then: at 1.8MB this should not be on the critical path
+   for a visitor who never scrolls to it. Muted and playsInline because no
+   browser will autoplay otherwise, and left on its poster entirely under
+   reduced motion. */
+function Video({ m }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    if (!('IntersectionObserver' in window)) return undefined;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) el.play().catch(() => {});
+        else el.pause();
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      className="pm-video"
+      src={m.src}
+      poster={m.poster}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-label={m.alt}
+    />
+  );
+}
+
+const SHAPES = { rota: Rota, list: List, timer: Timer, bars: Bars, steps: Steps, video: Video };
 
 export default function PillarMoment({ moment }) {
   const Shape = SHAPES[moment.shape];
   if (!Shape) return null;
+  // Footage carries its own frame; wrapping it in the card would put a white
+  // border round a screen recording that already has one.
+  if (moment.shape === 'video') return <Shape m={moment} />;
   return (
     <div className={`pm-card pm-card--${moment.shape}`}>
       <Shape m={moment} />

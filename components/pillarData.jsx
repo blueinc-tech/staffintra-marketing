@@ -25,17 +25,15 @@ export const PILLARS = [
     steps: [
       {
         label: 'Rota builder',
+        /* The one moment that is real footage rather than a drawn card: the
+           actual rota builder, shifts dragged into place and the week
+           published. A drawing cannot make that case as well as the thing
+           itself can. */
         moment: {
-          shape: 'rota',
-          title: 'Week of 10 Aug',
-          chip: 'Publish',
-          rows: [
-            { day: 'Mon', shifts: [{ l: 0.06, w: 0.38, t: 'Morning', k: 'a' }, { l: 0.5, w: 0.42, t: 'Late', k: 'b' }] },
-            { day: 'Tue', shifts: [{ l: 0.06, w: 0.52, t: 'Open · claim', k: 'b' }, { l: 0.64, w: 0.3, t: 'Close', k: 'c' }] },
-            { day: 'Wed', shifts: [{ l: 0.14, w: 0.44, t: 'Morning', k: 'a' }] },
-            { day: 'Thu', shifts: [{ l: 0.06, w: 0.34, t: 'Early', k: 'c' }, { l: 0.46, w: 0.4, t: 'Overlap', k: 'warn' }] },
-            { day: 'Fri', shifts: [{ l: 0.22, w: 0.48, t: 'Floor team', k: 'b' }] },
-          ],
+          shape: 'video',
+          src: '/assets/rota-builder.mp4',
+          poster: '/assets/rota-builder-poster.jpg',
+          alt: 'Building the week of 10 August: shifts dragged into place across the grid, clashes flagged, then the week published',
         },
       },
       {

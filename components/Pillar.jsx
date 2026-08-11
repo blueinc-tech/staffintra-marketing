@@ -109,7 +109,11 @@ export default function Pillar({ pillar }) {
           <span className="pv-texture" aria-hidden="true" />
           <span className="pv-shape" aria-hidden="true" />
           {/* Keyed so each moment fades in as its own element. */}
-          <div className="pv-stage" key={step}>
+          {/* Footage fills the panel; drawn cards float centred on it. */}
+          <div
+            className={`pv-stage${active.moment.shape === 'video' ? ' pv-stage--full' : ''}`}
+            key={step}
+          >
             <PillarMoment moment={active.moment} />
           </div>
         </div>

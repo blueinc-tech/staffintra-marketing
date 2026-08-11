@@ -41,15 +41,13 @@ export const PILLARS = [
       },
       {
         label: 'Open shifts',
+        /* 19.8s of footage plus a beat, same rule as the rota builder. */
+        dwell: 20600,
         moment: {
-          shape: 'list',
-          title: 'Open shifts',
-          meta: '3 unfilled this week',
-          rows: [
-            { name: 'Sat 15 Aug · 07:00–15:00', meta: 'Floor · 2 needed', chip: 'Claim', tone: 'accent' },
-            { name: 'Sun 16 Aug · 12:00–20:00', meta: 'Kitchen · 1 needed', chip: 'Claim', tone: 'accent' },
-            { name: 'Wed 19 Aug · 06:00–14:00', meta: 'Early · 1 needed', chip: 'Claimed', tone: 'ok' },
-          ],
+          shape: 'video',
+          src: '/assets/open-shifts.mp4',
+          poster: '/assets/open-shifts-poster.jpg',
+          alt: 'An unfilled Saturday shift offered out to eight people, then claimed from a phone: first to claim gets it',
         },
       },
       {

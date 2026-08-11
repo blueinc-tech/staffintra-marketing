@@ -272,15 +272,22 @@
 
 /* ---------- moment card ---------- */
 
-/* Footage sits square and unframed on the panel; the recording brings its own
-   window chrome, so a card round it would be a border on a border. */
+/* Footage fills the panel edge to edge rather than floating on it. The stage
+   goes static so the video's containing block is .pillar-visual itself, which
+   is what lets inset:0 reach past the panel's padding. Cover, not contain:
+   the source is square and the panel is not, so contain would put back the
+   empty bands this is meant to remove. */
+.pv-stage--full { position: static; }
 .pm-video {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: block;
-  width: min(430px, 90%);
-  aspect-ratio: 1 / 1;
-  border-radius: 3px;
-  background: var(--surface);
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
+  background: var(--surface);
 }
 
 .pm-card {

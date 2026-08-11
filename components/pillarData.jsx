@@ -25,9 +25,10 @@ export const PILLARS = [
     steps: [
       {
         label: 'Rota builder',
-        /* Held for the recording's full 20.8s plus a beat. On the shared 5.2s
-           dwell the carousel moved on a quarter of the way through it. */
-        dwell: 21600,
+        /* Every step here holds for its own clip plus a beat. On the shared
+           5.2s dwell the carousel moved on a quarter of the way through.
+           18.8s of footage after the two-second intro fade was trimmed. */
+        dwell: 19600,
         /* The one moment that is real footage rather than a drawn card: the
            actual rota builder, shifts dragged into place and the week
            published. A drawing cannot make that case as well as the thing
@@ -42,7 +43,7 @@ export const PILLARS = [
       {
         label: 'Open shifts',
         /* 19.8s of footage plus a beat, same rule as the rota builder. */
-        dwell: 20600,
+        dwell: 18600,
         moment: {
           shape: 'video',
           src: '/assets/open-shifts.mp4',
@@ -53,7 +54,7 @@ export const PILLARS = [
       {
         label: 'Time tracking',
         /* 19.8s of footage plus a beat. */
-        dwell: 20600,
+        dwell: 18600,
         moment: {
           shape: 'video',
           src: '/assets/time-tracking.mp4',
@@ -63,16 +64,13 @@ export const PILLARS = [
       },
       {
         label: 'Timesheets',
+        /* 19.0s of footage plus a beat. */
+        dwell: 19800,
         moment: {
-          shape: 'bars',
-          title: 'Timesheet · week of 10 Aug',
-          meta: 'Ready for approval',
-          rows: [
-            { label: 'Sofia Reyes', value: '38h 15m', p: 0.96 },
-            { label: 'Tunde Okafor', value: '32h 00m', p: 0.8 },
-            { label: 'Priya Sharma', value: '40h 30m', p: 1 },
-            { label: 'Kofi Mensah', value: '21h 45m', p: 0.54 },
-          ],
+          shape: 'video',
+          src: '/assets/timesheets.mp4',
+          poster: '/assets/timesheets-poster.jpg',
+          alt: 'The week of 10 August reconciled: hours totalled per person, variances flagged, each timesheet signed off',
         },
       },
     ],

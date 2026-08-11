@@ -223,7 +223,6 @@
   display: grid;
   place-items: center;
   min-height: 500px;
-  padding: 44px 24px;
   overflow: hidden;
 }
 /* Large surfaces stay in the purple family plus ink: the brand kit reserves
@@ -257,18 +256,23 @@
   pointer-events: none;
 }
 
-.pv-stage {
-  position: relative;
-  z-index: 1;
-  width: 100%;
+/* One layer per step, all mounted, only one visible. Crossfading between
+   layers is what removes the bare-panel gap you get from unmounting the old
+   moment and fading the new one in from nothing. */
+.pv-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: grid;
   place-items: center;
-  animation: pmIn .45s var(--ease) both;
+  padding: 44px 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .55s var(--ease);
 }
-@keyframes pmIn {
-  from { opacity: 0; translate: 0 12px; }
-  to { opacity: 1; translate: 0 0; }
-}
+.pv-layer.is-on { opacity: 1; }
+/* Footage runs to the panel edge, so its layer keeps no padding. */
+.pv-layer--full { padding: 0; }
 
 /* ---------- moment card ---------- */
 
@@ -282,13 +286,6 @@
 
    Cover, not contain: the source is square and the panel is not, so contain
    would put back the empty bands this is meant to remove. */
-.pv-stage--full {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  width: auto;
-  display: block;
-}
 .pm-video {
   display: block;
   width: 100%;
@@ -502,7 +499,7 @@
 /* The reference ships no reduced-motion handling; this does. The carousel
    stops advancing on its own and the ring shows as complete. */
 @media (prefers-reduced-motion: reduce) {
-  .pv-stage { animation: none; }
+  .pv-layer { animation: none; }
   .pstep-ring .arc { animation: none; stroke-dashoffset: 0; }
   .ptab-slide, .pl-turn, .ps-arrow, .ptab, .pstep { transition: none; }
 }

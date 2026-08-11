@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import PillarMoment from './PillarMoment';
 import { EyebrowGlyph, TurnArrow, StoryArrow } from './PillarMarks';
 
@@ -44,12 +44,22 @@ export default function Pillar({ pillar }) {
   // inheriting whatever was left of the previous one.
   const active = pillar.steps[step];
   const dwell = active.dwell ?? DWELL;
+  const isVideo = active.moment.shape === 'video';
 
+  const next = useCallback(
+    () => setStep((s) => (s + 1) % pillar.steps.length),
+    [pillar.steps.length]
+  );
+
+  /* A clip advances on its own `ended`, not on a timer. Timing it meant the
+     clip had to loop back to frame 0 and play its opening again before the
+     step changed, which is the restart flicker. The timer stays as a backstop
+     only, in case playback never starts or stalls. */
   useEffect(() => {
     if (!inView || reduced) return undefined;
-    const id = setTimeout(() => setStep((s) => (s + 1) % pillar.steps.length), dwell);
+    const id = setTimeout(next, isVideo ? dwell + 3000 : dwell);
     return () => clearTimeout(id);
-  }, [inView, reduced, step, dwell, pillar.steps.length]);
+  }, [inView, reduced, step, dwell, isVideo, next]);
 
   return (
     <article className="pillar" id={`pillar-${pillar.id}`} ref={rootRef} data-tone={pillar.tone}>
@@ -109,13 +119,25 @@ export default function Pillar({ pillar }) {
           <span className="pv-texture" aria-hidden="true" />
           <span className="pv-shape" aria-hidden="true" />
           {/* Keyed so each moment fades in as its own element. */}
-          {/* Footage fills the panel; drawn cards float centred on it. */}
-          <div
-            className={`pv-stage${active.moment.shape === 'video' ? ' pv-stage--full' : ''}`}
-            key={step}
-          >
-            <PillarMoment moment={active.moment} />
-          </div>
+          {/* Every step is its own layer and they all stay mounted, so a switch
+              is a crossfade rather than an unmount and a fade-in. Remounting
+              showed bare panel between clips and restarted the incoming video
+              from its poster. Only the active layer plays. */}
+          {pillar.steps.map((s, i) => (
+            <div
+              key={s.label}
+              className={
+                `pv-layer${i === step ? ' is-on' : ''}` +
+                `${s.moment.shape === 'video' ? ' pv-layer--full' : ''}`
+              }
+            >
+              <PillarMoment
+                moment={s.moment}
+                playing={i === step && inView && !reduced}
+                onDone={i === step ? next : undefined}
+              />
+            </div>
+          ))}
         </div>
       </div>
 

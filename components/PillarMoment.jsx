@@ -140,24 +140,22 @@ function Steps({ m }) {
    for a visitor who never scrolls to it. Muted and playsInline because no
    browser will autoplay otherwise, and left on its poster entirely under
    reduced motion. */
-function Video({ m }) {
+function Video({ m, playing, onDone }) {
   const ref = useRef(null);
 
+  /* Play is driven by the parent, which knows both which step is active and
+     whether the panel is on screen. Rewinding on activation means a clip
+     always opens on its first frame instead of wherever it was paused. */
   useEffect(() => {
     const el = ref.current;
-    if (!el) return undefined;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-    if (!('IntersectionObserver' in window)) return undefined;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) el.play().catch(() => {});
-        else el.pause();
-      },
-      { threshold: 0.35 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+    if (!el) return;
+    if (playing) {
+      el.currentTime = 0;
+      el.play().catch(() => {});
+    } else {
+      el.pause();
+    }
+  }, [playing]);
 
   return (
     <video
@@ -165,8 +163,11 @@ function Video({ m }) {
       className="pm-video"
       src={m.src}
       poster={m.poster}
+      onEnded={onDone}
       muted
-      loop
+      /* No loop: looping is what forced the clip to replay its opening while
+         waiting for a timer. It holds its last frame and reports `ended`, and
+         the parent moves on from there. */
       playsInline
       /* metadata, not none: with none the element has no frame AND some
          browsers skip the poster too, so the panel can sit empty until play
@@ -179,12 +180,12 @@ function Video({ m }) {
 
 const SHAPES = { rota: Rota, list: List, timer: Timer, bars: Bars, steps: Steps, video: Video };
 
-export default function PillarMoment({ moment }) {
+export default function PillarMoment({ moment, playing, onDone }) {
   const Shape = SHAPES[moment.shape];
   if (!Shape) return null;
   // Footage carries its own frame; wrapping it in the card would put a white
   // border round a screen recording that already has one.
-  if (moment.shape === 'video') return <Shape m={moment} />;
+  if (moment.shape === 'video') return <Shape m={moment} playing={playing} onDone={onDone} />;
   return (
     <div className={`pm-card pm-card--${moment.shape}`}>
       <Shape m={moment} />

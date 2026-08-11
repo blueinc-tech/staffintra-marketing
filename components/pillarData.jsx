@@ -25,6 +25,9 @@ export const PILLARS = [
     steps: [
       {
         label: 'Rota builder',
+        /* Held for the recording's full 20.8s plus a beat. On the shared 5.2s
+           dwell the carousel moved on a quarter of the way through it. */
+        dwell: 21600,
         /* The one moment that is real footage rather than a drawn card: the
            actual rota builder, shifts dragged into place and the week
            published. A drawing cannot make that case as well as the thing

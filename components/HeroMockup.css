@@ -326,10 +326,11 @@
   display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0;
   border-radius: 6px; background: var(--d-accent-soft); color: var(--d-accent);
 }
-/* Geometrically these are centred — measured, every glyph's ink sits on the
-   box centre. They still read left, which is what an eye beats a ruler at, so
-   they take a nudge. One value if it wants more or less. */
-.hm-rec-i svg { translate: 1.5px 0; }
+/* Geometrically these are centred: measured, every glyph's ink sits on the box
+   centre. They still read left, which is what an eye beats a ruler at. 1.5px
+   was invisible on a 13px glyph, so this is 4px — a third of the icon, which
+   cannot be missed. One value if it wants more or less. */
+.hm-rec-i svg { translate: 4px 0; }
 .hm-rec span { min-width: 0; display: block; }
 .hm-rec strong { display: block; font-family: var(--font-ui); font-size: .53rem; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hm-rec em { display: block; font-family: var(--font-ui); font-size: .46rem; font-style: normal; color: var(--d-ink-3); }

@@ -6,7 +6,11 @@ import { EyebrowGlyph, TurnArrow, StoryArrow } from './PillarMarks';
 
 /* How long each sub-feature holds before the next one takes over. The
    reference sits at roughly five seconds; long enough to read the moment,
-   short enough that the row visibly progresses while you are on the panel. */
+   short enough that the row visibly progresses while you are on the panel.
+
+   A step can override it, and one has to: the rota builder step plays a 20.8
+   second recording, and on the shared dwell the carousel moved on a quarter
+   of the way through it every time. */
 const DWELL = 5200;
 const RING = 39.27; // 2πr for r=6.25, the ring's circumference
 
@@ -38,13 +42,14 @@ export default function Pillar({ pillar }) {
 
   // Re-armed on every step change, so a click restarts the dwell rather than
   // inheriting whatever was left of the previous one.
+  const active = pillar.steps[step];
+  const dwell = active.dwell ?? DWELL;
+
   useEffect(() => {
     if (!inView || reduced) return undefined;
-    const id = setTimeout(() => setStep((s) => (s + 1) % pillar.steps.length), DWELL);
+    const id = setTimeout(() => setStep((s) => (s + 1) % pillar.steps.length), dwell);
     return () => clearTimeout(id);
-  }, [inView, reduced, step, pillar.steps.length]);
-
-  const active = pillar.steps[step];
+  }, [inView, reduced, step, dwell, pillar.steps.length]);
 
   return (
     <article className="pillar" id={`pillar-${pillar.id}`} ref={rootRef} data-tone={pillar.tone}>
@@ -90,7 +95,7 @@ export default function Pillar({ pillar }) {
                       stroke="currentColor"
                       strokeWidth="1.5"
                       strokeDasharray={RING}
-                      style={{ '--ring': RING, '--dwell': `${DWELL}ms` }}
+                      style={{ '--ring': RING, '--dwell': `${dwell}ms` }}
                     />
                   </svg>
                 ) : null}

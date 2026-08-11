@@ -52,13 +52,13 @@ export const PILLARS = [
       },
       {
         label: 'Time tracking',
+        /* 19.8s of footage plus a beat. */
+        dwell: 20600,
         moment: {
-          shape: 'timer',
-          title: 'Clock in',
-          site: 'Riverside site · Floor team',
-          time: '4:24:42',
-          note: 'Verified on site',
-          action: 'Clock out',
+          shape: 'video',
+          src: '/assets/time-tracking.mp4',
+          poster: '/assets/time-tracking-poster.jpg',
+          alt: 'Live timers running against open shifts, counting up from each clock-in',
         },
       },
       {

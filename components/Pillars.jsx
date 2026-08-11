@@ -58,9 +58,17 @@ export default function Pillars() {
     };
   }, []);
 
+  /* Scrolled by hand rather than with scrollIntoView. html carries a global
+     scroll-padding-top of 80px, which ADDS to the anchor's own scroll-margin
+     instead of replacing it, so the panel landed at 216px — below the 144px
+     spy line, and the tab never switched on its own click. Computing the
+     target puts the panel top just under the sticky bar, comfortably inside
+     the line. */
   const goTo = useCallback((i) => {
     const el = panelsRef.current[i];
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!el) return;
+    const top = window.scrollY + el.getBoundingClientRect().top - (NAV_H + TABS_H - 4);
+    window.scrollTo({ top, behavior: 'smooth' });
   }, []);
 
   return (
@@ -87,7 +95,7 @@ export default function Pillars() {
                 aria-hidden="true"
                 style={
                   slide.width
-                    ? { width: `${slide.width}px`, translate: `${slide.left}px 0` }
+                    ? { width: `${slide.width - 12}px`, translate: `${slide.left}px 0` }
                     : undefined
                 }
               />

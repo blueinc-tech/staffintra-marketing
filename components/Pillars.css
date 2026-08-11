@@ -38,16 +38,19 @@
   border: 1px solid var(--line);
 }
 
-/* Inset from the bar top and bottom only, so it reads as a button sitting in
-   the bar rather than a filled third of it, and still meets the bar's own
-   edge on the first and last tab. Width and offset are set from measurement;
-   the third here is only what the first paint uses. */
+/* Inset on all four sides, not just top and bottom. Flush against the bar's
+   own border, the outer two tabs showed a radius on three corners and a butt
+   join on the fourth; the middle one looked right only because it has no
+   border beside it. Even margin all round is what makes it read as one
+   button wherever it lands.
+
+   Left is the inset; the measured offset arrives as a translate on top. */
 .ptab-slide {
   position: absolute;
   top: 6px;
   bottom: 6px;
-  left: 0;
-  width: calc(100% / 3);
+  left: 6px;
+  width: calc(100% / 3 - 12px);
   background: var(--tint);
   border-radius: 2px;
   pointer-events: none;
@@ -83,8 +86,11 @@
 .ptab[data-tone='b'] .pt-mark { color: var(--warn); }
 .ptab[data-tone='c'] .pt-mark { color: var(--ok); }
 
-/* Clears the nav and the tab bar when a tab scrolls its panel into view. */
-.pillar-anchor { scroll-margin-top: 136px; }
+/* For hash navigation only — the tab buttons scroll by computation instead.
+   html sets scroll-padding-top: 80px, and that ADDS to this rather than
+   replacing it, so 56 here is what lands a panel at the 136px the sticky nav
+   and tab bar occupy. Setting 136 here put it at 216 and missed the spy line. */
+.pillar-anchor { scroll-margin-top: 56px; }
 
 /* ---------- panel ---------- */
 

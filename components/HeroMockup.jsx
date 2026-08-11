@@ -48,9 +48,9 @@ const IChev = () => <Ico d="M7.5 8.5 10 11l2.5-2.5" />;
 const IArrow = () => <Ico d="M4.5 10h10M10.5 6l4 4-4 4" />;
 const IRefresh = () => <Ico><path d="M16 10a6 6 0 1 1-1.9-4.4" {...s} /><path d="M16 3.5V7h-3.5" {...s} /></Ico>;
 const IHistory = () => <Ico><path d="M4.2 10a5.8 5.8 0 1 0 1.8-4.2" {...s} /><path d="M4 4.4V8h3.6M10 7v3.2l2.2 1.4" {...s} /></Ico>;
-const ICheck = () => <Ico d="M5.5 10.4 8.6 13.5 14.5 7" />;
+const ICheck = () => <Ico d="M4.4 10.2 8.4 14.2 15.6 5.8" />;
 const ICal = () => <Ico><rect x="3.5" y="4.8" width="13" height="11.7" rx="2" {...s} /><path d="M3.5 8.4h13M7 3.4v2.6M13 3.4v2.6" {...s} /></Ico>;
-const ILeave = () => <Ico d="M3.5 11.5 16.5 6.2l-2 5.6-4.6 1.3-1.6 3-1-3.6Z" />;
+const ILeave = () => <Ico d="M3.5 10.4 16.5 5.1l-2 5.6-4.6 1.3-1.6 3-1-3.6Z" />;
 const IFolder = () => <Ico><path d="M3.2 6.4a1.6 1.6 0 0 1 1.6-1.6h2.6l1.6 2h5.2a1.6 1.6 0 0 1 1.6 1.6v5.6a1.6 1.6 0 0 1-1.6 1.6H4.8a1.6 1.6 0 0 1-1.6-1.6Z" {...s} /></Ico>;
 const IPeople = () => <Ico><circle cx="8" cy="7.6" r="2.6" {...s} /><path d="M3.4 15.6a4.8 4.8 0 0 1 9.2 0M13.4 5.4a2.6 2.6 0 0 1 0 4.9M14.4 15.6a4.4 4.4 0 0 0-1.2-3" {...s} /></Ico>;
 /* Was a gear drawn as a ring with eight radial spokes, which is the same
@@ -60,7 +60,7 @@ const IPeople = () => <Ico><circle cx="8" cy="7.6" r="2.6" {...s} /><path d="M3.
 const ILayers = () => <Ico><path d="M10 3.2 3.4 6.6 10 10l6.6-3.4Z" {...s} /><path d="M3.4 10 10 13.4 16.6 10M3.4 13.4 10 16.8l6.6-3.4" {...s} /></Ico>;
 const ISliders = () => <Ico><path d="M3.2 7.2h8.2M15.2 7.2h1.6M3.2 12.8h1.6M8.6 12.8h8.2" {...s} /><circle cx="13.4" cy="7.2" r="1.8" {...s} /><circle cx="6.4" cy="12.8" r="1.8" {...s} /></Ico>;
 const IInbox = () => <Ico><path d="M3.4 11.2V6a1.4 1.4 0 0 1 1.4-1.4h10.4A1.4 1.4 0 0 1 16.6 6v5.2" {...s} /><path d="M3.4 11.2h3.4l1 2h4.4l1-2h3.4v2.8a1.4 1.4 0 0 1-1.4 1.4H4.8a1.4 1.4 0 0 1-1.4-1.4Z" {...s} /></Ico>;
-const IChart = () => <Ico d="M5.2 15.2V9.4M10 15.2V5.2M14.8 15.2v-4.2M3.2 16.8h13.6" />;
+const IChart = () => <Ico d="M5.2 14.2V8.4M10 14.2V4.2M14.8 14.2v-4.2M3.2 15.8h13.6" />;
 const IMega = () => <Ico><path d="M4.4 8.4v3a1 1 0 0 0 1 1h1.7l5.3 3.3V4.1L7.1 7.4H5.4a1 1 0 0 0-1 1Z" {...s} /><path d="M15 7.8a3.2 3.2 0 0 1 0 4.4" {...s} /></Ico>;
 const IDoc = () => <Ico><path d="M5.4 3.4h6l3.2 3.2v10H5.4Z" {...s} /><path d="M11.4 3.4v3.2h3.2M7.8 10h4.4M7.8 12.8h3" {...s} /></Ico>;
 const IDown = () => <Ico d="M10 4.5v8M6.4 9.2 10 12.8l3.6-3.6M4.8 15.6h10.4" />;

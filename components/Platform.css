@@ -34,24 +34,18 @@
 
 .plat-art {
   display: block;
-  width: 108%;
+  width: 104%;
   height: auto;
-  margin: 26px -4% -6%;
+  margin: 22px -2% -4%;
 }
-/* Fills are set on the polygons themselves; only the line weight is here. */
-.pa-plate polygon {
-  stroke: var(--ink);
-  stroke-opacity: .34;
-  stroke-width: 1;
-  stroke-linejoin: miter;
-  vector-effect: non-scaling-stroke;
-}
-.pa-guide line {
-  stroke: var(--ink);
-  stroke-opacity: .16;
-  stroke-width: 1;
-  stroke-dasharray: 5 6;
-  vector-effect: non-scaling-stroke;
+
+/* The handover path marches between the two hands. Travel is a whole multiple
+   of the 8px dash period, or the loop visibly jumps on repeat. */
+@keyframes platMarch { to { stroke-dashoffset: -16; } }
+.plat-march { animation: platMarch 1.6s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .plat-march { animation: none; }
 }
 
 /* Runs the box's closing rule out to both page edges. */

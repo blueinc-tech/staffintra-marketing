@@ -1,54 +1,96 @@
-import { boxFaces, p } from './iso';
+/* Shift handover, the companion to the hero's clock-in kiosk.
+   One worker holds the tablet out across the desk, the other reaches for it,
+   and a dashed line marches along the path between their hands with the
+   tablet riding its apex.
 
-/* The drawing behind the platform panel: three thin plates, offset and stacked,
-   with dashed guide lines running out along the isometric axes.
+   Same drawing system as HeroArt so the pair read as one hand: isometric at
+   dy/dx = 0.577, butt caps, mitred joins, 2px ink outlines, white and
+   accent-soft fills, Brand Purple for the thing being passed. The figures are
+   built exactly as the kiosk's are — shadow diamond, six-point torso, two
+   round-capped legs, circle head — so they are recognisably the same people.
 
-   Outline only and very faint, because it sits under live copy — the reference
-   does the same with its line drawing. The plates are the argument: separate
-   records, held in register, one above the other. */
+   This replaces three stacked isometric plates. Plates are abstract solids on
+   a 30-degree axis, which is the reference's device; a scene is not.
 
-/* Staggered along both plan axes as well as in height. Concentric plates read
-   as one nested tray; offset ones read as a stack. Faces are filled rather
-   than open, so a nearer plate hides the one behind it — three transparent
-   plates on top of each other is just a mesh of lines. */
-const PLATES = [
-  { x0: 0, x1: 4.6, y0: 0, y1: 3.0, z0: 0, z1: 0.4 },
-  { x0: 1.5, x1: 6.1, y0: 1.0, y1: 4.0, z0: 1.15, z1: 1.55 },
-  { x0: 3.0, x1: 7.6, y0: 2.0, y1: 5.0, z0: 2.3, z1: 2.7 },
+   The first version failed three ways, all fixed here: the desk was a block
+   tall enough to dominate the frame, the arms were single straight lines that
+   read as poles, and neither hand reached the tablet, so nothing was actually
+   being handed over. Arms now bend at an elbow and terminate exactly on the
+   arc's endpoints. */
+
+const ARC = { from: [200, 152], to: [320, 152], ctl: [260, 116] };
+/* Apex of the quadratic at t=0.5, which is where the tablet sits. */
+const APEX = [
+  0.25 * ARC.from[0] + 0.5 * ARC.ctl[0] + 0.25 * ARC.to[0],
+  0.25 * ARC.from[1] + 0.5 * ARC.ctl[1] + 0.25 * ARC.to[1],
 ];
 
-/* Long dashed runs along the +x axis, the device the reference uses to tie a
-   drawing to the grid it sits on. */
-const GUIDES = [
-  [p(-2.4, 0.4, 0), p(9.6, 0.4, 0)],
-  [p(-2.4, 2.6, 0), p(9.6, 2.6, 0)],
-  [p(-2.4, 5.2, 0), p(9.6, 5.2, 0)],
-];
+function Worker({ x, feet, tone, elbow, hand }) {
+  return (
+    <g>
+      <polygon
+        points={`${x},${feet - 16.8} ${x + 29.1},${feet} ${x},${feet + 16.8} ${x - 29.1},${feet}`}
+        fill="#ECE8FB"
+      />
+      <polygon
+        points={`${x - 10.5},${feet - 29} ${x - 11.5},${feet - 51} ${x - 7},${feet - 62} ${x + 7},${feet - 62} ${x + 11.5},${feet - 51} ${x + 10.5},${feet - 29}`}
+        fill={tone}
+        stroke="#17171C"
+        strokeWidth="2"
+      />
+      <line x1={x - 6.4} y1={feet - 29} x2={x - 7.4} y2={feet} stroke="#17171C" strokeWidth="3" strokeLinecap="round" />
+      <line x1={x + 6.6} y1={feet - 29} x2={x + 7.6} y2={feet} stroke="#17171C" strokeWidth="3" strokeLinecap="round" />
+      <circle cx={x} cy={feet - 72} r="9.5" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
+      {/* Shoulder, elbow, hand. The hand lands on the arc's end, so the reach
+          and the path are the same gesture rather than two near-misses. */}
+      <polyline
+        points={`${x + (hand[0] > x ? 10 : -10)},${feet - 58} ${elbow[0]},${elbow[1]} ${hand[0]},${hand[1]}`}
+        stroke="#17171C"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </g>
+  );
+}
 
 export default function PlatformArt() {
   return (
-    <svg className="plat-art" viewBox="-134 -32 372 232" fill="none" aria-hidden="true">
-      <g className="pa-guide">
-        {GUIDES.map(([a, b]) => {
-          const [x1, y1] = a.split(',');
-          const [x2, y2] = b.split(',');
-          return <line key={a} x1={x1} y1={y1} x2={x2} y2={y2} />;
-        })}
-      </g>
+    <svg className="plat-art" viewBox="0 0 520 300" fill="none" strokeLinecap="butt" strokeLinejoin="miter" aria-hidden="true">
+      <polygon points="260,60 460,175 260,290 60,175" fill="#FFFFFF" stroke="#D9D9DF" strokeWidth="2" />
+      <line x1="210" y1="88.75" x2="410" y2="203.75" stroke="#D9D9DF" strokeWidth="1.2" />
+      <line x1="160" y1="117.5" x2="360" y2="232.5" stroke="#D9D9DF" strokeWidth="1.2" />
+      <line x1="110" y1="146.25" x2="310" y2="261.25" stroke="#D9D9DF" strokeWidth="1.2" />
 
-      {/* Faces are filled here rather than in CSS: the fill is part of the
-          drawing, and it is what makes a nearer plate hide the one behind it.
-          Three open plates stacked on each other are just a mesh of lines. */}
-      {PLATES.map((plate) => {
-        const f = boxFaces(plate);
-        return (
-          <g className="pa-plate" key={plate.z0}>
-            <polygon points={f.top} fill="var(--surface)" />
-            <polygon points={f.right} fill="var(--surface-2)" />
-            <polygon points={f.left} fill="var(--surface)" />
-          </g>
-        );
-      })}
+      {/* A desk, not a plinth: low enough that the people carry the frame. */}
+      <polygon points="205,171.7 260,203.4 260,222 205,190.3" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
+      <polygon points="315,171.7 260,203.4 260,222 315,190.3" fill="#FFFFFF" stroke="#17171C" strokeWidth="2" />
+      <polygon points="260,140 315,171.7 260,203.4 205,171.7" fill="#ECE8FB" stroke="#17171C" strokeWidth="2" />
+      {/* the shift sheet lying on it */}
+      <polygon points="243,166 262,177 279,167.2 260,156.2" fill="#FFFFFF" stroke="#17171C" strokeWidth="1.6" />
+      <line x1="251" y1="166.5" x2="264" y2="174" stroke="#D9D9DF" strokeWidth="1.4" />
+      <line x1="256" y1="163.6" x2="269" y2="171.1" stroke="#D9D9DF" strokeWidth="1.4" />
+
+      <Worker x={150} feet={200} tone="#ECE8FB" elbow={[176, 150]} hand={ARC.from} />
+      <Worker x={370} feet={200} tone="#FFFFFF" elbow={[344, 150]} hand={ARC.to} />
+
+      <path
+        className="plat-march"
+        d={`M${ARC.from[0]} ${ARC.from[1]}Q${ARC.ctl[0]} ${ARC.ctl[1]} ${ARC.to[0]} ${ARC.to[1]}`}
+        stroke="#4024C0"
+        strokeWidth="2.4"
+        strokeDasharray="2 6"
+      />
+
+      {/* the tablet, riding the apex of the path it travels */}
+      <polygon
+        points={`${APEX[0] - 9},${APEX[1] + 7} ${APEX[0] + 9},${APEX[1] + 17.4} ${APEX[0] + 9},${APEX[1] - 7} ${APEX[0] - 9},${APEX[1] - 17.4}`}
+        fill="#4024C0"
+        stroke="#341DA0"
+        strokeWidth="1.8"
+      />
+      <line x1={APEX[0] - 4.5} y1={APEX[1] + 0.4} x2={APEX[0] + 3} y2={APEX[1] + 4.7} stroke="#FFFFFF" strokeWidth="1.8" />
+      <line x1={APEX[0] - 4.5} y1={APEX[1] - 5.6} x2={APEX[0] + 3} y2={APEX[1] - 1.3} stroke="#FFFFFF" strokeWidth="1.8" />
     </svg>
   );
 }

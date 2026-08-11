@@ -67,7 +67,7 @@
   transition: background-color .3s var(--ease), border-color .3s var(--ease);
 }
 
-.hm-i { width: 14px; height: 14px; flex-shrink: 0; }
+.hm-i { width: 13px; height: 13px; flex-shrink: 0; }
 .hm-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .hm-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
@@ -110,7 +110,7 @@
   padding: 4px 6px; border-radius: 4px;
   font-size: .52rem; color: var(--d-ink-2); white-space: nowrap;
 }
-.hm-s-item svg { width: 12px; height: 12px; flex-shrink: 0; color: var(--d-ink-3); }
+.hm-s-item svg { width: 13px; height: 13px; flex-shrink: 0; color: var(--d-ink-3); }
 .hm-s-item b { margin-left: auto; padding: 0 4px; border-radius: 6px; background: var(--d-accent); color: #fff; font-size: .4rem; }
 .hm-s-item.is-on { background: var(--d-accent-soft); color: var(--d-accent); font-weight: 500; }
 .hm-s-item.is-on svg { color: var(--d-accent); }
@@ -323,8 +323,8 @@
   padding: 7px 8px; border: 1px solid var(--d-line); border-radius: 5px;
 }
 .hm-rec-i {
-  display: grid; place-items: center; width: 20px; height: 20px; flex-shrink: 0;
-  border-radius: 5px; background: var(--d-accent-soft); color: var(--d-accent);
+  display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0;
+  border-radius: 6px; background: var(--d-accent-soft); color: var(--d-accent);
 }
 .hm-rec span { min-width: 0; display: block; }
 .hm-rec strong { display: block; font-family: var(--font-ui); font-size: .53rem; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

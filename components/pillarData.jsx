@@ -90,15 +90,13 @@ export const PILLARS = [
     steps: [
       {
         label: 'Leave requests',
+        /* 18.6s of footage after the two-second intro fade was trimmed. */
+        dwell: 18600,
         moment: {
-          shape: 'list',
-          title: 'Requests',
-          meta: '2 waiting on you',
-          rows: [
-            { name: 'Sofia Reyes', meta: 'Annual leave · 12–14 Aug', chip: 'Approve', tone: 'ok' },
-            { name: 'Tunde Okafor', meta: 'Shift swap · Sat 15 Aug', chip: 'Approve', tone: 'ok' },
-            { name: 'Priya Sharma', meta: 'Overtime · approved just now', chip: 'Approved', tone: 'quiet' },
-          ],
+          shape: 'video',
+          src: '/assets/leave-requests.mp4',
+          poster: '/assets/leave-requests-poster.jpg',
+          alt: 'The approvals queue: a leave request opened with balance and cover alongside it, then approved',
         },
       },
       {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import useReduced from './useReduced';
 import './motion.css';
 
@@ -49,14 +49,19 @@ export function SplitText({ text, as: Tag = 'span', className = '', stagger = 52
   return (
     <Tag ref={ref} className={`mo-split${on ? ' is-in' : ''} ${className}`.trim()}>
       <span className="sr-only">{text}</span>
+      {/* The inter-word space is a sibling of the clipping wrapper, never a
+          child of it. Inside an overflow:hidden inline-block a trailing space
+          collapses away, which runs every word together. */}
       <span aria-hidden="true">
         {words.map((w, i) => (
-          <span className="mo-split-w" key={w + i}>
-            <span className="mo-split-i" style={{ '--mo-d': `${start + i * stagger}ms` }}>
-              {w}
+          <Fragment key={w + i}>
+            <span className="mo-split-w">
+              <span className="mo-split-i" style={{ '--mo-d': `${start + i * stagger}ms` }}>
+                {w}
+              </span>
             </span>
             {i < words.length - 1 ? ' ' : null}
-          </span>
+          </Fragment>
         ))}
       </span>
     </Tag>
@@ -74,10 +79,12 @@ export function BlurText({ text, as: Tag = 'span', className = '', stagger = 40 
       <span className="sr-only">{text}</span>
       <span aria-hidden="true">
         {words.map((w, i) => (
-          <span className="mo-blur-w" key={w + i} style={{ '--mo-d': `${i * stagger}ms` }}>
-            {w}
-            {i < words.length - 1 ? ' ' : null}
-          </span>
+          <Fragment key={w + i}>
+            <span className="mo-blur-w" style={{ '--mo-d': `${i * stagger}ms` }}>
+              {w}
+            </span>
+            {i < words.length - 1 ? ' ' : null}
+          </Fragment>
         ))}
       </span>
     </Tag>

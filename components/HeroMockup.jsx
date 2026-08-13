@@ -5,7 +5,7 @@ import Brand from './Brand';
 import './HeroMockup.css';
 
 /* The product surface in the hero, rebuilt to the real Home screen rather than
-   invented: greeting, the NOW / TODAY / THIS WEEK / ELSEWHERE strip, My Work,
+   invented: greeting, the NOW / TODAY / PRODUCTIVITY / WORKDAY strip, My Work,
    Continue where you left off, the Approvals and schedule pair, the week chart
    and announcements, and the right rail of quick actions, team today and
    celebrations.
@@ -332,16 +332,21 @@ export default function HeroMockup() {
               <strong className="hm-mono">5h 24m</strong>
               <span className="hm-sub">3 sessions</span>
             </div>
+            {/* Productivity and Workday, not "This week" and "Elsewhere".
+                The real briefing strip is NOW / TODAY / PRODUCTIVITY /
+                WORKDAY; the first version of this mockup invented the last
+                two before the app had been read. */}
             <div>
-              <span className="hm-k">This week</span>
+              <span className="hm-k">Productivity</span>
               <strong className="hm-mono">26h 10m</strong>
-              <span className="hm-sub">of 40h target</span>
+              <span className="hm-sub">This month</span>
               <span className="hm-link">View timesheet →</span>
             </div>
             <div>
-              <span className="hm-k">Elsewhere</span>
-              <span className="hm-else"><strong className="hm-mono">14:27</strong><strong className="hm-mono">09:27</strong></span>
-              <span className="hm-else hm-sub"><span>London</span><span>Toronto</span></span>
+              <span className="hm-k">Workday</span>
+              <strong>Active</strong>
+              <span className="hm-sub">Clocked in 09:02</span>
+              <span className="hm-sub">5h 24m worked today</span>
             </div>
           </div>
 
@@ -496,7 +501,7 @@ function Phone({ dark, hide }) {
 
         <div className="hm-p-scroll">
           <div className="hm-p-greet">
-            <strong>Good afternoon, Fortune</strong>
+            <strong>Good morning, Samuel</strong>
             <em>Wed 12 Aug · Lagos</em>
           </div>
 

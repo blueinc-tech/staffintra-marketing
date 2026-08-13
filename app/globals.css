@@ -733,3 +733,15 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 .hero-chips li::before{
   content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;
 }
+
+/* Pricing page opens on its own header rather than the shared title band:
+   the matrix is the page, so the preamble above it stays short. */
+.pricing-hero{padding:124px 0 34px;background:var(--surface)}
+.pricing-hero h1{
+  margin-top:26px;max-width:17ch;
+  font-size:clamp(2rem,3.8vw,3rem);font-weight:800;line-height:1.06;letter-spacing:-.024em;
+}
+.pricing-hero p{
+  margin-top:16px;max-width:56ch;
+  font-size:1.0625rem;line-height:1.5;color:var(--ink-2);
+}

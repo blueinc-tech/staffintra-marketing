@@ -1,0 +1,136 @@
+/* Comparison matrix. Borders-only, same flat language as the rest of the
+   site: the table IS the page here, so it carries no card chrome of its own. */
+
+.pmx { padding: 8px 0 clamp(48px, 6vw, 80px); background: var(--surface); }
+
+.pmx-sr {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- billing toggle ---------- */
+
+.pmx-toggle-row {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding-bottom: 22px;
+}
+.pmx-toggle {
+  display: inline-flex; padding: 3px;
+  border: 1px solid var(--line-strong); border-radius: 9999px;
+  background: var(--surface);
+}
+.pmx-toggle button {
+  padding: 8px 18px; border: 0; border-radius: 9999px; cursor: pointer;
+  background: none; color: var(--ink-2);
+  font-family: var(--font-ui); font-size: .875rem; font-weight: 500;
+  transition: background-color .18s var(--ease), color .18s var(--ease);
+}
+.pmx-toggle button[aria-pressed='true'] { background: var(--accent); color: #fff; }
+.pmx-note { font-family: var(--font-ui); font-size: .8125rem; color: var(--ink-3-text); }
+
+/* ---------- table ---------- */
+
+/* The container scrolls, not the page: a five-column matrix cannot fit a
+   phone, and a horizontally scrolling body would break every other section. */
+.pmx-scroll { overflow-x: auto; overscroll-behavior-x: contain; }
+
+.pmx-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--font-ui);
+  text-align: left;
+}
+
+/* Plan header. Sticky under the 64px nav so the column stays labelled. */
+.pmx-table thead th {
+  position: sticky;
+  top: 64px;
+  z-index: 3;
+  background: var(--surface);
+  vertical-align: top;
+  padding: 20px 18px 22px;
+  border-bottom: 1px solid var(--line-strong);
+}
+.pmx-corner { width: 34%; background: var(--surface); }
+
+.pmx-plan { width: 16.5%; border-left: 1px solid var(--line); }
+.pmx-plan.is-featured { background: var(--accent-soft); }
+
+.pmx-plan-name {
+  display: block;
+  font-family: var(--font-display); font-weight: 700; font-size: 1.0625rem;
+  letter-spacing: -.012em; color: var(--ink);
+}
+.pmx-plan-price {
+  display: block; margin-top: 8px;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+  letter-spacing: -.02em; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.pmx-plan-unit,
+.pmx-plan-best {
+  display: block; font-size: .6875rem; color: var(--ink-3-text); line-height: 1.4;
+}
+.pmx-plan-unit { margin-top: 2px; }
+.pmx-plan-best { margin-top: 8px; }
+.pmx-plan-cta {
+  margin-top: 14px; width: 100%;
+  font-size: .8125rem; padding: 8px 12px;
+}
+
+/* Group heading rows break the matrix into readable runs. */
+.pmx-group th {
+  padding: 26px 0 10px;
+  font-family: var(--font-ui);
+  font-size: .6875rem; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3-text);
+  border-bottom: 1px solid var(--line);
+}
+
+.pmx-table tbody th[scope='row'] {
+  padding: 13px 18px 13px 0;
+  font-size: .9375rem; font-weight: 450; color: var(--ink-2);
+  border-bottom: 1px solid var(--line);
+}
+.pmx-table tbody td {
+  padding: 13px 18px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+.pmx-table tbody td.is-featured { background: var(--accent-soft); }
+
+/* Zebra by row hover rather than by stripe: 25 rows of stripes fights the
+   hairline grid, but tracking the row you are on genuinely helps. */
+.pmx-table tbody tr:not(.pmx-group):hover th[scope='row'],
+.pmx-table tbody tr:not(.pmx-group):hover td { background: var(--surface-2); }
+.pmx-table tbody tr:not(.pmx-group):hover td.is-featured { background: #E4DEF8; }
+
+.pmx-yes { display: inline-grid; place-items: center; color: var(--accent); }
+.pmx-yes svg { width: 15px; height: 15px; }
+.pmx-no {
+  display: inline-block;
+  width: 11px; height: 1px;
+  background: var(--line-strong);
+  vertical-align: middle;
+}
+.pmx-val {
+  font-size: .8125rem; color: var(--ink-2); line-height: 1.35; display: block;
+}
+
+.pmx-foot {
+  margin-top: 26px; max-width: 62ch;
+  font-family: var(--font-ui); font-size: .875rem; line-height: 1.55;
+  color: var(--ink-3-text);
+}
+
+@media (max-width: 600px) {
+  .pmx-table thead th { position: static; }
+  .pmx-plan-price { font-size: 1.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pmx-toggle button { transition: none; }
+}

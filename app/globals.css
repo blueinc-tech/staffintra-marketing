@@ -745,3 +745,11 @@ main{margin:0 var(--rail);position:relative;z-index:1}
   margin-top:16px;max-width:56ch;
   font-size:1.0625rem;line-height:1.5;color:var(--ink-2);
 }
+
+/* Visually hidden but read aloud. The split-text headings keep the real
+   string here and hand only the visual copy to the per-word spans, so a
+   screen reader gets a heading rather than a list of words. */
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}

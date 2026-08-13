@@ -1,0 +1,52 @@
+/* The outer block reserves scroll distance; the inner sticks while the card
+   resizes inside it. --se-extra goes to 0 under reduced motion, which
+   collapses the reserved distance so there is no empty scrolling. */
+
+.se {
+  position: relative;
+  height: calc(100vh + var(--se-extra, 90vh));
+}
+
+.se-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.se-card {
+  position: relative;
+  max-width: 1440px;
+  border: 1px solid var(--line);
+  /* Squares off as it reaches full bleed, so the corner radius never reads
+     as a floating card once it fills the frame. */
+  border-radius: calc(6px * (1 - var(--se-p, 0)));
+  overflow: hidden;
+  background: var(--surface);
+}
+.se-card > * { display: block; width: 100%; }
+
+.se-caption {
+  font-family: var(--font-ui);
+  font-size: .8125rem;
+  color: var(--ink-3-text);
+  transition: opacity .3s var(--ease);
+}
+
+@media (max-width: 720px) {
+  .se { height: auto; }
+  .se-sticky { position: static; height: auto; padding: 24px 0; }
+  .se-card { width: 100% !important; border-radius: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .se { height: auto; }
+  .se-sticky { position: static; height: auto; padding: 24px 0; }
+  .se-card { width: 100% !important; }
+  .se-caption { opacity: 1 !important; }
+}

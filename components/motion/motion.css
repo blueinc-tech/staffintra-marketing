@@ -1,0 +1,134 @@
+/* Shared motion primitives. Every rule here has a reduced-motion escape, and
+   every animated element's resting state is its FINISHED state, so a failure
+   to run leaves content visible rather than invisible. */
+
+/* ---------- Reveal ---------- */
+
+.mo-reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--mo-y, 18px), 0);
+  transition:
+    opacity .62s var(--ease) var(--mo-d, 0ms),
+    transform .62s var(--ease) var(--mo-d, 0ms),
+    filter .62s var(--ease) var(--mo-d, 0ms);
+  will-change: opacity, transform;
+}
+.mo-reveal--soft {
+  transform: none;
+  filter: blur(6px);
+}
+.mo-reveal.is-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ---------- SplitText ---------- */
+
+/* The wrapper clips, the word slides inside it, which is what makes the
+   letters appear to rise out of the line rather than fade over it. */
+.mo-split { display: inline; }
+.mo-split-w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: .06em;
+  margin-bottom: -.06em;
+}
+.mo-split-i {
+  display: inline-block;
+  transform: translate3d(0, 105%, 0);
+  transition: transform .78s cubic-bezier(.22, .61, .36, 1) var(--mo-d, 0ms);
+}
+.mo-split.is-in .mo-split-i { transform: none; }
+
+/* ---------- BlurText ---------- */
+
+.mo-blur-w {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translate3d(0, 8px, 0);
+  transition:
+    opacity .5s var(--ease) var(--mo-d, 0ms),
+    filter .5s var(--ease) var(--mo-d, 0ms),
+    transform .5s var(--ease) var(--mo-d, 0ms);
+}
+.mo-blur.is-in .mo-blur-w { opacity: 1; filter: none; transform: none; }
+
+/* ---------- RotatingText ---------- */
+
+.mo-rot {
+  display: inline-grid;
+  vertical-align: bottom;
+  overflow: hidden;
+  text-align: left;
+}
+.mo-rot > span {
+  grid-area: 1 / 1;
+  display: block;
+  color: var(--accent);
+  transition: transform .5s cubic-bezier(.22, .61, .36, 1), opacity .5s var(--ease);
+}
+.mo-rot > span[data-s='out'] { transform: translate3d(0, -110%, 0); opacity: 0; }
+.mo-rot > span[data-s='in'] { transform: none; opacity: 1; }
+.mo-rot > span[data-s='wait'] { transform: translate3d(0, 110%, 0); opacity: 0; }
+
+/* ---------- Spotlight ---------- */
+
+/* Hover feedback by light rather than by elevation: this brand has its
+   shadow tokens set to none, so a card cannot lift. */
+.mo-spot { position: relative; isolation: isolate; }
+.mo-spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity .34s var(--ease);
+  background: radial-gradient(
+    260px circle at var(--sx, 50%) var(--sy, 50%),
+    color-mix(in srgb, var(--accent) 9%, transparent),
+    transparent 62%
+  );
+  pointer-events: none;
+}
+.mo-spot:hover::before,
+.mo-spot:focus-within::before { opacity: 1; }
+.mo-spot > * { position: relative; z-index: 1; }
+
+/* ---------- Magnet ---------- */
+
+.mo-magnet { display: inline-block; transition: transform .32s cubic-bezier(.22, .61, .36, 1); }
+
+/* ---------- GradualBlur ---------- */
+
+/* A stack of increasingly blurred, increasingly masked layers. One layer
+   with a mask cannot ramp blur strength, which is why this is six. */
+.mo-fade-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+.mo-fade-edge > span {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(var(--b));
+  -webkit-backdrop-filter: blur(var(--b));
+  mask-image: linear-gradient(to top, #000 var(--m0), transparent var(--m1));
+  -webkit-mask-image: linear-gradient(to top, #000 var(--m0), transparent var(--m1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mo-reveal,
+  .mo-split-i,
+  .mo-blur-w,
+  .mo-rot > span,
+  .mo-magnet,
+  .mo-spot::before { transition: none !important; }
+  .mo-reveal { opacity: 1; transform: none; filter: none; }
+  .mo-split-i { transform: none; }
+  .mo-blur-w { opacity: 1; filter: none; transform: none; }
+}

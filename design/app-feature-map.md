@@ -115,11 +115,81 @@ builder.**
 TASK COMPLETION · PENDING APPROVALS, plus a **Productivity trend** chart of
 "Active, productive, and idle time by week".
 
-## Not yet read
+## Second pass: what clicking found
 
-`/dashboard/cases`, `/dashboard/tools`, `/dashboard/apps`, `/dashboard/inbox`,
-`/dashboard/workspaces`, `/dashboard/tasks`. Cases and Apps returned only the
-shell on the first pass and need a revisit.
+The first pass only read default tabs. These came from actually clicking.
+
+### Staff Lifecycle, Intake tab
+
+> "Collect a candidate's details before their first day. Submitting an intake
+> does not create an account."
+
+That last clause is a real product decision worth repeating on the site: you
+can gather a candidate's details without provisioning them.
+
+### Staff Lifecycle, Workflows tab
+
+Titled **Onboarding Templates**. Each template carries:
+
+`name` · type (**Onboarding** / **Offboarding**) · description ·
+`N tasks · N uses · N days` · optionally **Auto-assign enabled** · `by <author>`
+
+Shipped defaults are Standard Employee Onboarding (4 tasks, 14 days,
+auto-assign on), Standard Offboarding (4 tasks, 7 days) and Standard Staff
+Intake (3 tasks, 14 days). So this is a **reusable journey builder with
+auto-assignment and a usage count**, not a checklist.
+
+### HR, Org chart tab
+
+Real org chart: each manager heads a block with a role chip, their direct
+reports below as cards with avatar, name and role. Managers with nobody under
+them read **"No direct reports."**
+
+### Tools Hub (`/dashboard/tools`)
+
+> "Your centralized launcher for all workplace tools and integrations"
+
+Categories are **Communication · Recruitment · Finance · General**, each with a
+tool count.
+
+**Our integrations section invented four different categories** (HR & people,
+Payroll, Time & attendance, Finance). Only Finance overlaps. The board should
+follow the product.
+
+### Case Management (`/dashboard/cases`)
+
+The richest module in the app, and the one the site flattens most.
+
+> "Track operational issues, escalations, and resolutions across your workspace."
+
+- Counters: TOTAL · OPEN · ESCALATED · RESOLVED · CLOSED
+- **SLA tracking**: "SLA breaches: 0 · Avg: —"
+- **Eight statuses**: Open, Under Review, Pending Response, Escalated,
+  In Investigation, Resolved, Closed, Reopened
+- **Five case types**: General Operations Issue, Payroll Dispute,
+  Compliance Incident, HR Complaint, Facility Escalation
+- **Five priorities**: Low, Medium, High, Critical, Emergency
+- **Five views**: Dashboard · Kanban · Table · Timeline · Calendar
+- Analytics: Cases by Status, Priority Mix, Workload by Assignee
+- Filters by workspace, status, type, priority, search, "My cases only"
+
+The site currently says "Model any process as a case." The truth is far more
+specific and far more saleable: an SLA-backed case system with five views.
+
+### Attendance filters
+
+Status filter: Present · Late · Remote · WFH · **Outside geofence** · Absent.
+Group filter is by **team** (the account has HQ, Dev and Marketing teams), so
+teams are a first-class grouping.
+
+## Still unread
+
+`/dashboard/inbox`, `/dashboard/workspaces`, `/dashboard/tasks`,
+`/dashboard/apps`, `/dashboard/reports` beyond its default view, and any
+populated state anywhere. The account is nearly empty (0 approvals, 0 cases,
+0 announcements, 1 attendance record), so every module was seen in its empty
+state. Populated screens would be worth a second visit before building
+screenshots of them.
 
 ## What this changes on the marketing site
 

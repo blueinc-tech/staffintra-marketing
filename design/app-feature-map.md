@@ -182,14 +182,121 @@ Status filter: Present · Late · Remote · WFH · **Outside geofence** · Absen
 Group filter is by **team** (the account has HQ, Dev and Marketing teams), so
 teams are a first-class grouping.
 
+## Third pass: forms, view modes and the profile
+
+The pass that actually settles what the product is.
+
+### Gated routes
+
+`/dashboard/apps`, `/dashboard/settings/billing/plan` and
+`/dashboard/performance` all **silently redirect to `/dashboard`**, whether
+navigated or clicked from their own links in the UI. Either unbuilt or
+permission-gated for a Staff-level account. So there is no confirmed pricing
+inside the product, and **our pricing page remains entirely invented**.
+
+### Approval request types, all fifteen
+
+The single most useful list in the app. `New request` opens a picker:
+
+- **Attendance**: Early Departure · Lateness
+- **Leave**: Annual · Bereavement · Casual · Emergency · Leave Extension ·
+  Maternity · Paternity · Sick · **Study**
+- **Shift**: Location Change · Schedule Adjustment · Shift Change
+- **Other**: **Upfront Loan Request**
+
+Two things follow. **Shift is still a live concept**, so the shift vocabulary
+swept out during the pivot was over-corrected: the product does not build
+rotas, but it does handle shift changes. And **Study Leave** and **Upfront
+Loan Request** are strongly Nigerian-workplace features that no imported
+template would have, which makes them worth naming on the site.
+
+### Case creation, full field set
+
+`New Case` reveals more than the filters did:
+
+`Title` · `Case Type` (5) · `Status` (8) · `Priority` (5) ·
+**`Severity`** (Low, Moderate, High, Critical) · `Due Date` ·
+**`Source`** (Internal, Email, Phone, Chat, Portal) · `Assign To` ·
+`Description` · **`Mark as confidential case`**
+
+Priority and severity are **separate axes**, cases carry an **intake
+channel**, and there is a **confidentiality flag**. Timeline view is
+lifecycle events per case. This is a genuine case-management product.
+
+### The staff profile, eleven tabs
+
+`Personal · Job · Documents · Training · Requests · Company Devices ·
+Performance · Timesheets · Org Chart · Security · Connected Accounts`
+
+**Documents, Training, Company Devices and Connected Accounts are four
+product areas the site has never mentioned.** Company Devices in particular
+is asset tracking, which no competitor positioning of ours accounts for.
+
+Record shape: vitals (email, phone, department, staff type), join date, and
+manager with their role. Personal fields include staff ID, address, birthday
+and a three-part **emergency contact**.
+
+**Availability status** is a real presence feature: Available ("You appear
+online"), Busy ("Limit interruptions"), Do Not Disturb ("Silence
+notifications").
+
+A persistent nudge reads **"Complete your onboarding process (25% done)"**
+naming the template, which is the lifecycle workflow applied to a real person
+with progress tracked.
+
+### Performance is reviews, not scores
+
+The Performance tab reads **"No performance reviews yet."** There is no grade,
+no formula and no A/B/C/D scale anywhere in the product. Our Productivity
+pillar's "82 / 100" content is invented end to end and has to go.
+
+### Workspaces and tasks
+
+Breadcrumb `Apps / Work / Workspaces`. Tabs: **Boards · My Tasks · Reports ·
+Activity · Settings**. Boards show `N tasks · N done` with a percent ring.
+
+My Tasks has **four view modes** (List, Board, Calendar, Dashboard), plus
+Sort, Group, Options and an assignee filter, counters for due today and
+**overdue**, and grouping into `DO TODAY` / `NO DUE DATE`.
+
+**Project and task management is an entire product area the site is silent
+on.**
+
+### Inbox
+
+`50 unread across your workspace`. Tabs: **Chats · Groups · Approvals ·
+Slack**. A conversation carries a details rail with the person's **local
+time**, shared media and shared files.
+
+**Slack is a real, shipped integration.** A company announcement separately
+confirms **Google sign-in** went live. Those two are the real integration
+story, against the six invented systems on our wiring board.
+
+### Announcements
+
+Each post carries a **priority** (Normal), an **audience** (Company-wide), a
+date, an author, and its own **comments and replies** thread.
+
+### Populated state, at last
+
+A later load showed real figures: `TODAY 8h 00m · 1 session`,
+`PRODUCTIVITY 24h 00m this month`, and a **My week** bar chart with per-day
+hours and an `Avg 8.0h / day` footer. **Team today** is a donut with
+In office / Remote / On leave / Not in yet, which is what our hero mockup
+already draws, so that widget is validated.
+
+### Dark mode
+
+The app ships a real dark theme: near-black ground around `#0E1014`, panels
+around `#1A1D24`, hairlines lifting to roughly `#262A33`, and the teal accent
+holding rather than shifting. Captured and the setting restored.
+
 ## Still unread
 
-`/dashboard/inbox`, `/dashboard/workspaces`, `/dashboard/tasks`,
-`/dashboard/apps`, `/dashboard/reports` beyond its default view, and any
-populated state anywhere. The account is nearly empty (0 approvals, 0 cases,
-0 announcements, 1 attendance record), so every module was seen in its empty
-state. Populated screens would be worth a second visit before building
-screenshots of them.
+`/dashboard/reports` beyond its landing view, the Workspaces Activity and
+Settings tabs, the profile's Documents / Training / Company Devices /
+Security / Connected Accounts tabs, the `⌘K` command palette, the
+notifications panel, and the Tools Hub with any tools actually installed.
 
 ## What this changes on the marketing site
 

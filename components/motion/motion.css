@@ -4,7 +4,7 @@
 
 /* ---------- Reveal ---------- */
 
-.mo-reveal {
+[data-mo] .mo-reveal {
   opacity: 0;
   transform: translate3d(0, var(--mo-y, 18px), 0);
   transition:
@@ -13,7 +13,7 @@
     filter .62s var(--ease) var(--mo-d, 0ms);
   will-change: opacity, transform;
 }
-.mo-reveal--soft {
+[data-mo] .mo-reveal--soft {
   transform: none;
   filter: blur(6px);
 }
@@ -35,8 +35,8 @@
   padding-bottom: .06em;
   margin-bottom: -.06em;
 }
-.mo-split-i {
-  display: inline-block;
+.mo-split-i { display: inline-block; }
+[data-mo] .mo-split-i {
   transform: translate3d(0, 105%, 0);
   transition: transform .78s cubic-bezier(.22, .61, .36, 1) var(--mo-d, 0ms);
 }
@@ -44,8 +44,8 @@
 
 /* ---------- BlurText ---------- */
 
-.mo-blur-w {
-  display: inline-block;
+.mo-blur-w { display: inline-block; }
+[data-mo] .mo-blur-w {
   opacity: 0;
   filter: blur(8px);
   transform: translate3d(0, 8px, 0);

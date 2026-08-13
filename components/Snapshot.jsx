@@ -1,4 +1,5 @@
 import { TurnArrow } from './PillarMarks';
+import Reveal from './motion/Reveal';
 import './Snapshot.css';
 
 /* THE PLATFORM band, from v3. The hero already shows the home command center
@@ -34,7 +35,7 @@ export default function Snapshot() {
 
       <div className="snap-frame has-frame">
         <div className="container">
-          <div className="snap-browser">
+          <Reveal className="snap-browser" distance={22}>
             <div className="snap-bar">
               <span className="snap-dots" aria-hidden="true"><i /><i /><i /></span>
               <span className="snap-url">app.staffintra.com/blueinc/timesheets</span>
@@ -72,7 +73,7 @@ export default function Snapshot() {
                 </span>
               </div>
             </div>
-          </div>
+          </Reveal>
 
           <a className="turn-link snap-more" href="/platform">
             <TurnArrow />

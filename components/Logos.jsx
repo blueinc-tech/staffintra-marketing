@@ -43,7 +43,7 @@ const TILES = [
   },
   {
     id: 'primeretail', name: 'PRIMERETAIL', s: 'u4c', mark: 'b', study: true,
-    quote: 'Performance grades everyone can see ended the appraisal arguments. One formula, the same for all of us.',
+    quote: 'Every escalation gets an owner and a clock. We stopped losing payroll disputes in an inbox.',
     person: 'Tunde Adeyemi', role: 'Regional Manager', org: 'PrimeRetail · Retail', img: 'tunde',
   },
   { id: 'greentree', name: 'Greentree', s: 'm5c', mark: 'a', study: false },

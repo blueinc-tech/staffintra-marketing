@@ -1,329 +1,384 @@
-import { PageShell, PageSplit } from '../../components/PageBits';
+import Nav from '../../components/Nav';
+import Footer from '../../components/Footer';
+import Cta from '../../components/Cta';
+import CloseCta from '../../components/CloseCta';
+import Reveal from '../../components/motion/Reveal';
+import { Spotlight } from '../../components/motion/Surfaces';
 import PillarMoment from '../../components/PillarMoment';
+import { TurnArrow } from '../../components/PillarMarks';
+import '../../components/ProductPage.css';
 
 export const metadata = {
   title: 'StaffIntra: Product',
-  description: 'The full StaffIntra platform: time and attendance, productivity and performance, payroll and people operations in one place.',
+  description:
+    'The modules inside StaffIntra: time and attendance, workspaces and work logs, and the people operations that run on the same record.',
 };
 
-/* The deeper read of the product story: three groups that mirror the
-   homepage pillars. Time gets the real footage, productivity and operations
-   get drawn cards, and every anchor here is a target the nav and the other
-   subpages link to. */
+/* The spine.
+
+   Every other subpage on this site argues in bordered two-column splits, and
+   the product page is the one that cannot: it is a list of eleven modules, and
+   eleven alternating boxes would read as a catalogue nobody finishes. So this
+   page is a single vertical run with a sticky index beside it. The index is
+   the only navigation, the hairline between blocks is the only separator, and
+   each visual sits under its own copy rather than beside it, which keeps the
+   measure of the paragraphs constant all the way down.
+
+   The index is a plain list of anchors. Marking the current one would need
+   scroll state, and this file is a server component on purpose, so every tick
+   is drawn the same and the page stays free of JavaScript it does not need. */
+
+const GROUPS = [
+  {
+    id: 'time',
+    label: 'Time & attendance',
+    title: 'Every hour, captured once.',
+    lede: 'Clock events, the attendance board, timesheets and fifteen kinds of request, all reading from the same record.',
+    link: { href: '/#demo', text: 'See a clock-in on your own policies' },
+    features: [
+      {
+        id: 'clock-in',
+        name: 'Smart clock-in',
+        body: 'One tap starts the day, from a desktop at head office or a phone on site. The clock event carries its own context: the device it came from, the place it was taken, and the timezone it was taken in.',
+        bullets: [
+          'Verified sessions, each one stamped with an IANA timezone.',
+          'A location string on every clock event, including breaks and clock-out.',
+          'Lateness flagged against the schedule, without anyone having to report it.',
+        ],
+        moment: {
+          shape: 'list',
+          title: 'Clock event',
+          meta: 'Africa/Lagos',
+          rows: [
+            { name: 'Clocked in', meta: '08:58 · inside geofence', chip: 'Present', tone: 'ok' },
+            { name: 'Break', meta: '12:30 to 13:15', chip: '45m', tone: 'quiet' },
+            { name: 'Clocked out', meta: '17:30 · 8h 00m worked', chip: 'Complete', tone: 'accent' },
+          ],
+        },
+      },
+      {
+        id: 'attendance-board',
+        name: 'The attendance board',
+        body: 'One board for the whole team, not one report per manager. Filter it by status or by team, move between a day, a week and a month, and take the whole thing out as CSV when finance asks for it.',
+        bullets: [
+          'Present, Late, Remote / WFH, Outside geofence and Absent are first-class statuses.',
+          'Day, week or month, with teams as the grouping.',
+          'Export to CSV straight from the board.',
+        ],
+        moment: {
+          shape: 'list',
+          title: 'Attendance board',
+          meta: 'Today · 49 records',
+          rows: [
+            { name: 'Present', meta: 'Clocked in on time', chip: '34', tone: 'ok' },
+            { name: 'Late', meta: 'After the scheduled start', chip: '3', tone: 'warn' },
+            { name: 'Remote / WFH', meta: 'Working away from a site', chip: '9', tone: 'accent' },
+            { name: 'Outside geofence', meta: 'Clocked in off the site boundary', chip: '2', tone: 'due' },
+            { name: 'Absent', meta: 'No clock event today', chip: '1', tone: 'quiet' },
+          ],
+        },
+      },
+      {
+        id: 'timesheets',
+        name: 'Timesheets',
+        body: 'Timesheets are built from clock events, with breaks deducted, so nothing is typed twice. Payroll gets the number the clock recorded, and the week that produced it is one click away.',
+        bullets: [
+          'No re-entry: the timesheet is the clock record, totaled.',
+          'Variance stays visible, so a short week is a question rather than a surprise.',
+          'Sign-off happens per person, on the week that was actually worked.',
+        ],
+        moment: {
+          shape: 'bars',
+          title: 'Timesheet · this week',
+          meta: 'Avg 7.9h / day',
+          rows: [
+            { label: 'Monday', value: '8h 10m', p: 0.82 },
+            { label: 'Tuesday', value: '7h 45m', p: 0.78 },
+            { label: 'Wednesday', value: '8h 30m', p: 0.85 },
+            { label: 'Thursday', value: '8h 00m', p: 0.8 },
+            { label: 'Friday', value: '6h 50m', p: 0.68 },
+          ],
+        },
+      },
+      {
+        id: 'approvals',
+        name: 'Approvals',
+        body: 'Fifteen request types, grouped four ways, each with its own form. A request opens with its details, its timeline and a decision panel, so approving is reading one screen instead of chasing three messages.',
+        body2: 'Study leave and upfront loan requests are on that list because this was built for Nigerian workplaces, where both are ordinary and neither arrives in an imported template.',
+        bullets: [
+          'Attendance: early departure, lateness.',
+          'Leave: annual, bereavement, casual, emergency, extension, maternity, paternity, sick, study.',
+          'Shift: location change, schedule adjustment, shift change.',
+          'Other: upfront loan request.',
+        ],
+        moment: {
+          shape: 'list',
+          title: 'Request types',
+          meta: '15, in four groups',
+          rows: [
+            { name: 'Attendance', meta: 'Early departure, lateness', chip: '2', tone: 'accent' },
+            { name: 'Leave', meta: 'Annual through to study leave', chip: '9', tone: 'ok' },
+            { name: 'Shift', meta: 'Location, schedule, shift change', chip: '3', tone: 'quiet' },
+            { name: 'Other', meta: 'Upfront loan request', chip: '1', tone: 'warn' },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    id: 'productivity',
+    label: 'Work & productivity',
+    title: 'What the hours went into.',
+    lede: 'Workspaces hold the work, work logs hold the hours, and reports read across both without anyone building a deck.',
+    link: { href: '/pricing', text: 'See what each plan includes' },
+    features: [
+      {
+        id: 'workspaces',
+        name: 'Workspaces and tasks',
+        body: 'Work lives on boards inside workspaces, and every board reports its own progress. My Tasks reads the same data in four view modes, so the person doing the work picks the shape that suits them.',
+        bullets: [
+          'List, board, calendar and dashboard views over the same tasks.',
+          'Grouping, due dates and a running overdue count.',
+          'An activity feed per workspace, so progress is legible without a status meeting.',
+        ],
+        moment: {
+          shape: 'list',
+          title: 'Workspaces',
+          meta: '3 boards',
+          rows: [
+            { name: 'Onboarding revamp', meta: '18 tasks · 12 done', chip: '67%', tone: 'accent' },
+            { name: 'Q3 compliance review', meta: '9 tasks · 9 done', chip: '100%', tone: 'ok' },
+            { name: 'Lagos office move', meta: '24 tasks · 6 done', chip: '25%', tone: 'warn' },
+          ],
+        },
+      },
+      {
+        id: 'work-logs',
+        name: 'Work logs',
+        body: 'Hours tracked by teammate, by workspace and by task. Logs can be written by hand or generated from time already tracked, so the record fills in even in the weeks nobody remembers to write it.',
+        bullets: [
+          'Hours roll up by teammate, workspace and task.',
+          'Auto-generated logs come from tracked time, and are labeled as such.',
+          'Every entry keeps its description, its date and its author.',
+        ],
+        moment: {
+          shape: 'list',
+          title: 'Work logs · this week',
+          meta: 'Hours by teammate',
+          rows: [
+            { name: 'Ruth Adeyemi', meta: 'Onboarding revamp · 3h 20m', chip: 'Logged', tone: 'accent' },
+            { name: 'Emmanuel Okafor', meta: 'Q3 compliance review · 2h 45m', chip: 'Logged', tone: 'quiet' },
+            { name: 'Jemimah Dogara', meta: 'Lagos office move · 6h 00m', chip: 'Auto', tone: 'ok' },
+          ],
+        },
+      },
+      {
+        id: 'reports',
+        name: 'Reports',
+        body: 'One cross-module snapshot: total staff, who is clocked in right now, task completion, and the approvals still waiting on somebody. Under it, a productivity trend of active, productive and idle time by week.',
+        bullets: [
+          'Total staff, clocked in now, task completion, pending approvals.',
+          'Active, productive and idle time, week by week.',
+          'One page that reads across time, work and people at once.',
+        ],
+        moment: {
+          shape: 'bars',
+          title: 'Productivity trend',
+          meta: 'Active hours by week',
+          rows: [
+            { label: 'Week 30', value: '34h', p: 0.72 },
+            { label: 'Week 31', value: '36h', p: 0.78 },
+            { label: 'Week 32', value: '31h', p: 0.66 },
+            { label: 'Week 33', value: '38h', p: 0.84 },
+          ],
+        },
+      },
+    ],
+  },
+  {
+    id: 'operations',
+    label: 'People & operations',
+    title: 'The people, and the process around them.',
+    lede: 'A directory with a real org chart, a lifecycle that runs from intake to offboarding, cases with an SLA, and one record per person.',
+    link: { href: '/#demo', text: 'Walk through the staff record with us' },
+    features: [
+      {
+        id: 'directory',
+        name: 'Directory and org chart',
+        body: 'People by department, with a profile and a message button on every row. The org chart tab draws managers over their direct reports, and says so plainly when somebody has none.',
+        bullets: [
+          'Filter the directory by department, page it 10, 20 or 50 at a time.',
+          'An org chart of managers to reports, built from the same records.',
+          'In-app messaging with presence: available, busy, do not disturb.',
+        ],
+        moment: {
+          shape: 'list',
+          title: 'Directory',
+          meta: '48 people',
+          rows: [
+            { name: 'Operations', meta: 'Led by Usman Ibrahim', chip: '18', tone: 'accent' },
+            { name: 'Engineering', meta: 'Led by Emmanuel Okafor', chip: '21', tone: 'quiet' },
+            { name: 'Finance', meta: 'Led by Blossom Adeh', chip: '9', tone: 'ok' },
+          ],
+        },
+      },
+      {
+        id: 'lifecycle',
+        name: 'Staff lifecycle',
+        body: 'Intake collects a candidate’s details before their first day, and submitting an intake does not create an account. Onboarding runs from there, offboarding closes it out, and every stage tracks whether it is not started, in progress, needs attention or completed.',
+        bullets: [
+          'Intake before day one, with no account provisioned until you say so.',
+          'Onboarding and offboarding as full stages, not a checklist each.',
+          'Reusable workflow templates carrying task counts, durations and auto-assign.',
+        ],
+        moment: {
+          shape: 'steps',
+          title: 'Standard Employee Onboarding',
+          pct: '25%',
+          note: '4 tasks · 14 days · auto-assign on',
+          rows: [
+            { t: 'Intake submitted', s: 'done' },
+            { t: 'Contract and documents', s: 'current' },
+            { t: 'Device and account setup', s: '' },
+            { t: 'First week check-in', s: '' },
+          ],
+        },
+      },
+      {
+        id: 'cases',
+        name: 'Cases',
+        body: 'Operational issues, escalations and resolutions, tracked against an SLA. Priority and severity are separate axes on purpose, because an urgent small thing and a slow serious thing are not the same case and should not be filed as one.',
+        bullets: [
+          'Eight statuses, five case types, five priorities, and severity as its own axis.',
+          'An intake source on every case: internal, email, phone, chat or portal.',
+          'A confidentiality flag, SLA tracking, and five views: dashboard, kanban, table, timeline, calendar.',
+        ],
+        moment: {
+          shape: 'list',
+          title: 'Cases',
+          meta: 'SLA breaches: 0',
+          rows: [
+            { name: 'Payroll dispute · August run', meta: 'Under review · source: email', chip: 'High', tone: 'warn' },
+            { name: 'Facility escalation · generator', meta: 'In investigation · source: phone', chip: 'Critical', tone: 'due' },
+            { name: 'HR complaint', meta: 'Open · marked confidential', chip: 'Medium', tone: 'quiet' },
+          ],
+        },
+      },
+      {
+        id: 'staff-record',
+        name: 'The staff record',
+        body: 'Eleven tabs on one person, and four of them are areas most systems leave out entirely: documents, training, company devices and connected accounts. Asset tracking sits on the same record as the contract, because the laptop and the job started on the same day.',
+        bullets: [
+          'Documents and training held on the person, not in a shared folder.',
+          'Company devices: what was issued, and who has it now.',
+          'Connected accounts, alongside job, requests, timesheets, security and org chart.',
+        ],
+        moment: {
+          shape: 'list',
+          title: 'Staff record · Ruth Adeyemi',
+          meta: 'Eleven tabs',
+          rows: [
+            { name: 'Documents', meta: 'Held on the profile, not in a folder', chip: '12 files', tone: 'accent' },
+            { name: 'Training', meta: 'Recorded against the person', chip: '4 records', tone: 'ok' },
+            { name: 'Company devices', meta: 'Issued hardware, per person', chip: '2 assigned', tone: 'quiet' },
+            { name: 'Connected accounts', meta: 'Slack and Google sign-in', chip: '2 linked', tone: 'accent' },
+          ],
+        },
+      },
+    ],
+  },
+];
+
 export default function Product() {
   return (
-    <PageShell
-      kicker="Product"
-      title="Everything your team needs, and complete visibility."
-      lede="One platform for the entire employee workday, from clock-in to payslip."
-    >
-      <section className="page-section" id="time">
-        <div className="container">
-          <header className="sec-head sec-head--tight">
-            <span className="sec-eyebrow">Time &amp; Attendance</span>
-            <h2>From clock-in to payslip.</h2>
-            <p className="sec-lede">Every hour captured once, then carried through to payroll untouched.</p>
-          </header>
-        </div>
+    <>
+      <Nav />
+      <main>
+        <header className="pd-hero has-rails">
+          <div className="container">
+            <span className="sec-eyebrow">Product</span>
+            <h1>Everything the workday touches.</h1>
+            <p className="pd-hero-lede">
+              One platform for time, work and people. These are the modules, and what each one
+              actually does.
+            </p>
+            <div className="pd-hero-ctas">
+              <a className="btn btn-primary btn-lg" href="/#demo">
+                Book a demo
+              </a>
+              <a className="btn btn-secondary btn-lg" href="/pricing">
+                See pricing
+              </a>
+            </div>
+          </div>
+        </header>
 
-        <PageSplit
-          kicker="Clock-in"
-          title="Smart clock-in"
-          visual={
-            <video
-              muted
-              loop
-              playsInline
-              autoPlay
-              preload="metadata"
-              src="/assets/time-tracking.mp4"
-              poster="/assets/time-tracking-poster.jpg"
-              aria-label="StaffIntra clock-in screen recording a verified session"
-            />
-          }
-        >
-          <p>
-            One tap starts the day, from a desktop at head office or a phone on
-            site. Each session records device health and location context as it
-            happens, so nobody has to vouch for an entry after the fact.
-          </p>
-          <ul>
-            <li>Verified sessions: device and location captured at the moment of clock-in.</li>
-            <li>Streaks make consistent attendance visible, to staff first.</li>
-            <li>Late flags raise themselves, against the schedule you set.</li>
-          </ul>
-          <p>The workday starts with one tap, and the record starts with it.</p>
-        </PageSplit>
+        <section className="pd-spine has-frame">
+          <div className="container">
+            <div className="pd-grid">
+              <nav className="pd-index" aria-label="Modules on this page">
+                <span className="pd-index-title">On this page</span>
+                {GROUPS.map((g) => (
+                  <div className="pd-index-group" key={g.id}>
+                    <a className="pd-index-label" href={`#${g.id}`}>
+                      {g.label}
+                    </a>
+                    <ul>
+                      {g.features.map((f) => (
+                        <li key={f.id}>
+                          <a href={`#${f.id}`}>
+                            <span className="pd-tick" aria-hidden="true" />
+                            {f.name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </nav>
 
-        <PageSplit
-          flip
-          kicker="Timesheets"
-          title="Timesheets that build themselves"
-          visual={
-            <video
-              muted
-              loop
-              playsInline
-              autoPlay
-              preload="metadata"
-              src="/assets/timesheets.mp4"
-              poster="/assets/timesheets-poster.jpg"
-              aria-label="StaffIntra timesheet building itself from clock events"
-            />
-          }
-        >
-          <p>
-            Clock events become payroll-ready timesheets on their own. Nothing
-            is re-entered, nobody chases a spreadsheet on the 26th, and the
-            number payroll sees is the number the clock recorded.
-          </p>
-          <ul>
-            <li>Variance flags catch the weeks that need a second look.</li>
-            <li>Sign-off is a click, with the evidence attached.</li>
-            <li>Weeks build themselves as the days close.</li>
-          </ul>
-          <p>By the time payroll asks, the timesheet already exists.</p>
-        </PageSplit>
+              <div className="pd-run">
+                {GROUPS.map((g) => (
+                  <section className="pd-group" id={g.id} key={g.id}>
+                    <Reveal className="pd-group-head" blurOnly>
+                      <span className="sec-eyebrow">{g.label}</span>
+                      <h2>{g.title}</h2>
+                      <p className="sec-lede">{g.lede}</p>
+                    </Reveal>
 
-        <PageSplit
-          kicker="Leave"
-          title="Leave without the paperwork"
-          visual={
-            <video
-              muted
-              loop
-              playsInline
-              autoPlay
-              preload="metadata"
-              src="/assets/leave-requests.mp4"
-              poster="/assets/leave-requests-poster.jpg"
-              aria-label="StaffIntra leave request routing to the right approver"
-            />
-          }
-        >
-          <p>
-            A request routes itself by the rules you wrote, and balances stay
-            right without anyone keeping a tally. No printed form, no hallway
-            approval that never gets recorded.
-          </p>
-          <ul>
-            <li>Rule-based routing: rule §4 sends anything over five days to HR, automatically.</li>
-            <li>Balance and team cover sit in view before anyone approves.</li>
-            <li>One-tap approval, logged with who and when.</li>
-          </ul>
-          <p>The policy does the routing, so managers only do the deciding.</p>
-        </PageSplit>
-      </section>
+                    {g.features.map((f) => (
+                      <Reveal as="article" className="pd-block" id={f.id} key={f.id} blurOnly>
+                        <h3>{f.name}</h3>
+                        <p>{f.body}</p>
+                        {f.body2 ? <p>{f.body2}</p> : null}
+                        <ul className="pd-bullets">
+                          {f.bullets.map((b) => (
+                            <li key={b}>{b}</li>
+                          ))}
+                        </ul>
+                        <Spotlight className="pd-visual">
+                          <PillarMoment moment={f.moment} />
+                        </Spotlight>
+                      </Reveal>
+                    ))}
 
-      <section className="page-section" id="productivity">
-        <div className="container">
-          <header className="sec-head sec-head--tight">
-            <span className="sec-eyebrow">Productivity &amp; Performance</span>
-            <h2>One transparent formula for everyone.</h2>
-            <p className="sec-lede">The same numbers, visible to the person being measured.</p>
-          </header>
-        </div>
+                    <div className="pd-group-foot">
+                      <a className="turn-link" href={g.link.href}>
+                        {g.link.text}
+                        <TurnArrow />
+                      </a>
+                    </div>
+                  </section>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
-        <PageSplit
-          kicker="Activity"
-          title="Activity insights"
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'bars',
-                title: 'Activity · today',
-                meta: 'No screenshots, ever',
-                rows: [
-                  { label: 'Focused', value: '5h 40m', p: 0.82 },
-                  { label: 'Meetings', value: '1h 10m', p: 0.35 },
-                  { label: 'Admin', value: '0h 55m', p: 0.24 },
-                  { label: 'Idle', value: '0h 50m', p: 0.18 },
-                ],
-              }}
-            />
-          }
-        >
-          <p>
-            Real activity sits beside clock-in data, so a present day and a
-            productive day stop being the same claim. Focused and idle hours
-            show up hour by hour, not as a monthly guess.
-          </p>
-          <ul>
-            <li>Transparent to staff by design: everyone sees their own numbers.</li>
-            <li>Focused versus idle, hour by hour, next to attendance.</li>
-            <li>No screenshots, ever. Patterns, not surveillance.</li>
-          </ul>
-          <p>Attendance says who showed up. This says what the day held.</p>
-        </PageSplit>
-
-        <PageSplit
-          flip
-          kicker="Grades"
-          title="Performance grades"
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'list',
-                title: 'Grade · August',
-                meta: '82 / 100',
-                rows: [
-                  { name: 'Attendance', meta: '96% on time', chip: 'A', tone: 'ok' },
-                  { name: 'Activity', meta: '5h 40m focused daily', chip: 'B', tone: 'accent' },
-                  { name: 'Approved output', meta: '14 work logs signed off', chip: 'A', tone: 'ok' },
-                ],
-              }}
-            />
-          }
-        >
-          <p>
-            Attendance times activity times approved output. One formula,
-            published to everyone, applied to everyone. A grade you can argue
-            with is a grade you can trust.
-          </p>
-          <ul>
-            <li>Three inputs, all of them numbers the person already sees.</li>
-            <li>No manager mood, no end-of-year surprise.</li>
-            <li>Every grade traces back to the days that made it.</li>
-          </ul>
-          <p>When the formula is public, the review meeting gets short.</p>
-        </PageSplit>
-
-        <PageSplit
-          kicker="Work logs"
-          title="Work logs"
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'list',
-                title: 'Work logs · this week',
-                meta: 'Counts toward the grade',
-                rows: [
-                  { name: 'KYC validation states', meta: 'Delivered and approved', chip: 'Approved', tone: 'ok' },
-                  { name: 'Payout webhook retries', meta: '2h 10m tracked', chip: 'Open', tone: 'warn' },
-                  { name: 'Empty-state designs', meta: 'Sent for review', chip: 'In review', tone: 'accent' },
-                ],
-              }}
-            />
-          }
-        >
-          <p>
-            Hours say how long. Work logs say what was actually delivered, task
-            by task, with a reviewer's sign-off attached. Approved output is
-            the third input to the grade, and the hardest one to fake.
-          </p>
-          <ul>
-            <li>Each log names the task, the time it took, and its state.</li>
-            <li>Review and approval happen in the same place the work is logged.</li>
-            <li>Approved logs feed the grade. Open ones just wait.</li>
-          </ul>
-          <p>The week ends with a list of what shipped, not a feeling about it.</p>
-        </PageSplit>
-      </section>
-
-      <section className="page-section" id="operations">
-        <div className="container">
-          <header className="sec-head sec-head--tight">
-            <span className="sec-eyebrow">People &amp; Operations</span>
-            <h2>Payroll, people and process in one place.</h2>
-            <p className="sec-lede">The back office runs on the same record the workday wrote.</p>
-          </header>
-        </div>
-
-        <PageSplit
-          kicker="Payroll"
-          title="Payroll, connected"
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'timer',
-                title: 'August payroll',
-                site: '312 staff · 2 of 2 approvals',
-                time: '₦48.2m',
-                note: 'Statutory deductions handled',
-                action: 'Run scheduled · 28 Aug',
-              }}
-            />
-          }
-        >
-          <p>
-            Payroll reads the timesheets it was already given. Approved hours,
-            approved leave and approved expenses arrive as one run, with PAYE,
-            pension and NHF handled before anyone opens a calculator.
-          </p>
-          <ul>
-            <li>Every naira traces to a signed-off timesheet or an approved case.</li>
-            <li>Statutory deductions applied by rule, not by memory.</li>
-            <li>Approvals collected before the run, not after the complaints.</li>
-          </ul>
-          <p>Month end becomes a review, not a reconstruction.</p>
-        </PageSplit>
-
-        <PageSplit
-          flip
-          kicker="Lifecycle"
-          title="Staff lifecycle"
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'list',
-                title: 'Lifecycle',
-                meta: 'One continuous record',
-                rows: [
-                  { name: 'Town hall Friday', meta: 'Announcement', chip: '14 read', tone: 'quiet' },
-                  { name: 'New analyst onboarding', meta: 'Day 2 of 5', chip: 'On track', tone: 'ok' },
-                  { name: 'Exit checklist · contractor', meta: '3 items left', chip: 'Open', tone: 'warn' },
-                ],
-              }}
-            />
-          }
-        >
-          <p>
-            Onboarding, announcements, documents and exits live on one
-            continuous record per person. Day one starts with a checklist that
-            already exists, and the last day closes one that cannot be skipped.
-          </p>
-          <ul>
-            <li>Onboarding plans with owners and due days, visible to the new hire.</li>
-            <li>Announcements with read receipts, so "nobody told me" retires.</li>
-            <li>Exit checklists that hold laptops, access and final pay together.</li>
-          </ul>
-          <p>The employee file is the system, not a folder beside it.</p>
-        </PageSplit>
-
-        <PageSplit
-          kicker="Cases"
-          title="Cases &amp; approvals"
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'steps',
-                title: 'Expense above ₦50k',
-                pct: '75%',
-                note: 'Your rule, enforced · 4 steps',
-                rows: [
-                  { t: 'Submitted with receipts', s: 'done' },
-                  { t: 'Team lead review', s: 'done' },
-                  { t: 'Finance check', s: 'current' },
-                  { t: 'CEO sign-off', s: '' },
-                ],
-              }}
-            />
-          }
-        >
-          <p>
-            Write the rule once: expenses above ₦50k take four steps, ending at
-            the CEO. Every case follows it, shows where it stands, and names
-            who it is waiting on. Forms feed the same engine, so any form your
-            team fills becomes a case with a route and a deadline.
-          </p>
-          <ul>
-            <li>Approval chains follow your rules, with no quiet exceptions.</li>
-            <li>Each case shows its step, its owner and its age.</li>
-            <li>Any form becomes a case: requests, incidents, purchases.</li>
-          </ul>
-          <p>Process stops living in someone's head and starts living in the record.</p>
-        </PageSplit>
-      </section>
-    </PageShell>
+        <CloseCta />
+        <Cta />
+      </main>
+      <Footer />
+    </>
   );
 }

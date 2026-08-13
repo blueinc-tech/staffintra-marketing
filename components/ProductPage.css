@@ -1,0 +1,205 @@
+/* Product page: the spine.
+
+   A sticky index on the left, one continuous run of feature blocks on the
+   right. There are no boxes anywhere below the header: a block is separated
+   from the next by one hairline, and the only enclosed surface on the page is
+   the tinted bed each product card sits on. Everything is prefixed pd- so it
+   cannot reach any other page. */
+
+.pd-hero {
+  position: relative;
+  padding: 128px 0 60px;
+  background: var(--tint);
+  --rail-line: var(--rule-solid);
+}
+.pd-hero h1 {
+  margin-top: 30px;
+  max-width: 17ch;
+  font-size: clamp(2rem, 3.9vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -.024em;
+}
+.pd-hero-lede {
+  margin-top: 18px;
+  max-width: 54ch;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.pd-hero-ctas { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* ---------- the grid ---------- */
+
+.pd-spine { position: relative; background: var(--surface); border-top: 1px solid var(--line); }
+
+.pd-grid {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 84px);
+  /* start, not stretch: a stretched grid item is full height, and a sticky
+     child of a full-height item has nowhere to travel. */
+  align-items: start;
+  padding: clamp(48px, 6vw, 78px) 0 clamp(64px, 8vw, 104px);
+}
+
+/* ---------- the index ---------- */
+
+.pd-index { position: sticky; top: 88px; }
+.pd-index-title {
+  display: block;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-ui);
+  font-size: .6875rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3-text);
+}
+.pd-index-group { padding-top: 22px; }
+.pd-index-label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: -.006em;
+  color: var(--ink);
+  transition: color .2s var(--ease);
+}
+.pd-index-label:hover { color: var(--accent); }
+.pd-index ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.pd-index li a {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 0;
+  font-family: var(--font-ui);
+  font-size: .875rem;
+  line-height: 1.35;
+  color: var(--ink-2);
+  transition: color .2s var(--ease);
+}
+/* Hairline ticks. Nothing here can mark the section you are actually in
+   without scroll state, so every tick is drawn identically and only hover
+   distinguishes one. */
+.pd-tick {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 1px;
+  margin-top: .58em;
+  background: var(--line-strong);
+  transition: width .22s var(--ease), background .22s var(--ease);
+}
+.pd-index li a:hover { color: var(--accent); }
+.pd-index li a:hover .pd-tick { width: 20px; background: var(--accent); }
+
+/* ---------- the run ---------- */
+
+.pd-run { min-width: 0; }
+.pd-group + .pd-group { margin-top: clamp(52px, 6vw, 92px); }
+
+.pd-group-head {
+  padding-bottom: clamp(24px, 3vw, 36px);
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 104px;
+}
+.pd-group-head h2 {
+  margin-top: 18px;
+  max-width: 20ch;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.022em;
+}
+.pd-group-head .sec-lede { max-width: 56ch; }
+
+.pd-block {
+  padding: clamp(40px, 5vw, 64px) 0;
+  border-bottom: 1px solid var(--line);
+  scroll-margin-top: 104px;
+}
+.pd-block h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.4vw, 2rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  max-width: 22ch;
+}
+.pd-block p {
+  margin-top: 16px;
+  max-width: 60ch;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.pd-block p + p { margin-top: 12px; }
+
+.pd-bullets {
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 62ch;
+  font-family: var(--font-ui);
+  font-size: .9375rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.pd-bullets li { display: flex; align-items: flex-start; gap: 12px; }
+.pd-bullets li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 10px;
+  height: 1px;
+  margin-top: .68em;
+  background: var(--accent);
+}
+
+/* The visual sits under its copy, on a tinted bed the width of the column, so
+   the paragraph measure never shifts down the page. The bed is also what the
+   spotlight wash has to land on: the card itself is opaque white. */
+.pd-visual {
+  margin-top: clamp(26px, 3.4vw, 38px);
+  padding: clamp(24px, 3.2vw, 40px);
+  background: var(--tint);
+}
+.pd-visual .pm-card {
+  width: 100%;
+  max-width: 520px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+/* The one tone PillarMoment does not ship a chip color for. */
+.pd-visual .pm-chip--due { background: var(--danger-soft); color: var(--danger); }
+
+.pd-group-foot { padding-top: clamp(22px, 3vw, 32px); }
+
+/* ---------- single column ---------- */
+
+@media (max-width: 860px) {
+  .pd-hero { padding: 112px 0 48px; }
+  .pd-grid { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 40px; }
+  .pd-index {
+    position: static;
+    top: auto;
+    padding-bottom: 30px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+  }
+  .pd-index-group { padding-top: 18px; }
+  .pd-index ul { flex-direction: row; flex-wrap: wrap; gap: 0 20px; }
+  .pd-visual { padding: 20px; }
+  .pd-visual .pm-card { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-index li a,
+  .pd-index-label,
+  .pd-tick { transition: none; }
+  .pd-index li a:hover .pd-tick { width: 12px; background: var(--line-strong); }
+}

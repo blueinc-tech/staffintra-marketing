@@ -1,4 +1,6 @@
 import { ChipMark } from './ChipMarks';
+import Reveal from './motion/Reveal';
+import { Spotlight } from './motion/Surfaces';
 import { TurnArrow } from './PillarMarks';
 import './Audiences.css';
 
@@ -51,9 +53,9 @@ export default function Audiences() {
 
       <div className="aud-frame has-frame">
         <div className="container">
-          <div className="aud-grid">
+          <Reveal className="aud-grid" distance={14}>
             {AUDIENCES.map((a) => (
-              <article className="aud-card" key={a.id}>
+              <Spotlight as="article" className="aud-card" key={a.id}>
                 <ChipMark tone={a.tone} />
                 <h3>{a.name}</h3>
                 <p>{a.body}</p>
@@ -61,9 +63,9 @@ export default function Audiences() {
                   <TurnArrow />
                   {a.cta}
                 </a>
-              </article>
+              </Spotlight>
             ))}
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

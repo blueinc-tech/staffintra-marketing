@@ -1,0 +1,313 @@
+/* Leaf feature page chrome.
+
+   One stylesheet, three pages: /geofencing, /lifecycle and /directory all
+   import this file, so nothing in here may name a feature. The vocabulary is
+   structural only: a tinted hero, a row of key facts, alternating content
+   sections with a visual slot, and a closing note band.
+
+   House rules apply throughout: radii are 2px, shadows are none, and every
+   separation is a 1px hairline. */
+
+/* ---------- hero ---------- */
+
+.lf-hero {
+  position: relative;
+  padding: 132px 0 clamp(48px, 6vw, 68px);
+  background: var(--tint);
+  border-bottom: 1px solid var(--line);
+  --rail-line: var(--rule-solid);
+}
+.lf-hero h1 {
+  margin-top: 28px;
+  max-width: 17ch;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.8vw, 3.05rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -.024em;
+}
+.lf-hero-lede {
+  margin-top: 18px;
+  max-width: 56ch;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.lf-hero-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* ---------- key facts ---------- */
+
+/* A single row of hairline separated cells. The first and last cells drop
+   their outer padding so the numbers line up with the container edge rather
+   than floating inside it. */
+.lf-facts {
+  position: relative;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.lf-facts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.lf-facts-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.lf-fact {
+  padding: clamp(26px, 3.2vw, 42px) clamp(18px, 2.2vw, 32px);
+  border-left: 1px solid var(--line);
+}
+.lf-fact:first-child { border-left: 0; padding-left: 0; }
+.lf-fact:last-child { padding-right: 0; }
+
+.lf-fact-n {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: clamp(2.1rem, 4vw, 3rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+/* For cells whose headline value is a short word rather than a figure. */
+.lf-fact-n--word {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.2vw, 1.65rem);
+  font-weight: 700;
+  letter-spacing: -.016em;
+  line-height: 1.15;
+}
+.lf-fact-t {
+  display: block;
+  margin-top: 14px;
+  font-family: var(--font-ui);
+  font-size: .6875rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3-text);
+}
+.lf-fact-s {
+  margin-top: 9px;
+  max-width: 28ch;
+  font-size: .9375rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+/* ---------- content sections ---------- */
+
+.lf-sec {
+  position: relative;
+  padding: clamp(52px, 6.5vw, 96px) 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.lf-sec--tint { background: var(--surface-2); }
+
+.lf-grid {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  gap: clamp(28px, 4vw, 72px);
+  align-items: center;
+}
+.lf-sec--flip .lf-copy { order: 2; }
+.lf-sec--flip .lf-visual-wrap { order: 1; }
+
+.lf-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: .6875rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3-text);
+}
+.lf-num {
+  font-family: var(--font-mono);
+  letter-spacing: 0;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.lf-copy h2 {
+  margin-top: 16px;
+  max-width: 18ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2.05rem);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -.02em;
+}
+.lf-copy p {
+  margin-top: 16px;
+  max-width: 48ch;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.lf-copy p + p { margin-top: 12px; }
+
+.lf-points {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--font-ui);
+  font-size: .9375rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.lf-points li { display: flex; gap: 10px; align-items: baseline; }
+.lf-points li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: translateY(-1px);
+}
+.lf-copy .turn-link { margin-top: 24px; }
+
+/* The visual slot. The wrapper is the grid child so the reveal can wrap it
+   without breaking the flip order. */
+.lf-visual-wrap { display: grid; }
+.lf-visual {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 320px;
+  padding: clamp(24px, 3vw, 44px);
+  border: 1px solid var(--line);
+  background: var(--tint);
+  transition: border-color .3s var(--ease);
+}
+.lf-sec--tint .lf-visual { background: var(--surface); }
+.lf-visual:hover { border-color: var(--line-strong); }
+
+/* The drawn product card carries no border of its own, because on the home
+   page it sits on a coloured panel. Here it needs one. */
+.lf-visual .pm-card {
+  width: min(430px, 100%);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+/* The overdue tone the card data uses has no rule of its own outside the
+   pillar band, so it is defined here rather than left unpainted. */
+.lf-visual .pm-chip--due { background: var(--danger-soft); color: var(--danger); }
+
+/* ---------- closing note band ---------- */
+
+/* The honesty block: what the feature deliberately does not do. Held in a
+   bordered box on a quiet ground so it reads as a stated limit rather than as
+   more selling. */
+.lf-note {
+  position: relative;
+  padding: clamp(48px, 6vw, 84px) 0;
+  background: var(--surface);
+}
+.lf-note-box {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: clamp(22px, 3vw, 52px);
+  padding: clamp(26px, 3.4vw, 44px);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.lf-note-tag {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: .6875rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3-text);
+}
+.lf-note-box h2 {
+  margin-top: 14px;
+  max-width: 16ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.1vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -.018em;
+}
+.lf-note-box h2 + p {
+  margin-top: 14px;
+  max-width: 40ch;
+  font-size: .9375rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.lf-nots {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-self: center;
+}
+.lf-nots li {
+  display: flex;
+  gap: 12px;
+  padding: 15px 0;
+  border-top: 1px solid var(--line-strong);
+  font-size: .9375rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.lf-nots li:first-child { border-top: 0; padding-top: 0; }
+.lf-nots li:last-child { padding-bottom: 0; }
+.lf-nots li::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  margin-top: .38em;
+  border: 1px solid var(--danger);
+  border-radius: 2px;
+  background: var(--danger-soft);
+}
+.lf-nots strong { font-weight: 600; color: var(--ink); }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 860px) {
+  .lf-hero { padding-top: 112px; }
+  .lf-hero h1 { max-width: 100%; }
+
+  .lf-facts-grid,
+  .lf-facts-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lf-fact { padding: 24px 0 24px 22px; border-left: 1px solid var(--line); }
+  .lf-fact:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .lf-fact:nth-child(n + 3) { border-top: 1px solid var(--line); }
+
+  .lf-grid { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .lf-copy { order: 1 !important; }
+  .lf-visual-wrap { order: 2 !important; }
+  .lf-copy h2,
+  .lf-copy p { max-width: 100%; }
+  .lf-visual { min-height: 260px; }
+
+  .lf-note-box { grid-template-columns: minmax(0, 1fr); }
+  .lf-note-box h2 { max-width: 100%; }
+}
+
+@media (max-width: 560px) {
+  .lf-facts-grid,
+  .lf-facts-grid--3 { grid-template-columns: minmax(0, 1fr); }
+  .lf-fact { padding: 20px 0; border-left: 0; }
+  .lf-fact:nth-child(n + 2) { border-top: 1px solid var(--line); }
+  .lf-fact-s { max-width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lf-visual { transition: none; }
+}

@@ -28,40 +28,41 @@ export const NAV_ITEMS = [
           columns: [
             {
               feature: {
-                label: 'Time & Attendance',
-                description: 'One tap to clock in, timesheets that build themselves, leave that routes itself.',
+                label: 'Time & attendance',
+                description: 'One tap to clock in, geofence and breaks on the same board, timesheets that build themselves.',
                 href: '/product#time',
                 mark: <MarkStripes />,
               },
               items: [
                 { label: 'Smart clock-in', href: '/product#time', mark: <MarkPlan /> },
                 { label: 'Timesheets', href: '/product#time', mark: <MarkLedger /> },
-                { label: 'Leave', href: '/product#time', mark: <MarkAdvance /> },
+                { label: 'Geofencing & breaks', href: '/geofencing', mark: <MarkEnclose /> },
+                { label: 'Approvals', href: '/approvals', mark: <MarkAdvance /> },
               ],
             },
             {
               feature: {
-                label: 'Productivity & Performance',
-                description: 'Real activity beside clock-in data, and one transparent grade for everyone.',
+                label: 'Work & productivity',
+                description: 'Boards and tasks for the work, work logs for the hours, one report across both.',
                 href: '/product#productivity',
                 mark: <MarkConverge />,
               },
               items: [
-                { label: 'Activity insights', href: '/product#productivity', mark: <MarkStagger /> },
-                { label: 'Performance grades', href: '/product#productivity', mark: <MarkSteps /> },
-                { label: 'Work logs', href: '/product#productivity', mark: <MarkEnclose /> },
+                { label: 'Workspaces & tasks', href: '/product#productivity', mark: <MarkStagger /> },
+                { label: 'Work logs', href: '/product#productivity', mark: <MarkSteps /> },
+                { label: 'Reports', href: '/product#productivity', mark: <MarkEnclose /> },
               ],
             },
             {
               feature: {
                 label: 'People & Operations',
-                description: 'Payroll connected to the record, and any process modelled as a case.',
+                description: 'One record from intake to offboarding, and any escalation modelled as a case.',
                 href: '/product#operations',
                 mark: <MarkLayers />,
               },
               items: [
-                { label: 'HR & Payroll', href: '/product#operations', mark: <MarkLedger /> },
-                { label: 'Staff lifecycle', href: '/product#operations', mark: <MarkAdvance /> },
+                { label: 'Directory & org chart', href: '/directory', mark: <MarkLedger /> },
+                { label: 'Staff lifecycle', href: '/lifecycle', mark: <MarkAdvance /> },
                 { label: 'Cases & approvals', href: '/product#operations', mark: <MarkBranch /> },
                 { label: 'Forms', href: '/product#operations', mark: <MarkPlan /> },
               ],

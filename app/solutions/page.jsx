@@ -1,278 +1,306 @@
-/* Solutions: the same platform read four ways. Each audience gets one
-   page-section with a header and a single split, so the page scans as a
-   menu: find your shape of team, see the three features that matter, move
-   on. The consolidation section closes the argument for all four. */
-
-import { PageShell, PageSplit } from '../../components/PageBits';
+import Nav from '../../components/Nav';
+import Footer from '../../components/Footer';
+import Cta from '../../components/Cta';
+import CloseCta from '../../components/CloseCta';
+import Reveal from '../../components/motion/Reveal';
+import { Spotlight } from '../../components/motion/Surfaces';
 import PillarMoment from '../../components/PillarMoment';
+import { TurnArrow } from '../../components/PillarMarks';
+import '../../components/SolutionsPage.css';
 
 export const metadata = {
   title: 'StaffIntra: Solutions',
   description:
-    'How startups, mid-sized businesses, field teams and established organizations run time, productivity and operations on StaffIntra.',
+    'How startups, mid-sized businesses, field teams, established organizations and consolidating stacks each run on the same StaffIntra workspace.',
 };
+
+/* The ladder.
+
+   Five audiences, five full-width bands, no boxes and no splits. The only
+   thing between one rung and the next is the background changing from white
+   to tint, and the only ornament is the numeral sitting in the left gutter at
+   headline scale. Each rung carries the same four parts in the same order:
+   number, heading, three facts on hairlines, one product card. Read top to
+   bottom it is a ladder; read sideways any single rung is a complete pitch. */
+
+const BANDS = [
+  {
+    n: '01',
+    id: 'startups',
+    eyebrow: 'Startups',
+    title: 'Live on the first morning.',
+    lede: 'Free for the first 30 days with no card, and set up inside a day. Nothing to migrate later: the workspace you open this week is the one you grow on.',
+    link: { href: '/pricing', label: 'See what it costs' },
+    facts: [
+      {
+        k: 'Day one',
+        v: 'Clock-in runs from any phone, and every record keeps the place it was made and its timezone.',
+      },
+      {
+        k: 'One workspace, one board',
+        v: 'A single board holds the work, showing tasks done against tasks open on its face.',
+      },
+      {
+        k: 'Week one',
+        v: 'Hours and breaks land per session, so the first timesheet is payroll-ready without a rebuild.',
+      },
+    ],
+    moment: {
+      shape: 'steps',
+      title: 'Setting up',
+      pct: '50%',
+      note: 'Four steps, one afternoon',
+      rows: [
+        { t: 'Workspace created', s: 'done' },
+        { t: 'Team added to the directory', s: 'done' },
+        { t: 'Clock-in switched on', s: 'current' },
+        { t: 'First board opened', s: '' },
+      ],
+    },
+  },
+  {
+    n: '02',
+    id: 'midsize',
+    eyebrow: 'Mid-sized businesses',
+    title: 'Approvals that route themselves.',
+    lede: 'At fifty people, informal stops working. Requests arrive on a queue with their own timeline and decision panel, and work stays visible across every team at once.',
+    link: { href: '/product#operations', label: 'See approvals and reports' },
+    facts: [
+      {
+        k: 'Fifteen request types',
+        v: 'Leave, lateness, early departure, location change, shift change, study leave and an upfront loan request, each with its own form.',
+      },
+      {
+        k: 'Four view modes',
+        v: 'The same tasks read as a list, a board, a calendar or a dashboard, with overdue counted on its own.',
+      },
+      {
+        k: 'Cross-module reports',
+        v: 'Total staff, clocked in now, task completion and pending approvals in one snapshot.',
+      },
+    ],
+    moment: {
+      shape: 'list',
+      title: 'Approvals',
+      meta: '3 waiting',
+      rows: [
+        {
+          name: 'Annual leave, Ruth Adeyemi',
+          meta: 'Mon 17 to Fri 21 August',
+          chip: 'Pending',
+          tone: 'warn',
+        },
+        {
+          name: 'Study leave, Emmanuel Okafor',
+          meta: 'With the department head',
+          chip: 'In review',
+          tone: 'accent',
+        },
+        {
+          name: 'Upfront loan, Jemimah Dogara',
+          meta: '₦120,000, with the finance lead',
+          chip: 'Pending',
+          tone: 'warn',
+        },
+      ],
+    },
+  },
+  {
+    n: '03',
+    id: 'operations',
+    eyebrow: 'Field and operations teams',
+    title: 'Work that happens away from a desk.',
+    lede: 'Geofencing on the clock-in, remote and WFH as real statuses, and cases that carry a priority, a severity and an SLA from the first call to the resolution.',
+    link: { href: '/product#time', label: 'See attendance in detail' },
+    facts: [
+      {
+        k: 'Geofence per site',
+        v: 'Outside geofence is its own status, sitting beside present, late, remote, WFH and absent.',
+      },
+      {
+        k: 'Breaks per session',
+        v: 'Break time is tracked in its own column, next to clock in, clock out, hours and location.',
+      },
+      {
+        k: 'Cases from anywhere',
+        v: 'A case can come in by phone, email, chat or portal, and the source stays on the record.',
+      },
+    ],
+    moment: {
+      shape: 'list',
+      title: 'Attendance today',
+      meta: 'Three sites',
+      rows: [
+        {
+          name: 'Usman Ibrahim',
+          meta: 'Ikeja site, clocked in 07:52',
+          chip: 'Present',
+          tone: 'ok',
+        },
+        {
+          name: 'Blossom Adeh',
+          meta: 'Working from home, 6h 20m logged',
+          chip: 'WFH',
+          tone: 'accent',
+        },
+        {
+          name: 'Joseph Obi',
+          meta: 'Clock-in fell outside the site fence',
+          chip: 'Geofence',
+          tone: 'warn',
+        },
+      ],
+    },
+  },
+  {
+    n: '04',
+    id: 'enterprise',
+    eyebrow: 'Established organizations',
+    title: 'The whole record, in one place.',
+    lede: 'Eleven tabs on every person, a drawn org chart behind the directory, and the documents, training and company devices that come with the job tracked on the same record.',
+    link: { href: '/platform#security', label: 'See how access works' },
+    facts: [
+      {
+        k: 'Eleven tabs per person',
+        v: 'Personal, job, documents, training, requests, company devices, performance, timesheets, org chart, security and connected accounts.',
+      },
+      {
+        k: 'Departments and teams',
+        v: 'The directory filters by department, and the org chart draws each manager with their direct reports.',
+      },
+      {
+        k: 'Confidential cases',
+        v: 'A case can be marked confidential, so a complaint stays with the people handling it.',
+      },
+    ],
+    moment: {
+      shape: 'list',
+      title: 'Samuel Johnson',
+      meta: 'Staff record',
+      rows: [
+        { name: 'Documents', meta: 'Kept on the record', chip: 'On file', tone: 'ok' },
+        {
+          name: 'Company Devices',
+          meta: 'Hardware assigned to him',
+          chip: '2 assigned',
+          tone: 'accent',
+        },
+        { name: 'Training', meta: 'Courses on the record', chip: '1 outstanding', tone: 'warn' },
+        { name: 'Org Chart', meta: 'Manager and direct reports', chip: '4 reports', tone: 'quiet' },
+      ],
+    },
+  },
+  {
+    n: '05',
+    id: 'consolidation',
+    eyebrow: 'System consolidation',
+    title: 'One record instead of several tools.',
+    lede: 'A clock-in, a leave request and a case all describe the same person in the same place, and the tools you keep sit in one launcher rather than in six browser tabs.',
+    link: { href: '/platform#integrations', label: 'See what connects' },
+    facts: [
+      {
+        k: 'Slack and Google connected',
+        v: 'Slack has its own tab in the inbox, and Google sign-in is live across the workspace.',
+      },
+      {
+        k: 'One directory',
+        v: 'The same person record stands behind attendance, approvals, tasks, cases and timesheets.',
+      },
+      {
+        k: 'Tools hub, four categories',
+        v: 'A single launcher for communication, recruitment, finance and general tools, each with its count.',
+      },
+    ],
+    moment: {
+      shape: 'timer',
+      title: 'After consolidation',
+      site: 'One workspace',
+      time: '1',
+      note: 'One record for time, work and people',
+      action: 'See the platform',
+    },
+  },
+];
+
+function Band({ band, tint }) {
+  return (
+    <section className={`sol-band${tint ? ' sol-band--tint' : ''}`} id={band.id}>
+      <div className="container">
+        <Reveal className="sol-top" blurOnly>
+          <span className="sol-num" aria-hidden="true">
+            {band.n}
+          </span>
+
+          <div className="sol-headtext">
+            <span className="sec-eyebrow">{band.eyebrow}</span>
+            <h2>{band.title}</h2>
+            <p className="sec-lede">{band.lede}</p>
+            <a className="turn-link sol-link" href={band.link.href}>
+              {band.link.label}
+              <TurnArrow />
+            </a>
+          </div>
+
+          <Spotlight className="sol-visual">
+            <PillarMoment moment={band.moment} />
+          </Spotlight>
+        </Reveal>
+
+        <Reveal className="sol-facts" delay={120} blurOnly>
+          {band.facts.map((f) => (
+            <div className="sol-fact" key={f.k}>
+              <span className="sol-fact-k">{f.k}</span>
+              <span className="sol-fact-v">{f.v}</span>
+            </div>
+          ))}
+        </Reveal>
+      </div>
+    </section>
+  );
+}
 
 export default function SolutionsPage() {
   return (
-    <PageShell
-      kicker="Solutions"
-      title="Built for teams that don't work the same way."
-      lede="However your business runs, StaffIntra bends to fit, not the other way round."
-    >
-      <section className="page-section" id="startups">
-        <div className="container">
-          <header className="sec-head sec-head--tight">
-            <span className="sec-eyebrow">Startups</span>
-            <h2>Ready before the chaos starts.</h2>
-            <p className="sec-lede">Free to begin, and it grows as you do.</p>
-          </header>
-        </div>
-        <PageSplit
-          kicker="FIRST TEN HIRES"
-          title="Time, tasks and pay from day one."
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'bars',
-                title: 'Week one',
-                meta: 'Set up in a day',
-                rows: [
-                  { label: 'People added', value: '12 of 12', p: 1 },
-                  { label: 'Clock-in live', value: 'Day 1', p: 0.9 },
-                  { label: 'First payroll', value: 'Ready', p: 0.7 },
-                  { label: 'Cases modelled', value: '3 rules', p: 0.45 },
-                ],
-              }}
-            />
-          }
-        >
-          <p>
-            A five-person team does not need an HR department, it needs
-            defaults that work. StaffIntra starts free, sets up in a day, and
-            gives every hire a clock-in, a task list and a timesheet before
-            the first month closes.
-          </p>
-          <ul>
-            <li>Smart clock-in from any phone, live on day one</li>
-            <li>Tasks and simple approvals without an admin to run them</li>
-            <li>Timesheets that arrive payroll-ready, in naira, every cycle</li>
-          </ul>
-          <p>
-            Start on the free plan and switch nothing later. The workspace
-            you set up this week is the one you scale on.
-          </p>
-        </PageSplit>
-      </section>
+    <>
+      <Nav />
+      <main>
+        <header className="sol-hero">
+          <div className="container">
+            <Reveal>
+              <span className="sec-eyebrow">Solutions</span>
+              <h1>However your business runs.</h1>
+              <p className="sol-lede">
+                The same platform, shaped to how your team actually works.
+              </p>
+              <div className="sol-ctas">
+                <a className="btn btn-primary btn-lg" href="/#demo">
+                  Book a demo
+                </a>
+                <a className="btn btn-secondary btn-lg" href="/pricing">
+                  See pricing
+                </a>
+              </div>
+            </Reveal>
 
-      <section className="page-section" id="midsize">
-        <div className="container">
-          <header className="sec-head sec-head--tight">
-            <span className="sec-eyebrow">Mid-sized businesses</span>
-            <h2>Structure without the drag.</h2>
-            <p className="sec-lede">Clear time, fair grades, approvals that route themselves.</p>
-          </header>
-        </div>
-        <PageSplit
-          flip
-          kicker="FIFTY TO FIVE HUNDRED"
-          title="Every team gets the same clear rules."
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'list',
-                title: 'Approvals · this week',
-                meta: 'Routed by rule',
-                rows: [
-                  {
-                    name: 'Leave · Chidera A.',
-                    meta: 'Team lead, then HR',
-                    chip: 'Approved',
-                    tone: 'ok',
-                  },
-                  {
-                    name: 'Overtime · Lagos support',
-                    meta: 'Sent to ops manager',
-                    chip: 'Pending',
-                    tone: 'warn',
-                  },
-                  {
-                    name: 'Expense · site visit',
-                    meta: '₦48,500 · finance queue',
-                    chip: 'Routing',
-                    tone: 'accent',
-                  },
-                ],
-              }}
-            />
-          }
-        >
-          <p>
-            At fifty people, informal stops working. StaffIntra gives each
-            department its own view of time and output while leadership sees
-            one picture, and every request finds its approver without a
-            forwarding chain.
-          </p>
-          <ul>
-            <li>Productivity grades from one transparent formula, visible to staff</li>
-            <li>Approval flows that route by role, team and amount</li>
-            <li>Leave balances and cover checked before a request lands</li>
-          </ul>
-          <p>
-            Managers approve from their queue, staff see where things stand,
-            and nobody chases a signature across three chat threads.
-          </p>
-        </PageSplit>
-      </section>
+            <Reveal as="nav" className="sol-index" delay={140} aria-label="Five ways teams run">
+              {BANDS.map((b) => (
+                <a className="sol-index-item" href={`#${b.id}`} key={b.id}>
+                  <span className="sol-index-n">{b.n}</span>
+                  <span>{b.eyebrow}</span>
+                </a>
+              ))}
+            </Reveal>
+          </div>
+        </header>
 
-      <section className="page-section" id="operations">
-        <div className="container">
-          <header className="sec-head sec-head--tight">
-            <span className="sec-eyebrow">Field & operations teams</span>
-            <h2>Built for work that happens on site.</h2>
-            <p className="sec-lede">Shifts, cases and multi-step sign-offs, modelled as they really run.</p>
-          </header>
-        </div>
-        <PageSplit
-          kicker="CREWS AND SITES"
-          title="Model your real operations, stage by stage."
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'steps',
-                title: 'Site handover · Ikeja depot',
-                pct: '50%',
-                note: 'Your stages, in order · 4 steps',
-                rows: [
-                  { t: 'Crew clocked in on site', s: 'done' },
-                  { t: 'Handover checklist completed', s: 'done' },
-                  { t: 'Supervisor sign-off', s: 'current' },
-                  { t: 'Client confirmation', s: '' },
-                ],
-              }}
-            />
-          }
-        >
-          <p>
-            Depots, sites and crews do not run on office assumptions.
-            StaffIntra knows who is where, with location context on every
-            clock-in, and turns each job into a case that moves through your
-            stages in order.
-          </p>
-          <ul>
-            <li>Shift scheduling across sites, with cover gaps visible early</li>
-            <li>Cases with multi-step sign-offs that cannot skip a stage</li>
-            <li>Clock-in with device and location context for every crew</li>
-          </ul>
-          <p>
-            A supervisor closes a stage from the field, and the next person
-            in the chain sees it at once. That is the whole system.
-          </p>
-        </PageSplit>
-      </section>
+        {BANDS.map((b, i) => (
+          <Band band={b} tint={i % 2 === 1} key={b.id} />
+        ))}
 
-      <section className="page-section" id="enterprise">
-        <div className="container">
-          <header className="sec-head sec-head--tight">
-            <span className="sec-eyebrow">Established organizations</span>
-            <h2>One branded roof for the whole operation.</h2>
-            <p className="sec-lede">HR, time, productivity and operations in a single record.</p>
-          </header>
-        </div>
-        <PageSplit
-          flip
-          kicker="CONSOLIDATION AT SCALE"
-          title="Retire the sprawl, keep the history."
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'list',
-                title: 'Legacy stack',
-                meta: 'Consolidation tracker',
-                rows: [
-                  {
-                    name: 'Standalone HR records',
-                    meta: 'People data now in StaffIntra',
-                    chip: 'Retired',
-                    tone: 'quiet',
-                  },
-                  {
-                    name: 'Clock-in spreadsheet',
-                    meta: 'Replaced by smart clock-in',
-                    chip: 'Retired',
-                    tone: 'quiet',
-                  },
-                  {
-                    name: 'Old case tracker',
-                    meta: 'Cases moving stage by stage',
-                    chip: 'Migrating',
-                    tone: 'accent',
-                  },
-                ],
-              }}
-            />
-          }
-        >
-          <p>
-            Most large teams run on a stack that grew by accident: an HR
-            system here, a clock-in tool there, spreadsheets in between.
-            StaffIntra brings people records, time, productivity and
-            operations into one workspace that carries your own brand.
-          </p>
-          <ul>
-            <li>One employee record behind HR, time and performance</li>
-            <li>Your logo, colors and domain on the workspace staff use daily</li>
-            <li>Role-based access so each function sees exactly its slice</li>
-          </ul>
-          <p>
-            Migrations run system by system, not in one risky weekend. Each
-            tool retires only when its record already lives in StaffIntra.
-          </p>
-        </PageSplit>
-      </section>
-
-      <section className="page-section" id="consolidation">
-        <div className="container">
-          <header className="sec-head sec-head--tight">
-            <span className="sec-eyebrow">System consolidation</span>
-            <h2>One roof, not another tool.</h2>
-            <p className="sec-lede">Replace point tools with a single record, not another tab.</p>
-          </header>
-        </div>
-        <PageSplit
-          kicker="THE MATH OF ONE"
-          title="Four subscriptions become one workspace."
-          visual={
-            <PillarMoment
-              moment={{
-                shape: 'timer',
-                title: 'Stack after StaffIntra',
-                site: '4 tools retired',
-                time: '1',
-                note: 'One workspace, one record',
-                action: 'See the platform',
-              }}
-            />
-          }
-        >
-          <p>
-            Point tools each hold a slice of the truth: HR software knows who
-            works for you, a time tracker knows when, spreadsheets hold the
-            rest. StaffIntra replaces the set with one record, so a clock-in,
-            a leave request and a payslip all describe the same person in the
-            same place. See how the pieces fit on the{' '}
-            <a href="/product">product page</a>.
-          </p>
-          <ul>
-            <li>One record replacing HR files, time tracker and spreadsheets</li>
-            <li>Reports drawn from one source, not a reconciliation project</li>
-            <li>One bill in naira instead of four dollar subscriptions</li>
-          </ul>
-          <p>
-            Fewer logins, fewer exports, fewer places for the numbers to
-            disagree. The tool count goes down and the picture gets sharper.
-          </p>
-        </PageSplit>
-      </section>
-    </PageShell>
+        <CloseCta />
+        <Cta />
+      </main>
+      <Footer />
+    </>
   );
 }

@@ -1,0 +1,181 @@
+/* Solutions: the ladder.
+
+   No bordered splits on this page. Each audience is a full-width band and the
+   only separator between one and the next is the background changing from
+   surface to tint, so the page reads as one continuous climb rather than as
+   five cards. The numeral in the left gutter is the rung marker: display face,
+   headline scale, hairline colour, so it carries structure without competing
+   with the heading beside it. Everything else on the page is hairlines. */
+
+/* ---------- header ---------- */
+
+.sol-hero {
+  position: relative;
+  padding: 132px 0 clamp(52px, 6vw, 78px);
+  background: var(--tint);
+  --rail-line: var(--rule-solid);
+}
+.sol-hero h1 {
+  margin-top: 30px;
+  max-width: 16ch;
+  font-size: clamp(2rem, 3.8vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -.024em;
+}
+.sol-lede {
+  margin-top: 18px;
+  max-width: 46ch;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.sol-ctas {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* The rung index. Same hairline-over-label construction as the facts rows
+   further down, so the header states the page's grammar before using it. */
+.sol-index {
+  margin-top: clamp(40px, 5vw, 62px);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: clamp(16px, 2.4vw, 34px);
+}
+.sol-index-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line-strong);
+  font-family: var(--font-ui);
+  font-size: .875rem;
+  line-height: 1.35;
+  color: var(--ink-2);
+  transition: color .2s var(--ease), border-color .2s var(--ease);
+}
+.sol-index-n {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--ink-3-text);
+  font-variant-numeric: tabular-nums;
+  transition: color .2s var(--ease);
+}
+.sol-index-item:hover { color: var(--accent); border-color: var(--accent); }
+.sol-index-item:hover .sol-index-n { color: var(--accent); }
+
+/* ---------- the bands ---------- */
+
+.sol-band {
+  padding: clamp(66px, 8vw, 116px) 0 clamp(64px, 7.6vw, 108px);
+  background: var(--surface);
+  scroll-margin-top: 86px;
+}
+.sol-band--tint { background: var(--tint); }
+
+.sol-top {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(0, 420px);
+  column-gap: clamp(26px, 3.6vw, 56px);
+  align-items: start;
+}
+
+.sol-num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3.4rem, 5vw, 5rem);
+  line-height: .82;
+  letter-spacing: -.03em;
+  color: var(--line-strong);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.sol-headtext h2 {
+  margin-top: 26px;
+  max-width: 17ch;
+  font-size: clamp(1.7rem, 2.9vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.022em;
+}
+.sol-headtext .sec-lede { max-width: 48ch; }
+.sol-link { margin-top: 24px; }
+
+/* The product card. The border is the separation, since shadows are none, and
+   the card's own fill is dropped so the spotlight wash reads through it. */
+.sol-visual {
+  display: block;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  transition: border-color .28s var(--ease);
+}
+.sol-visual:hover { border-color: var(--line-strong); }
+.sol-visual .pm-card {
+  width: 100%;
+  background: transparent;
+}
+
+/* ---------- the three facts ---------- */
+
+.sol-facts {
+  margin-top: clamp(42px, 5vw, 66px);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: clamp(24px, 3vw, 48px);
+}
+.sol-fact {
+  padding-top: 14px;
+  border-top: 1px solid var(--line-strong);
+}
+.sol-fact-k {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: .6875rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3-text);
+}
+.sol-fact-v {
+  display: block;
+  margin-top: 9px;
+  max-width: 36ch;
+  font-size: .9375rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1080px) {
+  .sol-top { grid-template-columns: auto minmax(0, 1fr) minmax(0, 360px); }
+}
+
+@media (max-width: 860px) {
+  .sol-hero { padding-top: 112px; }
+  .sol-index { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 4px; }
+  .sol-index-item { padding-bottom: 12px; }
+
+  .sol-top { grid-template-columns: minmax(0, 1fr); }
+  .sol-num { line-height: 1; }
+  .sol-headtext h2 { margin-top: 16px; max-width: 22ch; }
+  .sol-visual { margin-top: 34px; }
+  .sol-visual .pm-card { width: 100%; }
+
+  .sol-facts { grid-template-columns: minmax(0, 1fr); row-gap: 22px; }
+  .sol-fact-v { max-width: 52ch; }
+}
+
+@media (max-width: 560px) {
+  .sol-index { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sol-index-item,
+  .sol-index-n,
+  .sol-visual { transition: none; }
+}

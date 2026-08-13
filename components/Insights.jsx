@@ -9,7 +9,7 @@ import './Insights.css';
 const POSTS = [
   { id: 1, tone: 'a', title: 'Switching workforce platforms: a migration guide', tags: ['Guide', 'Migration'] },
   { id: 2, tone: 'b', title: 'What NDPR means for your staff records', tags: ['Blog', 'Compliance'] },
-  { id: 3, tone: 'c', title: 'Performance grades your team will actually trust', tags: ['Blog', 'Performance'] },
+  { id: 3, tone: 'c', title: 'Work logs people actually fill in', tags: ['Blog', 'Productivity'] },
   { id: 4, tone: 'a', title: 'Consolidating your stack without losing a week', tags: ['Guide', 'Operations'] },
   { id: 5, tone: 'b', title: 'Payroll deductions in Nigeria, handled right', tags: ['Blog', 'Payroll'] },
   { id: 6, tone: 'c', title: 'Ops clinic: a live session for operations leads', tags: ['Event', 'Online'] },

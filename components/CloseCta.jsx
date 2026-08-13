@@ -1,32 +1,46 @@
-import { boxFaces } from './iso';
 import './CloseCta.css';
 
-/* A large stepped form, outline only, sitting half off the panel at each edge.
-   Two boxes rather than a notched prism, drawn near-to-far, which is all the
-   occlusion this needs. */
-const TALL = { x0: 0, x1: 2, y0: 0, y1: 2, z0: 0, z1: 3 };
-const LOW = { x0: 2, x1: 4, y0: 0, y1: 2, z0: 0, z1: 1.6 };
+/* The Weave, as a corner ornament.
+
+   This was a pair of isometric stepped boxes. Those were the reference site's
+   device and carried no meaning of ours, so the closing band is now signed
+   with our own mark instead of decorated with someone else's geometry.
+
+   Two strand groups crossing at ninety degrees, the near group painted last
+   so it passes over the far one. Outline weight only, no fills: this sits on
+   a tinted panel, and a filled form would read as a hole cut in it. */
+
+const PITCH = 22;
+const R = 28;
+
+/* Falls, then turns right. */
+function strandDR(x, y, len) {
+  return `M${x} ${y} L${x} ${y + len - R} Q${x} ${y + len} ${x + R} ${y + len} L${x + len + 70} ${y + len}`;
+}
+
+/* Runs right, then falls. The partner that crosses it. */
+function strandRD(x, y, len) {
+  return `M${x} ${y} L${x + len - R} ${y} Q${x + len} ${y} ${x + len} ${y + R} L${x + len} ${y + len + 60}`;
+}
+
+const A = [0, 1, 2].map((i) => strandDR(30 + i * PITCH, -30, 120 - i * PITCH));
+const B = [0, 1, 2].map((i) => strandRD(-30, 70 + i * PITCH, 160 - i * PITCH));
 
 function StepForm({ className }) {
-  const a = boxFaces(TALL);
-  const b = boxFaces(LOW);
   return (
-    <svg className={`cc-art ${className}`} viewBox="-90 -150 260 300" fill="none" aria-hidden="true">
-      <defs>
-        <pattern id="cc-grit" width="7" height="7" patternUnits="userSpaceOnUse">
-          <rect width="7" height="7" fill="var(--surface)" />
-          <circle cx="1.6" cy="1.9" r=".8" fill="var(--ink)" opacity=".2" />
-          <circle cx="4.9" cy="4.4" r=".62" fill="var(--ink)" opacity=".15" />
-        </pattern>
-      </defs>
-      {[a, b].map((f, i) => (
-        // eslint-disable-next-line react/no-array-index-key
-        <g key={i}>
-          <polygon points={f.top} fill="var(--surface)" />
-          <polygon points={f.right} fill="url(#cc-grit)" />
-          <polygon points={f.left} fill="var(--surface)" />
-        </g>
-      ))}
+    <svg className={`cc-art ${className}`} viewBox="-40 -40 260 300" fill="none" aria-hidden="true">
+      <g stroke="currentColor" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round">
+        {A.map((d, i) => (
+          <path key={`a${i}`} d={d} opacity=".5" />
+        ))}
+        {B.map((d, i) => (
+          <path key={`b${i}`} d={d} opacity=".28" />
+        ))}
+        {/* Overpaint: this is what makes the crossing read as woven. */}
+        {A.slice(0, 2).map((d, i) => (
+          <path key={`o${i}`} d={d} opacity=".5" />
+        ))}
+      </g>
     </svg>
   );
 }

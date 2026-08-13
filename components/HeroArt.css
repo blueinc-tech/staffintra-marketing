@@ -1,0 +1,36 @@
+/* The Weave. Strands draw themselves in sequence once, then hold.
+
+   It is a page ornament, so it never loops: a permanently moving graphic in
+   the corner of a hero competes with the copy for attention and wins, which
+   is not what you want the visitor reading. */
+
+.wv { width: 100%; height: auto; display: block; color: var(--accent); }
+
+.wv-s {
+  /* Long enough to cover any strand in the set; the exact figure only has to
+     exceed the true path length for the dash trick to work. */
+  stroke-dasharray: 620;
+  stroke-dashoffset: 620;
+  animation: wvDraw 1.15s cubic-bezier(.22, .61, .36, 1) forwards;
+  animation-delay: calc(var(--i) * 110ms + 260ms);
+}
+/* The crossing group sits back a shade so the weave reads as depth rather
+   than as one flat tangle. */
+.wv-s--b { opacity: .42; }
+/* The overpaint has to arrive after the strand it hides, or the tuck pops. */
+.wv-s--over { animation-delay: calc(var(--i) * 110ms + 300ms); }
+
+@keyframes wvDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Paused until the hero is on screen, so the draw is not already over by the
+   time anybody looks at it. .hero sets data-ready on its first frame. */
+.hero:not([data-ready]) .wv-s { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wv-s {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

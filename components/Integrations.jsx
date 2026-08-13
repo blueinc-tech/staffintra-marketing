@@ -8,28 +8,30 @@ import './Integrations.css';
    into one hub, with a pulse running down each line, and the categories
    rewiring the board rather than filtering a carousel.
 
-   Marks are neutral placeholders, so no tile claims to be a real vendor. */
+   Categories follow the product's own Tools Hub: Communication, Recruitment,
+   Finance and General. Slack and Google are named because both are shipped and
+   confirmed; every other tile is a capability, not a vendor claim. */
 
 const CATEGORIES = [
   {
-    id: 'people',
-    label: 'HR & people',
-    nodes: ['HR record', 'Right to work', 'Contracts', 'Absence', 'Training', 'Directory'],
+    id: 'communication',
+    label: 'Communication',
+    nodes: ['Slack', 'Google', 'Email', 'In-app chat', 'Groups', 'Announcements'],
   },
   {
-    id: 'payroll',
-    label: 'Payroll',
-    nodes: ['Gross to net', 'Pensions', 'Payslips', 'Expenses', 'Overtime', 'Year end'],
-  },
-  {
-    id: 'time',
-    label: 'Time & attendance',
-    nodes: ['Clock-in', 'Timesheets', 'Leave', 'Attendance', 'Devices', 'Sites'],
+    id: 'recruitment',
+    label: 'Recruitment',
+    nodes: ['Intake forms', 'Candidate records', 'Offer letters', 'Right to work', 'Onboarding', 'Job boards'],
   },
   {
     id: 'finance',
     label: 'Finance',
-    nodes: ['Ledger', 'Cost centres', 'Budgets', 'Invoicing', 'Reporting', 'Forecast'],
+    nodes: ['Payroll', 'Expenses', 'Loan requests', 'Cost centres', 'Invoicing', 'Reporting'],
+  },
+  {
+    id: 'general',
+    label: 'General',
+    nodes: ['Calendar', 'Storage', 'Devices', 'Documents', 'Training', 'Single sign-on'],
   },
 ];
 
@@ -63,10 +65,9 @@ export default function Integrations() {
           <div className="int-grid">
             <header className="int-head">
               <span className="sec-eyebrow">Integrations</span>
-              <h2>Connected to your stack.</h2>
+              <h2>The tools hub.</h2>
               <p>
-                StaffIntra connects seamlessly with the systems your business already uses.
-                One record, shared both ways, without anyone retyping a thing.
+                One launcher for every tool your workspace runs on, sorted the way the product sorts them. Slack and Google sign-in ship today, and the record is shared both ways.
               </p>
               <a className="btn btn-light" href="/platform#integrations">
                 Explore all integrations

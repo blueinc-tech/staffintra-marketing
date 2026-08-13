@@ -1,0 +1,363 @@
+/* Platform page: the dark room.
+
+   The rest of the site is light, so this page earns its difference by
+   inverting rather than by decorating. The whole body sits on one near-black
+   ground, sections are told apart by hairlines running the full width of the
+   page, and nothing is boxed. It should read as infrastructure: the floor the
+   product stands on, not another feature band.
+
+   Every token below is the light palette translated for dark, so the two
+   halves of the site stay one system: 2px radii, no shadows, 1px hairlines
+   for all separation. The accent lifts from #4024C0 to #8E75F2 because brand
+   purple at full depth disappears against #101014, and --accent itself is
+   re-pointed on the wrapper so the shared Spotlight wash and the shared
+   buttons lift with it. */
+
+.pf {
+  --pf-ground: #101014;
+  --pf-ink: #F2F2F5;
+  --pf-ink-2: #A8A8B3;
+  --pf-ink-3: #7E7E8A;
+  --pf-line: #2A2A32;
+  --pf-line-2: #3A3A45;
+  --pf-accent: #8E75F2;
+  --pf-ok: #5FD3A8;
+  --pf-warn: #E5A85F;
+  /* Shared components read --accent: lift it for the length of the page. */
+  --accent: #8E75F2;
+
+  background: var(--pf-ground);
+  color: var(--pf-ink);
+  /* main carries the white page rails; the dark ground has to run past them
+     to the page edges, or it reads as a slab floating on white. */
+  margin-inline: calc(-1 * var(--rail));
+}
+
+/* ---------- shared classes, re-inked for dark ---------- */
+
+.pf .sec-eyebrow { color: var(--pf-ink-3); }
+.pf .sec-lede { color: var(--pf-ink-2); }
+/* The section rhythm comes from .pf-sec here, so the shared header keeps only
+   its bottom half of the spacing. */
+.pf .sec-head { padding: 0 0 clamp(30px, 3.6vw, 48px); }
+.pf .sec-head h2 { margin-top: 26px; }
+
+.pf .turn-link { color: var(--pf-ink); }
+.pf .turn-link svg { color: var(--pf-ink-3); }
+.pf .turn-link:hover,
+.pf .turn-link:hover svg { color: var(--pf-accent); }
+
+.pf .btn-primary { background: var(--pf-accent); color: #14121F; }
+.pf .btn-primary:hover { background: #A28CF5; }
+.pf .btn-secondary {
+  background: transparent;
+  color: var(--pf-ink);
+  border-color: var(--pf-line-2);
+}
+.pf .btn-secondary:hover { background: rgba(255, 255, 255, .05); border-color: var(--pf-ink-2); }
+
+/* ---------- header ---------- */
+
+.pf-hero { padding: 132px 0 clamp(52px, 6vw, 78px); }
+.pf-hero h1 {
+  margin-top: 28px;
+  max-width: 17ch;
+  font-size: clamp(2.1rem, 4.4vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -.026em;
+}
+.pf-lede {
+  margin-top: 20px;
+  max-width: 56ch;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--pf-ink-2);
+}
+.pf-acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.pf-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 30px;
+  margin-top: 40px;
+  padding-top: 22px;
+  border-top: 1px solid var(--pf-line);
+}
+
+/* ---------- sections ---------- */
+/* One hairline per section boundary, carried the full width of the page.
+   That line is the only separation on this page. */
+
+.pf-sec {
+  border-top: 1px solid var(--pf-line);
+  padding: clamp(58px, 7vw, 104px) 0 clamp(58px, 7vw, 104px);
+}
+.pf-sec--last { padding-bottom: clamp(64px, 8vw, 112px); }
+
+.pf-note {
+  max-width: 66ch;
+  margin-top: 30px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--pf-ink-2);
+}
+
+/* ---------- briefing strip ---------- */
+/* The real four cells of "Your day at a glance": one row, four columns,
+   divided by hairlines rather than gaps, so it reads as one instrument. */
+
+.pf-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--pf-line);
+  border-bottom: 1px solid var(--pf-line);
+}
+.pf-cell { padding: 26px 28px 28px; border-left: 1px solid var(--pf-line); }
+.pf-cell:first-child { border-left: 0; }
+.pf-cell-label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: .75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--pf-ink-3);
+}
+.pf-cell-value {
+  display: block;
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--pf-ink);
+}
+.pf-cell-note {
+  display: block;
+  margin-top: 12px;
+  font-size: .875rem;
+  color: var(--pf-ink-2);
+}
+
+/* ---------- panels ---------- */
+
+.pf-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--pf-line);
+}
+.pf-panels--wide { grid-template-columns: 1.7fr 1fr; }
+.pf-panel { padding: 28px 28px 30px; }
+.pf-panel + .pf-panel { border-left: 1px solid var(--pf-line); }
+
+.pf-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding-bottom: 16px;
+}
+.pf-panel-head h3 {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--pf-ink);
+}
+.pf-panel-meta { font-size: .8125rem; color: var(--pf-ink-3); }
+.pf-panel-foot {
+  margin-top: 18px;
+  max-width: 46ch;
+  font-size: .875rem;
+  line-height: 1.55;
+  color: var(--pf-ink-3);
+}
+
+.pf-rows { list-style: none; }
+.pf-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 0;
+  border-top: 1px solid var(--pf-line);
+}
+.pf-row--stack { display: block; }
+.pf-row-text { display: block; }
+.pf-row-name { display: block; font-size: .9375rem; color: var(--pf-ink); }
+.pf-row-meta {
+  display: block;
+  margin-top: 4px;
+  font-size: .8125rem;
+  color: var(--pf-ink-3);
+}
+.pf-row-meta--right { margin-top: 0; text-align: right; white-space: nowrap; }
+
+.pf-chip {
+  flex: none;
+  font-family: var(--font-ui);
+  font-size: .6875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  padding: 4px 9px;
+  border: 1px solid var(--pf-line-2);
+  border-radius: 2px;
+  color: var(--pf-ink-2);
+  white-space: nowrap;
+}
+.pf-chip--ok { color: var(--pf-ok); border-color: rgba(95, 211, 168, .38); }
+.pf-chip--warn { color: var(--pf-warn); border-color: rgba(229, 168, 95, .38); }
+.pf-chip--accent { color: var(--pf-accent); border-color: rgba(142, 117, 242, .45); }
+
+/* Team today: a label, a count, and a 2px rule that carries the share.
+   Anything thicker would become a chart, and this is a reading. */
+.pf-meters { list-style: none; }
+.pf-meter-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding: 13px 0;
+  border-top: 1px solid var(--pf-line);
+}
+.pf-meter-label { font-size: .9375rem; color: var(--pf-ink); }
+.pf-meter-value {
+  font-family: var(--font-mono);
+  font-size: .9375rem;
+  color: var(--pf-ink-2);
+}
+.pf-meter {
+  grid-column: 1 / -1;
+  display: block;
+  height: 2px;
+  margin-top: 6px;
+  background: var(--pf-line);
+}
+.pf-meter i { display: block; height: 2px; background: var(--pf-accent); }
+
+/* ---------- tools hub ---------- */
+
+.pf-cats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--pf-line);
+  border-bottom: 1px solid var(--pf-line);
+}
+.pf-cat { padding: 28px 26px 30px; border-left: 1px solid var(--pf-line); }
+.pf-cat:first-child { border-left: 0; }
+.pf-cat h3 {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.pf-cat-note { margin-top: 8px; font-size: .875rem; color: var(--pf-ink-3); }
+.pf-cat-list { list-style: none; margin-top: 18px; }
+.pf-cat-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px solid var(--pf-line);
+  font-size: .9375rem;
+  color: var(--pf-ink-2);
+}
+
+/* ---------- security ---------- */
+
+.pf-defs { border-top: 1px solid var(--pf-line); }
+.pf-def {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 2.2fr;
+  gap: 8px 40px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--pf-line);
+}
+.pf-def dt {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -.008em;
+  color: var(--pf-ink);
+}
+.pf-def dd {
+  max-width: 64ch;
+  font-size: .9375rem;
+  line-height: 1.6;
+  color: var(--pf-ink-2);
+}
+.pf-defs--tight .pf-def { padding: 15px 0; }
+.pf-sub { margin-top: clamp(40px, 5vw, 66px); }
+.pf-sub .sec-eyebrow { margin-bottom: 18px; }
+
+/* ---------- support ---------- */
+
+.pf-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--pf-line);
+}
+.pf-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 28px 30px 30px 0;
+}
+.pf-col + .pf-col { padding-left: 30px; border-left: 1px solid var(--pf-line); }
+.pf-col h3 {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.pf-col p {
+  font-size: .9375rem;
+  line-height: 1.6;
+  color: var(--pf-ink-2);
+}
+.pf-col .turn-link { margin-top: 4px; }
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1040px) {
+  .pf-strip { grid-template-columns: repeat(2, 1fr); }
+  .pf-cell:nth-child(3) { border-left: 0; }
+  .pf-cell:nth-child(n + 3) { border-top: 1px solid var(--pf-line); }
+  .pf-cats { grid-template-columns: repeat(2, 1fr); }
+  .pf-cat:nth-child(3) { border-left: 0; }
+  .pf-cat:nth-child(n + 3) { border-top: 1px solid var(--pf-line); }
+  .pf-def { grid-template-columns: minmax(180px, 1fr) 1.9fr; gap: 8px 28px; }
+}
+
+@media (max-width: 860px) {
+  .pf-hero { padding-top: 112px; }
+  .pf-strip,
+  .pf-cats,
+  .pf-panels,
+  .pf-panels--wide,
+  .pf-cols { grid-template-columns: 1fr; }
+  .pf-cell,
+  .pf-cat { border-left: 0; }
+  .pf-cell + .pf-cell,
+  .pf-cat + .pf-cat { border-top: 1px solid var(--pf-line); }
+  .pf-panel { padding-inline: 0; }
+  .pf-panel + .pf-panel { border-left: 0; border-top: 1px solid var(--pf-line); }
+  .pf-cell { padding-inline: 0; }
+  .pf-cat { padding-inline: 0; }
+  .pf-def { grid-template-columns: 1fr; gap: 6px; }
+  .pf-col { padding: 24px 0; }
+  .pf-col + .pf-col { padding-left: 0; border-left: 0; border-top: 1px solid var(--pf-line); }
+  .pf-row-meta--right { white-space: normal; }
+}
+
+/* The only motion this file owns is the button and link hover; the section
+   reveals belong to Reveal, which already honors the setting. */
+@media (prefers-reduced-motion: reduce) {
+  .pf .btn,
+  .pf .turn-link,
+  .pf .turn-link svg { transition: none; }
+}

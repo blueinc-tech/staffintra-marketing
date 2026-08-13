@@ -1,0 +1,320 @@
+/* Resources: the index.
+
+   An editorial magazine grid rather than the bordered feature splits the other
+   subpages use. A visitor here is scanning for one thing to read, so the page
+   is a masthead, a grid with a lead article, and then the plumbing (by type,
+   help, API, status) filed underneath in plain rules.
+
+   The lead spans two of the three columns and two rows, so the two cards
+   beside it and the six below it land on an exact rectangle: nine items, no
+   ragged tail. Everything is hairline and flat, per the house tokens. */
+
+/* ---------- header ---------- */
+
+.rx-hero {
+  position: relative;
+  padding: 132px 0 64px;
+  background: var(--tint);
+  --rail-line: var(--rule-solid);
+}
+.rx-hero h1 {
+  margin-top: 30px;
+  max-width: 18ch;
+  font-size: clamp(2rem, 3.8vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -.024em;
+}
+.rx-lede {
+  margin-top: 18px;
+  max-width: 54ch;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* Local visually-hidden helper: the global sheet has no sr-only class. */
+.rx-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- the index ---------- */
+
+.rx-index {
+  background: var(--surface);
+  padding: clamp(56px, 7vw, 92px) 0 clamp(44px, 5vw, 72px);
+}
+
+.rx-masthead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line-strong);
+}
+.rx-masthead h2 {
+  margin-top: 12px;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -.022em;
+  line-height: 1.1;
+}
+.rx-masthead-note {
+  max-width: 44ch;
+  padding-bottom: 4px;
+  font-family: var(--font-ui);
+  font-size: .875rem;
+  line-height: 1.55;
+  color: var(--ink-3-text);
+}
+
+.rx-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.rx-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+  overflow: hidden;
+  transition: border-color .22s var(--ease);
+}
+.rx-card:hover,
+.rx-card:focus-visible { border-color: var(--line-strong); }
+.rx-card--lead { grid-column: span 2; grid-row: span 2; }
+
+/* Cover: a tinted block carrying one line drawing, hairline off the body.
+   It takes the slack in a stretched grid row, so cards of unequal copy still
+   line their bodies up along the bottom. */
+.rx-cover {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  min-height: 136px;
+  background: var(--tint);
+  border-bottom: 1px solid var(--line);
+  color: var(--accent);
+}
+.rx-cover svg { width: 132px; height: 76px; }
+.rx-card--lead .rx-cover {
+  flex: 1;
+  min-height: 244px;
+  height: auto;
+  background: var(--accent-soft);
+}
+.rx-card--lead .rx-cover svg { width: 230px; height: 132px; }
+
+.rx-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 18px 18px;
+}
+.rx-card--lead .rx-body { gap: 13px; padding: 28px 32px 30px; }
+
+.rx-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.rx-tag {
+  font-family: var(--font-ui);
+  font-size: .625rem;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink-3-text);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 3px 7px;
+}
+.rx-tag--type {
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+}
+
+.rx-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.28;
+  letter-spacing: -.014em;
+  color: var(--ink);
+  transition: color .22s var(--ease);
+}
+.rx-card--lead .rx-title {
+  max-width: 19ch;
+  font-size: clamp(1.5rem, 2.5vw, 2.05rem);
+  line-height: 1.11;
+  letter-spacing: -.024em;
+}
+.rx-card:hover .rx-title { color: var(--accent); }
+
+.rx-dek {
+  max-width: 50ch;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.rx-meta {
+  font-family: var(--font-mono);
+  font-size: .6875rem;
+  letter-spacing: .04em;
+  color: var(--ink-3-text);
+}
+.rx-read { margin-top: 6px; }
+.rx-card:hover .rx-read { color: var(--accent); }
+.rx-card:hover .rx-read svg { color: var(--accent); translate: 3px 0; }
+
+/* ---------- filed: by type, then help, API and status ---------- */
+
+.rx-filed {
+  position: relative;
+  background: var(--surface-2);
+  padding: clamp(52px, 6vw, 86px) 0 clamp(58px, 7vw, 96px);
+}
+.rx-filed h2 {
+  margin-top: 12px;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -.022em;
+  line-height: 1.1;
+}
+
+.rx-list {
+  margin-top: clamp(24px, 3vw, 34px);
+  border-top: 1px solid var(--line-strong);
+}
+.rx-row {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr) 22px;
+  align-items: center;
+  gap: 6px 24px;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--line);
+}
+.rx-row-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: -.012em;
+  color: var(--ink);
+  transition: color .22s var(--ease);
+}
+.rx-row-note {
+  font-family: var(--font-ui);
+  font-size: .9375rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+.rx-row-go { display: inline-grid; place-items: center; justify-self: end; }
+.rx-row-go svg {
+  width: 12px;
+  height: 12px;
+  color: var(--ink-3-text);
+  transition: translate .22s var(--ease), color .22s var(--ease);
+}
+.rx-row:hover .rx-row-name { color: var(--accent); }
+.rx-row:hover .rx-row-go svg { color: var(--accent); translate: 3px 0; }
+
+.rx-three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: clamp(40px, 5vw, 66px);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--surface);
+}
+.rx-col { padding: 26px 26px 24px; }
+.rx-col + .rx-col { border-left: 1px solid var(--line); }
+.rx-col h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: -.012em;
+}
+.rx-col p {
+  margin-top: 9px;
+  max-width: 34ch;
+  font-family: var(--font-ui);
+  font-size: .9375rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.rx-col ul {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.rx-col li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-ui);
+  font-size: .875rem;
+  color: var(--ink-2);
+}
+.rx-col li:last-child { border-bottom: 0; padding-bottom: 0; }
+.rx-col li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1080px) {
+  .rx-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rx-card--lead { grid-column: span 2; grid-row: auto; }
+  .rx-card--lead .rx-cover { min-height: 210px; }
+  .rx-three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rx-col:nth-child(3) {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 860px) {
+  .rx-hero { padding: 112px 0 52px; }
+  .rx-masthead { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .rx-masthead-note { padding-bottom: 0; }
+  .rx-grid { grid-template-columns: minmax(0, 1fr); }
+  .rx-card--lead { grid-column: auto; }
+  .rx-card--lead .rx-body { padding: 22px 22px 24px; }
+  .rx-card--lead .rx-cover { min-height: 180px; }
+  .rx-card--lead .rx-cover svg { width: 180px; height: 104px; }
+  .rx-row { grid-template-columns: minmax(0, 1fr) 22px; }
+  .rx-row-go { grid-column: 2; grid-row: 1; }
+  .rx-row-note { grid-column: 1 / -1; grid-row: 2; }
+  .rx-three { grid-template-columns: minmax(0, 1fr); }
+  .rx-col + .rx-col { border-left: 0; border-top: 1px solid var(--line); }
+  .rx-col:nth-child(3) { grid-column: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rx-card,
+  .rx-title,
+  .rx-row-name,
+  .rx-row-go svg,
+  .rx-read svg { transition: none !important; }
+  .rx-card:hover .rx-read svg,
+  .rx-row:hover .rx-row-go svg { translate: none; }
+}

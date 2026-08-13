@@ -710,3 +710,26 @@ main{margin:0 var(--rail);position:relative;z-index:1}
   .va-item{flex-wrap:wrap}
   .va-actions{width:100%;justify-content:flex-end}
 }
+
+/* ---------- Brand lockup ---------- */
+/* PNG mark plus set wordmark. The white variant filters the solid-colour mark
+   to white, so one asset serves both surfaces. */
+.brand{display:inline-flex;align-items:center;gap:8px;line-height:1}
+.brand-mark{height:1.35em;width:auto;display:block}
+.brand-word{
+  font-family:var(--font-display);font-weight:700;font-size:1em;
+  letter-spacing:-.02em;color:var(--ink);transform:translateY(-.02em);
+}
+.brand--white .brand-mark{filter:brightness(0) invert(1)}
+.brand--white .brand-word{color:#fff}
+.brand--mark{gap:0}
+
+/* Trust chips under the hero CTAs, per v3: three quiet proof points. */
+.hero-chips{
+  display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;padding:0;list-style:none;
+  font-family:var(--font-ui);font-size:.8125rem;color:var(--ink-2);
+}
+.hero-chips li{display:inline-flex;align-items:center;gap:8px}
+.hero-chips li::before{
+  content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;
+}

@@ -7,12 +7,12 @@ import './Insights.css';
 /* Our own resource titles, not claims about anyone. Cover art is a tinted
    panel with a line drawing rather than a stock photograph. */
 const POSTS = [
-  { id: 1, tone: 'a', title: 'Switching rota software: a practical guide', tags: ['Guide', 'Rota'] },
-  { id: 2, tone: 'b', title: 'What the working time rules actually require', tags: ['Blog', 'Compliance'] },
-  { id: 3, tone: 'c', title: 'Cutting agency spend without cutting cover', tags: ['Blog', 'Labour cost'] },
-  { id: 4, tone: 'a', title: 'Onboarding seasonal staff: a checklist', tags: ['Guide', 'Onboarding'] },
-  { id: 5, tone: 'b', title: 'Holiday accrual for irregular hours, explained', tags: ['Blog', 'Leave'] },
-  { id: 6, tone: 'c', title: 'Rota clinic: a live session for operations leads', tags: ['Event', 'Online'] },
+  { id: 1, tone: 'a', title: 'Switching workforce platforms: a migration guide', tags: ['Guide', 'Migration'] },
+  { id: 2, tone: 'b', title: 'What NDPR means for your staff records', tags: ['Blog', 'Compliance'] },
+  { id: 3, tone: 'c', title: 'Performance grades your team will actually trust', tags: ['Blog', 'Performance'] },
+  { id: 4, tone: 'a', title: 'Consolidating your stack without losing a week', tags: ['Guide', 'Operations'] },
+  { id: 5, tone: 'b', title: 'Payroll deductions in Nigeria, handled right', tags: ['Blog', 'Payroll'] },
+  { id: 6, tone: 'c', title: 'Ops clinic: a live session for operations leads', tags: ['Event', 'Online'] },
 ];
 
 const COVERS = [

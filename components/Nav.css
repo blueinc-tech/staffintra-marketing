@@ -35,7 +35,8 @@
   display: inline-flex;
   align-items: center;
 }
-.nav-logo img { height: 100%; width: auto; display: block; }
+.nav-logo .brand { height: 100%; font-size: 17px; }
+.nav-logo .brand-mark { height: 24px; }
 
 /* ---------- links ---------- */
 .nav-links {

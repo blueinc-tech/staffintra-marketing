@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Brand from './Brand';
 import './HeroMockup.css';
 
 /* The product surface in the hero, rebuilt to the real Home screen rather than
@@ -71,29 +72,29 @@ const IHome = () => <Ico d="M3.6 9 10 3.8 16.4 9v6.6a1 1 0 0 1-1 1H4.6a1 1 0 0 1
 /* Filenames must match public/assets/people; p1 and p2 never existed and were
    404ing behind the initials fallback. */
 const PEOPLE = [
-  { initials: 'TS', tone: 'a', img: null },
-  { initials: 'AO', tone: 'b', img: 'amara' },
-  { initials: 'TA', tone: 'c', img: 'tunde' },
+  { initials: 'RA', tone: 'a', img: null },
+  { initials: 'UI', tone: 'b', img: 'amara' },
+  { initials: 'EO', tone: 'c', img: 'tunde' },
 ];
 
 const RECENT = [
   { name: 'StaffIntra Workspace', when: 'opened just now', I: ILayers },
   { name: 'Attendance', when: 'opened 10m ago', I: IClock },
-  { name: 'Rota · week of 10 Aug', when: 'opened 28m ago', I: ICal },
+  { name: 'Timesheets · week 33', when: 'opened 28m ago', I: ICal },
   { name: 'Approvals queue', when: 'opened 1h ago', I: ICheck },
 ];
 
 const WORK = [
-  { t: 'Approve overtime · Ikeja site', m: 'Due today', tone: 'due' },
-  { t: 'Sign off week 32 timesheets', m: '12 of 15 in', tone: 'go' },
-  { t: 'Review cover for Sat 15 Aug', m: 'Tomorrow', tone: 'soft' },
+  { t: 'Task overdue · payout webhook retries', m: '≈6 min to clear', tone: 'due' },
+  { t: 'Leave request · Jemimah, Thu to Fri', m: 'rule §4 routed', tone: 'go' },
+  { t: 'August payroll run', m: 'Scheduled 28 Aug', tone: 'soft' },
 ];
 
 const QUICK = [
   { t: 'Request leave', I: ILeave },
+  { t: 'Claim expense', I: IDoc },
   { t: 'My timesheet', I: IClock },
-  { t: 'Open projects', I: IFolder },
-  { t: 'Team directory', I: IPeople },
+  { t: 'Review approvals', I: ICheck },
 ];
 
 const WEEK = [
@@ -116,34 +117,39 @@ const TEAM = [
 /* Sidebar, in the real app's grouping. Each row carries its own icon rather
    than a grey placeholder square. */
 const SIDE = [
-  { items: [{ t: 'Home', I: IHome, on: true }, { t: 'Inbox', I: IInbox, n: 26 }] },
+  { items: [{ t: 'Home', I: IHome, on: true }, { t: 'Inbox', I: IInbox, n: '99+' }] },
+  {
+    lab: 'Pinned',
+    items: [
+      { t: 'My Tasks', I: ICheck },
+      { t: 'Announcements', I: IMega },
+      { t: 'Timesheets', I: ICal },
+    ],
+  },
   {
     lab: 'Work',
     items: [
       { t: 'Workspaces', I: ILayers },
-      { t: 'Case management', I: IFolder },
+      { t: 'Case Management', I: IFolder },
       { t: 'Productivity', I: IChart },
-      { t: 'Announcements', I: IMega },
+      { t: 'Forms', I: IDoc },
     ],
   },
   {
     lab: 'People',
     items: [
       { t: 'HR', I: IPeople },
-      { t: 'Staff lifecycle', I: IRefresh },
-      { t: 'Attendance', I: IClock },
-      { t: 'Approvals', I: ICheck },
+      { t: 'Staff Lifecycle', I: IRefresh },
     ],
   },
-  { lab: 'Platform', items: [{ t: 'Tools', I: ISliders }] },
 ];
 
 /* One asset per theme; the light one is purple on white, the dark one white. */
 function Logo({ className = '' }) {
   return (
     <>
-      <img className={`hm-logo hm-logo--l ${className}`.trim()} src="/assets/StaffIntra_Logo_Horizontal_Purple.svg" alt="StaffIntra" />
-      <img className={`hm-logo hm-logo--d ${className}`.trim()} src="/assets/StaffIntra_Logo_Horizontal_White.svg" alt="" aria-hidden="true" />
+      <span className={`hm-logo hm-logo--l ${className}`.trim()}><Brand /></span>
+      <span className={`hm-logo hm-logo--d ${className}`.trim()} aria-hidden="true"><Brand variant="white" /></span>
     </>
   );
 }
@@ -268,8 +274,8 @@ export default function HeroMockup() {
               <span className="hm-user">
                 <Ava p={{ initials: 'FS', tone: 'a' }} />
                 <span>
-                  <strong>Fortune Stephen</strong>
-                  <em>Full Stack Developer</em>
+                  <strong>Samuel Johnson</strong>
+                  <em>MD / CEO · BLU-0001</em>
                 </span>
               </span>
             </div>
@@ -294,7 +300,7 @@ export default function HeroMockup() {
             {PEOPLE.map((p) => <Ava key={p.initials} p={p} />)}
             <span className="hm-more">+8</span>
           </span>
-          <span className="hm-in">11 in today</span>
+          <span className="hm-in">14 of 16 in</span>
           <span className="hm-ico"><IHelp /></span>
           <span className="hm-ico hm-ico--bell"><IBell /><i>9+</i></span>
           {/* Only visible while the sidebar is collapsed; see the stylesheet. */}
@@ -305,7 +311,7 @@ export default function HeroMockup() {
         <div className="hm-scroll" ref={scrollRef}>
           <div className="hm-greet">
             <div>
-              <h3>Good afternoon, Fortune</h3>
+              <h3>Good morning, Samuel</h3>
               <p>Monday, 10 August 2026 · Lagos (GMT+1)</p>
             </div>
             <div className="hm-greet-act">
@@ -371,7 +377,7 @@ export default function HeroMockup() {
 
               <div className="hm-pair">
                 <Card title="Approvals" chip="3 waiting" link="Queue">
-                  {['Annual leave · 12–14 Aug', 'Overtime · Fri 13 Aug', 'Shift swap · Sat 15 Aug'].map((t) => (
+                  {['Annual leave · 12 to 14 Aug', 'Overtime · Fri 13 Aug', 'Expense · ₦48,500'].map((t) => (
                     <div className="hm-row" key={t}>
                       <span className="hm-tick hm-tick--go" />
                       <span className="hm-row-t">{t}</span>
@@ -379,7 +385,7 @@ export default function HeroMockup() {
                   ))}
                 </Card>
                 <Card title="Today's schedule" chip="2" link="Calendar">
-                  {[['09:30', 'Shift handover'], ['14:00', 'Rota review']].map(([h, t]) => (
+                  {[['09:30', 'Standup · Engineering'], ['14:00', 'Payroll review']].map(([h, t]) => (
                     <div className="hm-row" key={t}>
                       <span className="hm-row-h hm-mono">{h}</span>
                       <span className="hm-row-t">{t}</span>
@@ -466,8 +472,8 @@ export default function HeroMockup() {
 
 const P_TABS = [
   { t: 'Home', I: IHome, on: true },
-  { t: 'Rota', I: ICal },
-  { t: 'Time', I: IClock },
+  { t: 'Time', I: ICal },
+  { t: 'Tasks', I: ICheck },
   { t: 'Team', I: IPeople },
 ];
 
@@ -491,7 +497,7 @@ function Phone({ dark, hide }) {
         <div className="hm-p-scroll">
           <div className="hm-p-greet">
             <strong>Good afternoon, Fortune</strong>
-            <em>Mon 10 Aug · Lagos</em>
+            <em>Wed 12 Aug · Lagos</em>
           </div>
 
           <div className="hm-p-now">

@@ -108,10 +108,10 @@ export default function DemoForm() {
         </div>
         <div className="form-row">
           <label htmlFor="f-size">Team size</label>
-          <select id="f-size" name="size" defaultValue="26–100">
-            <option>1–25</option>
-            <option>26–100</option>
-            <option>101–500</option>
+          <select id="f-size" name="size" defaultValue="26 to 100">
+            <option>1 to 25</option>
+            <option>26 to 100</option>
+            <option>101 to 500</option>
             <option>500+</option>
           </select>
         </div>

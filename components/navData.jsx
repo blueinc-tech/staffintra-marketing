@@ -3,7 +3,6 @@ import {
   MarkStagger,
   MarkConverge,
   MarkSteps,
-  MarkBreak,
   MarkEnclose,
   MarkLedger,
   MarkAdvance,
@@ -13,12 +12,13 @@ import {
   MarkCross,
 } from './NavMarks';
 
-// Nav structure mirrors the reference site's shape. Destination pages do not
-// exist yet — every "#" below is a placeholder to be pointed at a real route.
+// The v3 taxonomy: Product | Solutions | Platform | Pricing | Resources.
+// Every branch points at a real route now; in-page anchors keep the /# form so
+// they resolve from subpages too.
 export const NAV_ITEMS = [
   {
-    id: 'platform',
-    label: 'Platform',
+    id: 'product',
+    label: 'Product',
     menu: {
       type: 'columns',
       groups: [
@@ -28,59 +28,55 @@ export const NAV_ITEMS = [
           columns: [
             {
               feature: {
-                label: 'Scheduling & shifts',
-                description: 'Build the rota, catch clashes, and publish to every phone at once.',
-                href: '#product',
+                label: 'Time & Attendance',
+                description: 'One tap to clock in, timesheets that build themselves, leave that routes itself.',
+                href: '/product#time',
                 mark: <MarkStripes />,
               },
               items: [
-                { label: 'Rota builder', href: '#product', mark: <MarkPlan /> },
-                { label: 'Open shifts', href: '#product', mark: <MarkStagger /> },
-                { label: 'Shift swaps', href: '#product', mark: <MarkCross /> },
-                { label: 'Time tracking', href: '#features', mark: <MarkLedger /> },
-                { label: 'Timesheets', href: '#features', mark: <MarkEnclose /> },
+                { label: 'Smart clock-in', href: '/product#time', mark: <MarkPlan /> },
+                { label: 'Timesheets', href: '/product#time', mark: <MarkLedger /> },
+                { label: 'Leave', href: '/product#time', mark: <MarkAdvance /> },
               ],
             },
             {
               feature: {
-                label: 'Leave & approvals',
-                description: 'Balances, cover, and policy in view, so a fair answer takes seconds.',
-                href: '#product',
+                label: 'Productivity & Performance',
+                description: 'Real activity beside clock-in data, and one transparent grade for everyone.',
+                href: '/product#productivity',
                 mark: <MarkConverge />,
               },
               items: [
-                { label: 'Leave requests', href: '#product', mark: <MarkAdvance /> },
-                { label: 'Balances & accrual', href: '#product', mark: <MarkLedger /> },
-                { label: 'Cover', href: '#product', mark: <MarkBranch /> },
-                { label: 'Approvals inbox', href: '#product', mark: <MarkEnclose /> },
-                { label: 'Absence reporting', href: '#features', mark: <MarkBreak /> },
+                { label: 'Activity insights', href: '/product#productivity', mark: <MarkStagger /> },
+                { label: 'Performance grades', href: '/product#productivity', mark: <MarkSteps /> },
+                { label: 'Work logs', href: '/product#productivity', mark: <MarkEnclose /> },
               ],
             },
             {
               feature: {
-                label: 'Onboarding journeys',
-                description: 'Paperwork, sign-off, and introductions sequenced before day one.',
-                href: '#product',
-                mark: <MarkSteps />,
+                label: 'People & Operations',
+                description: 'Payroll connected to the record, and any process modelled as a case.',
+                href: '/product#operations',
+                mark: <MarkLayers />,
               },
               items: [
-                { label: 'Guided journeys', href: '#product', mark: <MarkAdvance /> },
-                { label: 'Policy sign-off', href: '#features', mark: <MarkPlan /> },
-                { label: 'Task routing', href: '#product', mark: <MarkBranch /> },
-                { label: 'Documents', href: '#product', mark: <MarkEnclose /> },
+                { label: 'HR & Payroll', href: '/product#operations', mark: <MarkLedger /> },
+                { label: 'Staff lifecycle', href: '/product#operations', mark: <MarkAdvance /> },
+                { label: 'Cases & approvals', href: '/product#operations', mark: <MarkBranch /> },
+                { label: 'Forms', href: '/product#operations', mark: <MarkPlan /> },
               ],
             },
           ],
         },
         {
-          heading: 'Technology',
+          heading: 'Platform',
           span: 1,
           columns: [
             {
               items: [
-                { label: 'Integrations', href: '#features', mark: <MarkBranch /> },
-                { label: 'Support', href: '#', mark: <MarkConverge /> },
-                { label: 'Security & permissions', href: '#features', mark: <MarkEnclose /> },
+                { label: 'The command center', href: '/platform', mark: <MarkStripes /> },
+                { label: 'Integrations', href: '/platform#integrations', mark: <MarkBranch /> },
+                { label: 'Security & compliance', href: '/platform#security', mark: <MarkEnclose /> },
               ],
             },
           ],
@@ -95,17 +91,35 @@ export const NAV_ITEMS = [
       type: 'intro',
       intro: {
         title: 'Solutions',
-        description: 'Bring the whole week together, and decide with better numbers.',
+        description: 'However your business runs, StaffIntra bends to fit, not the other way round.',
       },
       items: [
-        { label: 'Compliance', href: '#features', mark: <MarkPlan /> },
-        { label: 'Labour cost', href: '#features', mark: <MarkLedger /> },
-        { label: 'System consolidation', href: '#features', mark: <MarkLayers /> },
-        { label: 'Multi-site operations', href: '#pricing', mark: <MarkBranch /> },
+        { label: 'Startups', href: '/solutions#startups', mark: <MarkStagger /> },
+        { label: 'Mid-sized businesses', href: '/solutions#midsize', mark: <MarkSteps /> },
+        { label: 'Field & operations teams', href: '/solutions#operations', mark: <MarkCross /> },
+        { label: 'Established organizations', href: '/solutions#enterprise', mark: <MarkLayers /> },
+        { label: 'System consolidation', href: '/solutions#consolidation', mark: <MarkConverge /> },
       ],
     },
   },
-  { id: 'customers', label: 'Customers', href: '#customers' },
+  {
+    id: 'platform',
+    label: 'Platform',
+    menu: {
+      type: 'intro',
+      intro: {
+        title: 'The platform',
+        description: 'One home for the whole workday.',
+      },
+      items: [
+        { label: 'The command center', href: '/platform', mark: <MarkStripes /> },
+        { label: 'Integrations', href: '/platform#integrations', mark: <MarkBranch /> },
+        { label: 'Security & compliance', href: '/platform#security', mark: <MarkEnclose /> },
+        { label: 'Support', href: '/platform#support', mark: <MarkConverge /> },
+      ],
+    },
+  },
+  { id: 'pricing', label: 'Pricing', href: '/pricing' },
   {
     id: 'resources',
     label: 'Resources',
@@ -113,39 +127,23 @@ export const NAV_ITEMS = [
       type: 'resources',
       intro: {
         title: 'Resources',
-        description: 'Practical guidance for the people who run the rota.',
+        description: 'Guidance for the people who run operations.',
         mark: <MarkStripes />,
       },
       byType: {
         heading: 'By type',
         items: [
-          { label: 'Guides', href: '#' },
-          { label: 'Events', href: '#' },
-          { label: 'Help centre', href: '#' },
+          { label: 'Blog', href: '/resources#blog' },
+          { label: 'Help center', href: '/resources#help' },
+          { label: 'API docs', href: '/resources#api' },
+          { label: 'Status', href: '/resources#status' },
         ],
       },
       featured: {
         heading: 'Featured',
-        title: 'Moving off spreadsheets: a rota migration guide',
-        href: '#',
+        title: 'Consolidating your stack: a migration guide',
+        href: '/resources',
       },
-    },
-  },
-  {
-    id: 'company',
-    label: 'Company',
-    menu: {
-      type: 'intro',
-      intro: {
-        title: 'More about StaffIntra',
-        description: 'One workspace for your whole team.',
-      },
-      items: [
-        { label: 'About', href: '#', mark: <MarkStripes /> },
-        { label: 'Careers', href: '#', mark: <MarkSteps /> },
-        { label: 'Partnerships', href: '#', mark: <MarkBranch /> },
-        { label: 'Customer stories', href: '#customers', mark: <MarkConverge /> },
-      ],
     },
   },
 ];

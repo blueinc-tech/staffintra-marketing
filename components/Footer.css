@@ -29,7 +29,8 @@
   grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
   gap: clamp(32px, 5vw, 72px);
 }
-.foot-brand img { height: 26px; width: auto; display: block; }
+.foot-brand .brand { font-size: 17px; }
+.foot-brand .brand-mark { height: 26px; }
 .foot-brand p {
   margin-top: 16px;
   max-width: 22ch;

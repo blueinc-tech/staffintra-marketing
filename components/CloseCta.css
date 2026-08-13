@@ -67,3 +67,30 @@
 @media (max-width: 940px) {
   .cc-art { display: none; }
 }
+
+.cc-ctas { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 34px; }
+.cc-copy .cc-ctas .btn { margin-top: 0; }
+
+/* Compliance chips, per v3: the bold marque then its state, in one quiet row. */
+.cc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 14px;
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.cc-chips li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  background: var(--surface);
+  font-family: var(--font-ui);
+  font-size: .8125rem;
+  color: var(--ink-2);
+}
+.cc-chips strong { font-weight: 700; color: var(--ink); font-size: .8125rem; }

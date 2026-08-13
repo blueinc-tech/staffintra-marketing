@@ -40,14 +40,24 @@ export default function CloseCta() {
 
         <div className="container">
           <div className="cc-copy">
-            <h2>Give your managers their evenings back.</h2>
+            <h2>Run your workforce with confidence.</h2>
             <p>
-              StaffIntra is the piece that brings the week together, so your team can plan with
-              confidence and stop rebuilding the rota by hand.
+              One workspace built around the way your business actually works. A Blueinc
+              Technologies product.
             </p>
-            <a className="btn btn-primary btn-lg" href="#demo">
-              Get a demo
-            </a>
+            <div className="cc-ctas">
+              <a className="btn btn-primary btn-lg" href="/pricing">
+                Open an account
+              </a>
+              <a className="btn btn-secondary btn-lg" href="#demo">
+                Book a demo
+              </a>
+            </div>
+            <ul className="cc-chips" aria-label="Compliance">
+              <li><strong>SOC 2</strong> Type 2 ready</li>
+              <li><strong>ISO 27001</strong> Aligned</li>
+              <li><strong>NDPR</strong> Compliant</li>
+            </ul>
           </div>
         </div>
       </div>

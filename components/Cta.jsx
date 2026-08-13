@@ -9,7 +9,7 @@ export default function Cta() {
           <div className="cta-copy">
             <h2>See StaffIntra on your team&apos;s schedule.</h2>
             <p>
-              A 30-minute walkthrough with your rota, your policies, and your questions. If it
+              A 30-minute walkthrough with your team, your policies, and your questions. If it
               fits, you can pilot with one team next week.
             </p>
             <ul className="checklist light">

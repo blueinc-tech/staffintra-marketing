@@ -23,8 +23,8 @@ const CATEGORIES = [
   },
   {
     id: 'time',
-    label: 'Rota & time',
-    nodes: ['Clock-in', 'Timesheets', 'Open shifts', 'Cover', 'Job costing', 'Sites'],
+    label: 'Time & attendance',
+    nodes: ['Clock-in', 'Timesheets', 'Leave', 'Attendance', 'Devices', 'Sites'],
   },
   {
     id: 'finance',
@@ -63,12 +63,12 @@ export default function Integrations() {
           <div className="int-grid">
             <header className="int-head">
               <span className="sec-eyebrow">Integrations</span>
-              <h2>Wire StaffIntra into what you already run.</h2>
+              <h2>Connected to your stack.</h2>
               <p>
-                One record, shared both ways. Hours approved here land in payroll, and a new
-                starter there shows up on the rota, without anyone retyping a thing.
+                StaffIntra connects seamlessly with the systems your business already uses.
+                One record, shared both ways, without anyone retyping a thing.
               </p>
-              <a className="btn btn-light" href="#demo">
+              <a className="btn btn-light" href="/platform#integrations">
                 Explore all integrations
               </a>
 
@@ -93,7 +93,7 @@ export default function Integrations() {
                   SVG. The hub is dead centre of the viewBox, so 50%/50% puts
                   the logo on it exactly at any width, and this avoids the
                   inconsistent sizing an external SVG gets inside <image>. */}
-              <img className="ib-logo" src="/assets/StaffIntra_Logo_Mark_White.svg" alt="StaffIntra" />
+              <img className="ib-logo" src="/assets/Staffintra_Logo_Icon.png" alt="StaffIntra" style={{ filter: 'brightness(0) invert(1)' }} />
               <svg viewBox={`0 0 ${BOARD.w} ${BOARD.h}`} role="img" aria-label={`${active.label} systems wired into StaffIntra`}>
                 {/* Lines first, so every tile sits on top of its own wire. */}
                 <g className="ib-wires" key={active.id}>

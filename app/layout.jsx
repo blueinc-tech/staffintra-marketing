@@ -23,12 +23,12 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: 'StaffIntra: One workspace for your whole team',
+  title: 'StaffIntra: Take control of your workforce operations',
   description:
-    'StaffIntra brings scheduling, leave, approvals, and onboarding into a single workspace, so your people spend less time on admin and more time on the work that matters.',
+    'Join over 1,000 businesses using StaffIntra to manage people, time, productivity and everyday operations, with confidence.',
   icons: { icon: '/assets/StaffIntra_Logo_Mark_Purple.svg' },
   openGraph: {
-    title: 'StaffIntra: One workspace for your whole team',
+    title: 'StaffIntra: Take control of your workforce operations',
     description:
       'Scheduling, leave, approvals, and onboarding in a single workspace.',
     type: 'website',

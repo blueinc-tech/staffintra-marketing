@@ -1,0 +1,127 @@
+/* Platform snapshot: the timesheets surface in a browser frame, on the page
+   frame's hairlines. Product face inside, site face outside. */
+
+.snapshot { position: relative; background: var(--surface); }
+
+.snap-frame { padding-bottom: clamp(56px, 7vw, 92px); }
+
+.snap-browser {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.snap-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+}
+.snap-dots { display: inline-flex; gap: 5px; }
+.snap-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--line-strong); }
+.snap-url {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--ink-3-text);
+}
+
+.snap-body { padding: 26px clamp(20px, 3vw, 40px) 0; font-family: var(--font-product); }
+
+.snap-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.snap-head h3 { font-size: 1.15rem; font-weight: 700; letter-spacing: -.014em; }
+.snap-filters { display: inline-flex; gap: 6px; font-family: var(--font-ui); font-size: .75rem; }
+.snap-filters span {
+  padding: 6px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  color: var(--ink-2);
+}
+.snap-filters .is-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.snap-table { margin-top: 18px; }
+.snap-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1.4fr) minmax(0, .7fr) minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 11px 0;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-ui);
+  font-size: .875rem;
+}
+.snap-ava {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: .625rem;
+  font-weight: 700;
+}
+.snap-name { font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.snap-hours { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+.snap-dept { color: var(--ink-3-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.snap-chip {
+  justify-self: end;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-size: .6875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.snap-chip--ok { background: var(--ok-soft); color: var(--ok); }
+.snap-chip--warn { background: var(--warn-soft); color: var(--warn); }
+.snap-chip--accent { background: var(--accent-soft); color: var(--accent-ink); }
+.snap-chip--due { background: var(--danger-soft); color: var(--danger); }
+.snap-ava--warn { background: var(--warn-soft); color: var(--warn); }
+.snap-ava--due { background: var(--danger-soft); color: var(--danger); }
+
+.snap-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 6px calc(-1 * clamp(20px, 3vw, 40px)) 0;
+  padding: 14px clamp(20px, 3vw, 40px);
+  background: var(--surface-2);
+  border-top: 1px solid var(--line);
+  font-family: var(--font-ui);
+  font-size: .75rem;
+  color: var(--ink-3-text);
+}
+.snap-user strong {
+  font-size: .6875rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-right: 8px;
+}
+.snap-live { display: inline-flex; align-items: center; gap: 7px; color: var(--ink-2); }
+.snap-live i {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--ok);
+  animation: snapPulse 2.2s ease-in-out infinite;
+}
+@keyframes snapPulse { 50% { opacity: .35; } }
+
+.snap-more { margin-top: 22px; }
+
+@media (max-width: 720px) {
+  .snap-row { grid-template-columns: 34px minmax(0, 1fr) auto; }
+  .snap-hours, .snap-dept { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .snap-live i { animation: none; }
+}

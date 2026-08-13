@@ -1,80 +1,55 @@
+import Brand from './Brand';
 import './Footer.css';
 
 /* Column set follows navData, so the footer and the menu never drift apart.
    Every href is still a placeholder until the routes exist. */
 const COLS = [
   {
-    title: 'Products',
+    title: 'Product',
     links: [
-      { label: 'Scheduling & shifts', href: '#product' },
-      { label: 'Leave & approvals', href: '#product' },
-      { label: 'Onboarding journeys', href: '#product' },
+      { label: 'Time & Attendance', href: '/product#time' },
+      { label: 'Productivity', href: '/product#productivity' },
+      { label: 'Performance', href: '/product#productivity' },
+      { label: 'HR & Payroll', href: '/product#operations' },
+      { label: 'Cases & Approvals', href: '/product#operations' },
+      { label: 'Forms', href: '/product#operations' },
     ],
   },
   {
-    title: 'Features',
+    title: 'Solutions',
     links: [
-      { label: 'Rota builder', href: '#product' },
-      { label: 'Open shifts', href: '#product' },
-      { label: 'Shift swaps', href: '#product' },
-      { label: 'Time tracking', href: '#features' },
-      { label: 'Timesheets', href: '#features' },
-      { label: 'Leave requests', href: '#product' },
-      { label: 'Balances & accrual', href: '#product' },
-      { label: 'Cover', href: '#product' },
-      { label: 'Approvals inbox', href: '#product' },
-      { label: 'Absence reporting', href: '#features' },
-      { label: 'Guided journeys', href: '#product' },
-      { label: 'Policy sign-off', href: '#features' },
-      { label: 'Task routing', href: '#product' },
-      { label: 'Documents', href: '#product' },
+      { label: 'Startups', href: '/solutions#startups' },
+      { label: 'Mid-sized businesses', href: '/solutions#midsize' },
+      { label: 'Field & operations', href: '/solutions#operations' },
+      { label: 'Enterprises', href: '/solutions#enterprise' },
+      { label: 'System consolidation', href: '/solutions#consolidation' },
     ],
   },
   {
-    title: 'Platform',
-    groups: [
-      {
-        links: [
-          { label: 'Integrations', href: '#features' },
-          { label: 'Support', href: '#demo' },
-          { label: 'Security & permissions', href: '#features' },
-        ],
-      },
-      {
-        heading: 'Solutions',
-        links: [
-          { label: 'Compliance', href: '#features' },
-          { label: 'Labour cost', href: '#features' },
-          { label: 'System consolidation', href: '#features' },
-          { label: 'Multi-site operations', href: '#pricing' },
-        ],
-      },
-      {
-        heading: 'Resources',
-        links: [
-          { label: 'Guides', href: '#' },
-          { label: 'Events', href: '#' },
-          { label: 'Help centre', href: '#' },
-        ],
-      },
+    title: 'Resources',
+    links: [
+      { label: 'Blog', href: '/resources#blog' },
+      { label: 'Help center', href: '/resources#help' },
+      { label: 'API docs', href: '/resources#api' },
+      { label: 'Privacy & tracking policy', href: '#' },
+      { label: 'Status', href: '/resources#status' },
     ],
   },
   {
     title: 'Company',
     links: [
       { label: 'About', href: '#' },
+      { label: 'Customers', href: '/#customers-strip' },
       { label: 'Careers', href: '#' },
-      { label: 'Partnerships', href: '#' },
-      { label: 'Customer stories', href: '#customers' },
-      { label: 'Pricing', href: '#pricing' },
-      { label: 'Talk to sales', href: '#demo' },
+      { label: 'Partners', href: '#' },
+      { label: 'Contact', href: '/#demo' },
     ],
   },
 ];
 
 const LEGAL = [
-  { label: 'Privacy policy', href: '#' },
-  { label: 'Terms of service', href: '#' },
+  { label: 'Privacy', href: '#' },
+  { label: 'Terms', href: '#' },
   { label: 'Security', href: '#' },
 ];
 
@@ -94,12 +69,8 @@ export default function Footer() {
       <div className="foot-wrap">
         <div className="foot-top">
           <div className="foot-brand">
-            <img
-              src="/assets/StaffIntra_Logo_Horizontal_Purple.svg"
-              alt="StaffIntra"
-              height={26}
-            />
-            <p>One workspace for your whole team.</p>
+            <Brand className="foot-brand-logo" />
+            <p>One workspace built around the way your business actually works.</p>
           </div>
 
           <div className="foot-cols">
@@ -136,7 +107,7 @@ export default function Footer() {
         </form>
 
         <div className="foot-legal">
-          <span>© 2026 StaffIntra. All rights reserved.</span>
+          <span>© StaffIntra 2026 · Blueinc Technologies. All rights reserved.</span>
           <span className="foot-legal-links">
             <LinkList links={LEGAL} />
           </span>

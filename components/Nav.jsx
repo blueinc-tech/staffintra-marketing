@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { NAV_ITEMS } from './navData';
+import Brand from './Brand';
 import './Nav.css';
 
 // Timings follow the Stripe/Radix conventions: hover-intent before the first
@@ -372,8 +373,8 @@ export default function Nav() {
       }}
     >
       <div className="nav-bar" ref={barRef}>
-        <a className="nav-logo" href="#top" aria-label="StaffIntra home" onClick={closeNow}>
-          <img src="/assets/StaffIntra_Logo_Horizontal_Purple.svg" alt="StaffIntra" />
+        <a className="nav-logo" href="/" aria-label="StaffIntra home" onClick={closeNow}>
+          <Brand className="nav-brand" />
         </a>
 
         <nav className={`nav-links${activeId ? ' has-open' : ''}`} aria-label="Primary">
@@ -432,7 +433,7 @@ export default function Nav() {
               <span aria-hidden="true">Log in</span>
             </span>
           </a>
-          <a className="btn btn-primary btn-nav btn-swap" href="#demo">
+          <a className="btn btn-primary btn-nav btn-swap" href="/#demo">
             <span className="swap">
               <span>Book a demo</span>
               <span aria-hidden="true">Book a demo</span>
@@ -529,7 +530,7 @@ export default function Nav() {
           <a className="btn btn-secondary btn-lg" href="#" onClick={() => setMobileOpen(false)}>
             Log in
           </a>
-          <a className="btn btn-primary btn-lg" href="#demo" onClick={() => setMobileOpen(false)}>
+          <a className="btn btn-primary btn-lg" href="/#demo" onClick={() => setMobileOpen(false)}>
             Book a demo
           </a>
         </div>

@@ -76,7 +76,10 @@ export default function Pillars() {
       <div className="container">
         <header className="sec-head">
           <span className="sec-eyebrow">Products</span>
-          <h2>Connect your people, your rota, and your payroll.</h2>
+          <h2>Everything your team needs, and complete visibility.</h2>
+          <p className="sec-lede">
+            One platform for the entire employee workday, from clock-in to payslip.
+          </p>
         </header>
       </div>
 

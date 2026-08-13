@@ -30,7 +30,7 @@ export default function Support() {
               <article className="sup-card">
                 <h3>Managed setup</h3>
                 <p>
-                  We import your people, build your first rota alongside you, and stay on the
+                  We import your people, set up your rules alongside you, and stay on the
                   line until the first pay run has landed.
                 </p>
                 <div className="sup-art">

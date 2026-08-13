@@ -9,14 +9,14 @@ const PLANS = [
     monthly: '₦1,500',
     yearly: '₦1,250',
     unit: 'per person / month',
-    tagline: 'Get the rota out of the spreadsheet.',
+    tagline: 'Get the workday out of the spreadsheet.',
     bestFor: 'One team leaving spreadsheets behind, usually 1 to 25 people',
     cta: 'Pilot with one team',
     featured: false,
     features: [
-      'Drag-and-drop rota builder that flags clashes before you publish',
-      'Open shifts your team can claim from their phone, so gaps fill without a group chat',
-      'Clock in by phone or kiosk, with timesheets ready for payroll',
+      'Smart clock-in from desktop or mobile, with location context built in',
+      'Timesheets that build themselves from clock events, payroll-ready',
+      'Activity insights beside clock-in data, transparent to staff by design',
       'Leave requests with balances and cover in view, so a fair answer takes seconds',
       'Hours, absence, and labour cost, exported in two clicks',
       'Manager and staff roles, so everyone sees what they should',
@@ -29,13 +29,13 @@ const PLANS = [
     yearly: '₦2,500',
     unit: 'per person / month',
     tagline: 'The whole week, handled in one place.',
-    bestFor: 'Where rota, leave, and payroll land on one desk, usually 26 to 100 people',
+    bestFor: 'Where time, leave, and payroll land on one desk, usually 26 to 100 people',
     cta: 'Pilot with one team',
     featured: true,
     badge: 'Recommended for one busy site',
     features: [
       'Everything in Core',
-      'Every team and site on one rota, with cover shown across them',
+      'Every team and site on one record, with activity and grades across them',
       'Leave that knows your policy: accrual, carry-over, and public holidays handled',
       'Onboarding journeys that route tasks to IT, payroll, and the hiring manager',
       'Policy sign-off tracked per person, with quiet nudges for anyone outstanding',
@@ -83,11 +83,11 @@ const ENTERPRISE = {
 const FAQ = [
   {
     q: 'What counts as a person on the bill?',
-    a: 'Anyone who is scheduled, requests leave, or clocks in during that month. Bank and seasonal staff only count in the months they actually work, and admin-only logins for payroll or IT are free. Someone who leaves stops counting from the next month, and their old rotas and timesheets stay searchable at no cost.',
+    a: 'Anyone who clocks in, requests leave, or is paid during that month. Bank and seasonal staff only count in the months they actually work, and admin-only logins for payroll or IT are free. Someone who leaves stops counting from the next month, and their old records and timesheets stay searchable at no cost.',
   },
   {
     q: 'What happens when the 30-day pilot ends?',
-    a: 'Nothing automatic. The pilot runs on one team, there is no card on file, so nothing switches off on day 31 and nothing charges. Your workspace waits until you pick a plan, and the rotas, policies, and people you set up during the pilot are all still there when you come back.',
+    a: 'Nothing automatic. The pilot runs on one team, there is no card on file, so nothing switches off on day 31 and nothing charges. Your workspace waits until you pick a plan, and the records, policies, and people you set up during the pilot are all still there when you come back.',
   },
   {
     q: 'When would we move up a plan?',
@@ -95,7 +95,7 @@ const FAQ = [
   },
   {
     q: 'Where does the six hours a week come from?',
-    a: 'It is the median across StaffIntra customers 90 days after go-live, measured against the time managers spent building rotas, chasing cover, and fixing timesheets beforehand. Medians move, so treat it as a guide rather than a guarantee. During your pilot we measure the same thing on your own team, and you get those numbers whether they flatter us or not.',
+    a: 'It is the median across StaffIntra customers 90 days after go-live, measured against the time managers spent chasing hours, approvals, and timesheets beforehand. Medians move, so treat it as a guide rather than a guarantee. During your pilot we measure the same thing on your own team, and you get those numbers whether they flatter us or not.',
   },
 ];
 
@@ -169,7 +169,7 @@ export default function Pricing() {
 
         <Reveal as="p" className="price-note">
           Free for 30 days on any plan, with no card, no minimum spend, and no setup fee. Import
-          from spreadsheets, and we build your first rota with you. Sixty people on Plus is
+          from spreadsheets, and we run your first payroll month with you. Sixty people on Plus is
           ₦180,000 a month, or ₦150,000 a month paid for the year.
         </Reveal>
 

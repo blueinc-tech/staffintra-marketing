@@ -1,0 +1,45 @@
+/* Audiences: a 2x2 bordered grid inside the page frame, cells divided by
+   hairlines rather than gaps, the same construction as the platform box. */
+
+.audiences { position: relative; background: var(--surface); }
+
+.aud-frame { padding-bottom: clamp(56px, 7vw, 92px); }
+
+.aud-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.aud-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px 48px 44px;
+}
+/* Internal hairlines: right edge on the left column, bottom edge on row one. */
+.aud-card:nth-child(odd) { border-right: 1px solid var(--line); }
+.aud-card:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
+
+.aud-card h3 {
+  margin-top: 22px;
+  font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.aud-card p {
+  margin-top: 14px;
+  max-width: 44ch;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.aud-card .turn-link { margin-top: 22px; }
+
+@media (max-width: 720px) {
+  .aud-grid { grid-template-columns: minmax(0, 1fr); }
+  .aud-card { padding: 30px 26px 34px; }
+  .aud-card:nth-child(odd) { border-right: 0; }
+  .aud-card:not(:last-child) { border-bottom: 1px solid var(--line); }
+}

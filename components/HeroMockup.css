@@ -93,7 +93,11 @@
   font-family: var(--font-ui);
 }
 .hm-side-top { padding: 2px 2px 12px; }
-.hm-logo { height: 15px; width: auto; display: block; }
+.hm-logo { display: block; }
+.hm-logo .brand { font-size: 10.5px; gap: 5px; }
+.hm-logo .brand-mark { height: 15px; }
+/* In-app the wordmark follows the app theme, not the site ink. */
+.hm-logo--d .brand-word { color: var(--d-ink); }
 .hm-dash[data-theme='light'] .hm-logo--d,
 .hm-phone[data-theme='light'] .hm-logo--d { display: none; }
 .hm-dash[data-theme='dark'] .hm-logo--l,
@@ -426,7 +430,8 @@
   display: flex; align-items: center; justify-content: space-between;
   padding: 9px 11px; background: var(--d-card); border-bottom: 1px solid var(--d-line);
 }
-.hm-p-logo { height: 13px; }
+.hm-p-logo .brand { font-size: 9px; gap: 4px; }
+.hm-p-logo .brand-mark { height: 13px; }
 .hm-p-scroll { flex: 1; min-height: 0; overflow: hidden; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
 
 /* Tab bar closes the frame, which is what makes it read as an app rather

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import './Pillars.css';
 
 /* One product moment: the white card that sits on the coloured panel.
 

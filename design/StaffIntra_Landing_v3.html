@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StaffIntra — Take control of your workforce operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ==================================================================
+   STAFFINTRA LANDING v3 — Bujeti-inspired, StaffIntra brand tokens.
+   Wide nav / hero / footer. Custom SVG icons & isometric art only.
+   ================================================================== */
+:root{
+  --accent:#4024C0; --accent-deep:#341DA0; --accent-bright:#7B5CFF; --accent-glow:#8F6DFF;
+  --accent-soft:#ECE8FB; --accent-softer:#F6F4FD; --lavender:#C4B5FD;
+  --bg:#F7F7F8; --surface:#FFFFFF; --panel:#F1F1F4;
+  --ink:#17171C; --ink2:#55555E; --muted:#8A8A93; --faint:#B4B4BC;
+  --line:#E8E8EC; --line-strong:#D9D9DF;
+  --dark:#0B0B0F; --dark-2:#111118; --dark-line:#232330; --dark-text:#A3A3B2;
+  --ok:#178A63; --ok-soft:#E4F5EE; --warn:#C77414; --warn-soft:#FBF0DE;
+  --danger:#C23A3A; --info:#2563B8; --info-soft:#E7F0FB;
+  --btn:#1B1B20;
+  --r-sm:10px; --r-md:16px; --r-lg:24px; --r-xl:32px; --r-pill:999px;
+  --sh-sm:0 1px 2px rgba(23,23,28,.05),0 2px 8px rgba(23,23,28,.06);
+  --sh-md:0 2px 6px rgba(23,23,28,.06),0 12px 32px rgba(23,23,28,.08);
+  --sh-nav:0 4px 14px rgba(23,23,28,.08),0 16px 48px rgba(23,23,28,.10);
+  --e:cubic-bezier(.2,.7,.3,1);
+  --wide:1400px; --content:1200px;
+  --display:'Plus Jakarta Sans',Inter,sans-serif;
+  --ui:Inter,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--ui);background:var(--bg);color:var(--ink);font-size:16px;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wide{max-width:var(--wide);margin:0 auto;padding:0 24px}
+.content{max-width:var(--content);margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.8px}
+.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--e),transform .7s var(--e)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:9px;border-radius:var(--r-pill);font-weight:600;font-size:15px;cursor:pointer;border:none;font-family:var(--ui);transition:all .22s var(--e);padding:13px 26px}
+.btn .ic{width:15px;height:15px;transition:transform .22s var(--e)}
+.btn:hover .ic{transform:translateX(3px)}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{background:var(--accent-deep);transform:translateY(-1px);box-shadow:0 12px 30px rgba(64,36,192,.35)}
+.btn-white{background:#fff;color:var(--ink)}
+.btn-white:hover{transform:translateY(-1px);box-shadow:var(--sh-md)}
+.btn-dark{background:var(--btn);color:#fff}
+.btn-dark:hover{background:var(--accent);transform:translateY(-1px)}
+.btn-ghost-l{background:transparent;border:1.5px solid rgba(255,255,255,.28);color:#fff}
+.btn-ghost-l:hover{border-color:#fff}
+
+/* ---------- floating pill nav ---------- */
+nav{position:fixed;top:16px;left:0;right:0;z-index:120;pointer-events:none}
+nav .pill{pointer-events:auto;max-width:1240px;margin:0 auto;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-radius:var(--r-pill);box-shadow:var(--sh-nav);display:flex;align-items:center;gap:8px;padding:10px 12px 10px 22px;transition:box-shadow .3s var(--e)}
+nav.scrolled .pill{box-shadow:0 6px 20px rgba(23,23,28,.12),0 20px 60px rgba(23,23,28,.14)}
+.lockup{height:22px;width:auto;display:block;color:var(--accent)}
+.nlinks{display:flex;gap:4px;margin-left:26px}
+.nlinks a{display:flex;align-items:center;gap:6px;padding:9px 14px;border-radius:var(--r-pill);font-size:14.5px;font-weight:500;color:var(--ink2)}
+.nlinks a:hover{background:var(--panel);color:var(--ink)}
+.nlinks .ic{width:12px;height:12px;stroke-width:2.2;color:var(--muted)}
+.nav-cta{margin-left:auto;display:flex;align-items:center;gap:8px}
+.nav-cta .login{padding:9px 16px;font-weight:600;font-size:14.5px;color:var(--ink2);border-radius:var(--r-pill)}
+.nav-cta .login:hover{background:var(--panel)}
+.nav-cta .btn{padding:11px 22px;font-size:14.5px}
+
+/* ---------- hero ---------- */
+.hero{padding:104px 0 26px}
+.hero-panel{position:relative;border-radius:var(--r-xl);overflow:hidden;background:
+  radial-gradient(1100px 560px at 12% 118%, rgba(143,109,255,.55), transparent 62%),
+  radial-gradient(800px 420px at 96% -10%, rgba(64,36,192,.35), transparent 60%),
+  linear-gradient(165deg,#131024 0%, #1A1440 52%, #251A66 100%)}
+.hero-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:30px;align-items:center;padding:92px 72px 84px;position:relative}
+.hero h1{font-size:clamp(42px,4.6vw,64px);line-height:1.04;letter-spacing:-1.8px;color:#fff;font-weight:800}
+.hero h1 .em{color:var(--accent-glow)}
+.hero .lead{font-size:18.5px;color:#C9C5E8;margin:26px 0 34px;max-width:460px;line-height:1.65}
+.hero .ctas{display:flex;gap:13px;flex-wrap:wrap}
+.hero .fine{margin-top:20px;font-size:13px;color:#8D89B0;display:flex;gap:18px}
+.hero .fine span{display:flex;align-items:center;gap:7px}
+.hero .fine .ic{width:13px;height:13px;color:var(--accent-glow)}
+
+/* hero mocks */
+.hero-vis{position:relative;height:480px}
+.appwin{position:absolute;top:0;right:-12px;width:94%;background:#fff;border-radius:18px;box-shadow:0 40px 120px rgba(0,0,0,.45);overflow:hidden;font-size:11px}
+.appwin .awtop{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--line)}
+.awtop .lockup{height:13px;color:var(--accent)}
+.awtop .awsearch{margin-left:auto;display:flex;align-items:center;gap:7px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:4px 10px;color:var(--muted);font-size:9.5px;width:150px}
+.awbody{display:flex}
+.awside{width:128px;border-right:1px solid var(--line);padding:10px 7px;background:#FBFBFC}
+.awside .it{display:flex;align-items:center;gap:7px;font-size:9.5px;color:var(--ink2);padding:5.5px 8px;border-radius:6px;font-weight:500}
+.awside .it .ic{width:11px;height:11px;color:var(--muted)}
+.awside .it.on{background:var(--accent-soft);color:var(--accent-deep);font-weight:700}
+.awside .it.on .ic{color:var(--accent-deep)}
+.awmain{flex:1;padding:14px 16px}
+.awmain h6{font-family:var(--display);font-size:13.5px;letter-spacing:-.2px}
+.awtabs{display:flex;gap:12px;font-size:9px;color:var(--muted);border-bottom:1px solid var(--line);margin:8px 0 4px}
+.awtabs b{color:var(--ink);border-bottom:2px solid var(--accent);padding-bottom:5px}
+.awtabs span{padding-bottom:5px}
+table.aw{width:100%;border-collapse:collapse;font-size:9.5px}
+table.aw td{padding:7px 4px;border-bottom:1px solid var(--line);color:var(--ink2);white-space:nowrap}
+table.aw .nm{display:flex;align-items:center;gap:7px;font-weight:600;color:var(--ink)}
+.awav{width:16px;height:16px;border-radius:50%;color:#fff;font-size:6.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.awchip{font-size:8px;font-weight:700;border-radius:5px;padding:2px 7px}
+.badgecard{position:absolute;left:-6px;bottom:34px;width:250px;border-radius:16px;padding:18px;background:linear-gradient(150deg,#1B1B22,#0D0D12);box-shadow:0 30px 80px rgba(0,0,0,.5);color:#fff;z-index:3;animation:heroFloat 6.5s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-11px) rotate(-2deg)}}
+.badgecard::before{content:"";position:absolute;top:0;bottom:0;left:26px;width:14px;background:linear-gradient(180deg,var(--accent-bright),var(--accent));opacity:.9}
+.badgecard .bclogo{height:12px;color:#fff;margin-left:34px}
+.badgecard .chip{width:30px;height:22px;border-radius:5px;margin:22px 0 8px 34px;background:linear-gradient(140deg,#E8D9A0,#C9B26B);position:relative}
+.badgecard .chip::after{content:"";position:absolute;inset:4px;border:1px solid rgba(0,0,0,.25);border-radius:3px}
+.badgecard .who{margin-left:34px;font-size:11.5px;font-weight:700;letter-spacing:.4px}
+.badgecard .role{margin-left:34px;font-size:8.5px;color:#8D89B0;letter-spacing:1.6px;margin-top:2px}
+.toast{position:absolute;right:6px;bottom:-6px;background:#fff;border-radius:12px;box-shadow:var(--sh-md);padding:10px 15px;display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:600;z-index:4;animation:heroFloat 7s ease-in-out infinite -3s}
+.toast .dotp{width:22px;height:22px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:flex;align-items:center;justify-content:center}
+.toast .dotp .ic{width:11px;height:11px}
+
+/* ---------- logo strip ---------- */
+.strip{padding:46px 0 30px;text-align:center}
+.strip .cap{font-size:12.5px;color:var(--muted);letter-spacing:1.6px;font-weight:600;margin-bottom:24px}
+.strip .row{display:flex;justify-content:center;gap:52px;flex-wrap:wrap;font-family:var(--display);font-weight:800;font-size:15px;color:#C2C2CA;letter-spacing:.6px}
+
+/* ---------- product tabs ---------- */
+.prod{padding:88px 0 40px}
+.prod h2{font-size:clamp(34px,3.8vw,52px);line-height:1.06;text-align:center;max-width:760px;margin:0 auto;font-weight:800}
+.prod .sub{text-align:center;color:var(--ink2);font-size:17px;max-width:560px;margin:18px auto 0}
+.ptabs{display:flex;justify-content:center;gap:8px;margin:44px 0 40px;flex-wrap:wrap}
+.ptab{border:none;background:transparent;font-family:var(--display);font-weight:700;font-size:17px;color:var(--muted);padding:12px 26px;border-radius:var(--r-pill);cursor:pointer;transition:all .25s var(--e)}
+.ptab:hover{color:var(--ink)}
+.ptab.on{background:var(--accent);color:#fff;box-shadow:0 10px 26px rgba(64,36,192,.3)}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pcard{background:var(--panel);border-radius:var(--r-lg);padding:18px 18px 22px;transition:all .3s var(--e);cursor:default}
+.pcard:hover{transform:translateY(-6px);box-shadow:var(--sh-md);background:#EDEDF1}
+.pcard .art{background:#fff;border-radius:16px;min-height:230px;padding:20px;display:flex;flex-direction:column;justify-content:center;box-shadow:var(--sh-sm)}
+.pcard h4{font-family:var(--display);font-size:19px;font-weight:700;margin-top:18px;letter-spacing:-.3px}
+.pcard p{font-size:13.5px;color:var(--ink2);margin-top:5px;line-height:1.55}
+.pane{display:none}
+.pane.on{display:block;animation:fadeUp .5s var(--e)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* mini mock bits */
+.mrow2{display:flex;align-items:center;gap:9px;background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:9px 12px;margin-bottom:8px;font-size:11.5px;font-weight:600}
+.mrow2 .mic{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mrow2 .mic .ic{width:13px;height:13px}
+.mrow2 .val{margin-left:auto;font-family:var(--mono);font-size:10.5px;color:var(--ink2);font-weight:500}
+.bigfig{font-family:var(--display);font-size:30px;font-weight:800;letter-spacing:-1px}
+.meter{display:flex;gap:3px;margin:12px 0}
+.meter i{width:9px;height:22px;border-radius:3px;background:var(--accent);opacity:.9}
+.meter i.off{background:var(--line-strong)}
+.avstack{display:flex}
+.avstack .awav{width:22px;height:22px;font-size:8px;border:2px solid #fff;margin-left:-7px}
+.avstack .awav:first-child{margin-left:0}
+.donut{width:110px;height:110px;border-radius:50%;background:conic-gradient(var(--accent) 0 76%, var(--line) 76% 100%);display:flex;align-items:center;justify-content:center;margin:0 auto}
+.donut i{width:78px;height:78px;background:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal}
+.donut b{font-family:var(--display);font-size:20px}
+.donut span{font-size:9px;color:var(--muted)}
+.gradechips{display:flex;justify-content:center;gap:7px;margin-top:14px}
+.gc{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:13px}
+.hbars{display:flex;align-items:flex-end;gap:6px;height:110px}
+.hbars i{flex:1;border-radius:5px 5px 2px 2px;background:var(--accent-soft)}
+.hbars i.hi{background:var(--accent)}
+.hbars i.md{background:var(--accent-bright);opacity:.55}
+
+/* ---------- dark bento w/ iso art ---------- */
+.bento{padding:60px 0}
+.bento-inner{background:var(--dark);border-radius:var(--r-xl);padding:78px 56px;position:relative;overflow:hidden}
+.bento h2{color:#fff;font-size:clamp(32px,3.6vw,48px);text-align:center;font-weight:800;max-width:640px;margin:0 auto}
+.bento .sub{text-align:center;color:var(--dark-text);margin:16px auto 54px;max-width:520px;font-size:16.5px}
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.bcard{border:1px solid var(--dark-line);border-radius:var(--r-lg);min-height:360px;position:relative;overflow:hidden;padding:30px;display:flex;flex-direction:column;justify-content:flex-end;background:
+  linear-gradient(60deg, rgba(255,255,255,.035) 1px, transparent 1.5px),
+  linear-gradient(-60deg, rgba(255,255,255,.035) 1px, transparent 1.5px),
+  var(--dark-2);background-size:44px 76px;transition:border-color .3s var(--e),transform .3s var(--e)}
+.bcard:hover{border-color:rgba(143,109,255,.5);transform:translateY(-4px)}
+.bcard .iso{position:absolute;top:26px;left:50%;transform:translateX(-50%);width:min(340px,78%);transition:transform .5s var(--e)}
+.bcard:hover .iso{transform:translateX(-50%) translateY(-8px)}
+.bcard h4{font-family:var(--display);color:#fff;font-size:22px;font-weight:700;letter-spacing:-.3px;position:relative}
+.bcard p{color:var(--dark-text);font-size:14px;margin-top:6px;max-width:340px;position:relative}
+.bcard .go{display:inline-flex;align-items:center;gap:8px;color:var(--accent-glow);font-weight:600;font-size:13.5px;margin-top:14px;position:relative}
+.bcard .go .ic{width:14px;height:14px}
+
+/* ---------- snapshot ---------- */
+.snap{padding:96px 0 60px;text-align:center}
+.snap .kick{font-size:12.5px;font-weight:700;letter-spacing:2.4px;color:var(--accent);text-transform:uppercase}
+.snap h2{font-size:clamp(34px,3.8vw,50px);font-weight:800;margin:16px auto 0;max-width:680px;line-height:1.08}
+.snap .sub{color:var(--ink2);font-size:17px;max-width:560px;margin:18px auto 46px}
+.shot{max-width:1240px;margin:0 auto;background:#fff;border-radius:22px;box-shadow:0 8px 24px rgba(23,23,28,.06),0 48px 120px rgba(23,23,28,.14);overflow:hidden;text-align:left;border:1px solid var(--line)}
+.shot *{font-size:11px}
+.shot-top{display:flex;align-items:center;gap:10px;padding:11px 18px;border-bottom:1px solid var(--line);background:#FBFBFC}
+.shot-top .dot{width:9px;height:9px;border-radius:50%}
+.shot-top .url{margin-left:12px;background:#fff;border:1px solid var(--line);border-radius:7px;padding:3.5px 14px;color:var(--muted);font-size:10px}
+.shot-body{display:flex;min-height:520px}
+.rail{width:54px;background:#101014;display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:10px}
+.rail .rtile{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.rail .rtile .ic{width:15px;height:15px;color:#fff}
+.sbar{width:186px;border-right:1px solid var(--line);padding:14px 10px;background:#fff}
+.sbar .slog{display:flex;align-items:center;gap:8px;padding:0 6px 14px}
+.sbar .slog .lockup{height:15px;color:var(--ink)}
+.sgroup{font-size:8.5px;letter-spacing:1.2px;color:var(--muted);font-weight:700;padding:10px 8px 5px}
+.sit{display:flex;align-items:center;gap:8px;padding:6.5px 9px;border-radius:8px;color:var(--ink2);font-weight:500;font-size:10.5px}
+.sit .ic{width:12px;height:12px;color:var(--muted)}
+.sit.on{background:var(--accent-soft);color:var(--accent-deep);font-weight:700}
+.sit.on .ic{color:var(--accent-deep)}
+.sit .b99{margin-left:auto;background:var(--accent);color:#fff;font-size:7.5px;font-weight:700;border-radius:99px;padding:1.5px 6px}
+.smain{flex:1;background:var(--bg);padding:20px 24px;min-width:0}
+.smain .greet{display:flex;align-items:flex-start}
+.smain h5{font-family:var(--display);font-size:20px;letter-spacing:-.4px}
+.smain .gd{color:var(--muted);font-size:10px;margin-top:2px}
+.brief{margin-left:auto;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 13px;font-weight:600;font-size:10px;color:var(--accent-deep)}
+.brief .ic{width:11px;height:11px}
+.clockrow{display:grid;grid-template-columns:1.1fr 1fr 1.1fr 1fr;background:#fff;border:1px solid var(--line);border-radius:14px;margin:14px 0;overflow:hidden}
+.clockrow>div{padding:13px 16px;border-right:1px solid var(--line)}
+.clockrow>div:last-child{border-right:none}
+.clockrow .cl{font-size:8px;letter-spacing:1px;color:var(--muted);font-weight:700;margin-bottom:4px}
+.clockrow .cv{font-family:var(--mono);font-size:17px;font-weight:700}
+.clockrow .cs{font-size:9px;color:var(--muted);margin-top:3px}
+.smain-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:14px}
+.wcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+.wcard .wh{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.wcard .wh b{font-size:12px}
+.wcard .cnt5{background:var(--ink);color:#fff;border-radius:99px;font-size:8px;font-weight:700;padding:2px 7px}
+.wcard .openb{margin-left:auto;background:var(--btn);color:#fff;border-radius:8px;padding:5px 12px;font-weight:600;font-size:9.5px}
+.taskcard{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:11px;padding:12px 14px;margin-bottom:9px}
+.taskcard .tag{display:inline-block;background:var(--accent-soft);color:var(--accent-deep);font-size:8px;font-weight:700;border-radius:6px;padding:2.5px 8px;letter-spacing:.6px}
+.taskcard b{display:block;font-size:12.5px;margin-top:6px}
+.taskcard .tm{color:var(--muted);font-size:9.5px;margin-top:2px}
+.taskcard .sugg{display:flex;gap:7px;align-items:center;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:9.5px;color:var(--ink2)}
+.taskcard .sugg .ic{width:11px;height:11px;color:var(--accent)}
+.taskcard .row{display:flex;align-items:center;margin-top:9px}
+.taskcard .ob{background:var(--accent);color:#fff;border-radius:7px;padding:5px 14px;font-weight:600;font-size:9.5px}
+.taskcard .ago{margin-left:auto;color:var(--faint);font-size:9px}
+.qa{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qa div{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:9.5px 11px;font-weight:600;font-size:10px;background:#fff}
+.qa .ic{width:12px;height:12px;color:var(--ink2)}
+.teamrow{display:flex;gap:12px;align-items:center;margin-top:12px}
+.tdonut{width:64px;height:64px;border-radius:50%;background:conic-gradient(var(--ok) 0 7%, var(--warn) 7% 14%, var(--line) 14% 100%);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tdonut i{width:44px;height:44px;background:#fff;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal}
+.tdonut b{font-size:12px}
+.tdonut span{font-size:6.5px;color:var(--muted)}
+.tl-legend{font-size:9.5px;color:var(--ink2);line-height:1.9}
+.tl-legend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px}
+
+/* ---------- integrations ---------- */
+.integ{padding:40px 0 60px}
+.integ-inner{background:var(--dark);border-radius:var(--r-xl);padding:88px 40px;text-align:center;position:relative;overflow:hidden}
+.integ-inner::before{content:"";position:absolute;top:-180px;left:50%;transform:translateX(-50%);width:760px;height:400px;background:radial-gradient(ellipse,rgba(123,92,255,.28),transparent 65%)}
+.integ .kick{color:var(--accent-glow);font-size:12.5px;font-weight:700;letter-spacing:2.6px}
+.integ h2{color:#fff;font-size:clamp(34px,3.8vw,52px);font-weight:800;margin:16px 0;position:relative}
+.integ .sub{color:var(--dark-text);max-width:440px;margin:0 auto 52px;position:relative}
+.imar{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);margin-bottom:20px}
+.itrack{display:flex;gap:18px;width:max-content;animation:imv 32s linear infinite}
+.itrack.rev{animation-direction:reverse;animation-duration:40s}
+@keyframes imv{to{transform:translateX(-50%)}}
+.ichip{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:800;font-size:15px;color:#fff;flex-shrink:0;border:1px solid rgba(255,255,255,.1)}
+
+/* ---------- footer ---------- */
+.finalcta{padding:40px 0 0}
+footer{margin-top:70px;background:var(--dark);color:var(--dark-text);position:relative;overflow:hidden}
+.fcta{border-bottom:1px solid var(--dark-line);padding:76px 0}
+.fcta .wide{display:flex;align-items:center;gap:30px;flex-wrap:wrap}
+.fcta h2{color:#fff;font-size:clamp(30px,3.4vw,44px);font-weight:800;max-width:520px;line-height:1.1}
+.fcta .b2{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
+.fgrid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:40px;padding:64px 0 40px}
+.fgrid h5{color:#fff;font-size:13px;margin-bottom:15px;font-family:var(--display)}
+.fgrid a{display:block;padding:4px 0;font-size:13.5px;color:var(--dark-text)}
+.fgrid a:hover{color:#fff}
+.fbrand p{font-size:13.5px;max-width:300px;margin-top:16px;line-height:1.65}
+.fbadges{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.fbadge{border:1px solid var(--dark-line);border-radius:10px;padding:8px 13px;font-size:9.5px;letter-spacing:.5px;line-height:1.45}
+.fbadge b{display:block;color:#fff;font-size:10.5px}
+.fsub{display:flex;gap:9px;margin-top:14px;max-width:300px}
+.fsub input{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--dark-line);border-radius:var(--r-pill);padding:10px 16px;color:#fff;font-size:13px;outline:none;font-family:var(--ui)}
+.fsub input::placeholder{color:#6B6B78}
+.fsub .btn{padding:10px 18px;font-size:13px}
+.flegal{border-top:1px solid var(--dark-line);padding:24px 0 30px;display:flex;justify-content:space-between;font-size:12.5px;flex-wrap:wrap;gap:10px}
+.fwater{margin:10px auto -2.5vw;max-width:var(--wide);padding:0 24px}
+.fwater .lockup{width:100%;height:auto;color:rgba(255,255,255,.045)}
+
+@media(max-width:960px){
+  .hero-grid{grid-template-columns:1fr;padding:56px 28px 48px}
+  .hero-vis{height:430px;margin-top:20px}
+  .pgrid,.bgrid{grid-template-columns:1fr}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .nlinks{display:none}
+  .shot-body{min-height:auto}
+  .sbar{display:none}
+  .smain-grid,.clockrow{grid-template-columns:1fr 1fr}
+  .fcta .b2{margin-left:0}
+}
+</style>
+</head>
+<body>
+<svg style="display:none" aria-hidden="true"><symbol id="si-lockup" viewBox="0 0 7600 1344"><path fill="currentColor" d="M550.9,1240.6c-4.7-.6-10.4-1.8-12.6-2.7-8.3-3.1-18.3-9.1-24.9-15-11.1-9.9-11.7-11-28.8-46.3-2.8-5.8-3.1-6.9-2.8-13.1l.3-6.7,220.6-.5c121.3-.3,221.9-.8,223.3-1.1,1.4-.3,6.6-1,11.3-1.5,16.5-2,34.2-5.9,44.3-10,2.3-1,5-1.7,5.9-1.7s2.4-.5,3.4-1.3c1-.6,2.8-1.5,4.1-1.9,2.2-.6,9.7-4.1,12.6-5.8.7-.5,2.3-1.3,3.6-1.8s3.5-1.8,5-2.8,4.1-2.6,5.9-3.6c14.2-8.3,34.9-27.1,49.5-45,4.5-5.5,6.7-8.6,12.3-17.1,2.2-3.2,4.5-6.7,5.2-7.7.7-.9,1.4-2.4,1.4-3.2s.5-2,1.3-2.5c.7-.6,2.4-3.2,3.7-5.8,1.4-2.6,3-5.3,3.7-6.1.7-.7,1.3-2,1.3-2.8s.8-2.4,1.8-3.7c1-1.3,1.8-2.7,1.8-3.2s2-5.1,4.5-10.4c2.4-5.2,4.5-9.6,4.5-9.9s2.4-5.6,5.4-11.8,5.4-11.4,5.4-11.6c0-.3,2.4-5.6,5.5-12,3.1-6.3,6.9-14.6,8.6-18.3,1.7-3.7,3.5-7.4,4-8.1.8-1.4,1.5-2.8,4.6-9.9.9-2.3,2.1-4.7,2.6-5.4.5-.7,1.3-2.3,1.8-3.6,2.3-5,3.6-8,7.4-16.2,8.1-17.1,22.2-47.9,22.2-48.4s2.1-4.8,4.6-10.1c2.5-5.2,6.5-13.4,8.6-18.1,4.9-10.2,9-19,16.4-34.5,3.1-6.3,5.5-11.6,5.5-11.8,0-.3,1.9-4.4,4.1-9.3,4.6-9.8,6.2-13.4,10.1-21.9,3.6-8.2,11.4-24.8,17.6-37.4,6.7-14,17.6-26.5,28.1-32.4,2.4-1.4,5-3,5.7-3.5,1.5-1.1,11.1-5,12.4-5s3.6-.8,6.8-1.8c5.3-1.7,7.8-1.8,32.8-1.6l27,.3.3,6.3c.2,4.3,0,7.2-1.1,9-1.5,3.2-8.2,17.3-11.8,25.2-1.4,3-4.4,9.5-6.8,14.4s-6.1,13.1-8.5,18c-2.3,5-5,10.5-5.9,12.3s-1.8,3.8-1.8,4.3-.8,2.1-1.8,3.3c-1,1.3-1.8,3.2-1.8,4.3s-.6,2.5-1.4,3.2c-.7.5-1.5,2-1.8,3-.4,1.1-2.1,5-3.8,8.7-1.8,3.7-4.7,10-6.6,14s-4.7,9.9-6.2,13.1c-1.5,3.3-2.8,6.2-2.8,6.5s-2.4,5.7-5.5,12c-10.2,21.4-17.2,36.5-20.9,44.5-1,2.3-2.2,4.7-2.5,5.4-.5.7-1.3,2.3-1.7,3.6-1.2,2.9-4.6,9.9-5.6,11.7-.4.7-1,2-1.3,2.7-.6,1.4-6,13.1-10.3,22.1-4.9,10.3-8.8,18.9-15.8,34.1-8.6,19.2-9.3,20.5-10.2,22.1-.5.7-1.6,3.2-2.6,5.4-3.5,7.9-5.9,13.1-6.7,14.4-.5.7-1.3,2.3-1.7,3.6-.5,1.3-1.4,2.9-1.8,3.6-.5.7-1.2,2-1.4,2.7-.8,1.9-4,8.8-8.8,18.9-2.2,4.7-8.1,17.5-13,28.4-11.4,25.2-13.3,29-21.5,43.2-21,36.5-42.9,62.9-69.5,84-11,8.7-23,17.3-24.1,17.3s-1.3.6-2.2,1.4c-6,5.4-39.3,20.4-57.5,25.8-14.3,4.3-16.7,5-20.7,5.6-2.3.3-5.9,1.1-8.1,1.8-2.3.6-6.5,1.4-9.5,1.8-3,.3-8.6,1.2-12.6,1.8-15.2,2.8-43.1,3.2-222.8,3.1-139.3,0-182.5-.4-189.1-1.3ZM1215.5,1240.9c-.6-.6-1.1-3.6-1.1-7s.5-6.9,2.7-11.3c1.4-3,2.7-5.7,2.7-6s2.3-5.6,10.4-22.8c1.6-3.4,4.6-9.9,6.7-14.4,10.9-23.4,15.4-33,16.4-34.7.5-.7,1.3-2.3,1.8-3.6,2.8-6.4,3.7-8.4,7.6-16.7,2.3-5,4.9-10.4,5.7-12.2.7-1.7,1.7-3.8,2.2-4.5.4-.7,1.4-2.8,2.2-4.5,2-4.5,3.8-8.5,12-25.9,4.1-8.6,7.3-15.8,7.3-15.9,0-.3,2.7-6,5.9-12.8,3.2-6.8,7.4-15.5,9.1-19.2,8.6-18.5,10.4-22.1,11.2-23.4.5-.7,1.1-2,1.4-2.7.4-.7,1.5-3.4,2.7-6,1.2-2.5,2.2-5,2.2-5.5s.6-1.4,1.4-2,1.4-1.6,1.4-2.3,2.6-6.8,5.9-13.5,5.9-12.4,5.9-12.6,1.5-3.7,3.5-7.8c1.9-4.1,4.6-9.9,5.9-12.9s4.1-8.8,6-13.1c2-4.2,5-10.7,6.8-14.4,1.8-3.7,3.5-7.4,4-8.1s1.3-2.3,1.8-3.6,2.3-5,4-8.6,4.1-8.7,5.4-11.7,4-8.6,5.9-12.6c5.5-11.4,9.5-20,13.8-29.7,2.3-5,5.9-13.1,8.3-18,4.1-8.6,6.1-13.1,14.2-30.2,4.7-9.9,10.1-21.4,11.3-24.3.5-1.3,1.4-2.9,1.8-3.6s1.7-3.4,2.8-5.9c3.2-7.1,5.6-12.5,6.5-14,.4-.7,1.2-2.3,1.6-3.6,1.4-3.5,3-6.8,9.4-19.8,4.7-9.6,7.2-13.6,11.8-18.6,5.9-6.5,15.2-14.3,19.4-16.3,1.3-.5,2.9-1.4,3.6-1.8,3.8-2.2,9.6-4.7,10.8-4.7s4-.8,7-1.8c5.2-1.6,8.3-1.8,33.1-1.8h27.4v7.7c0,4.2-.4,7.7-.8,7.7s-1.1.9-1.4,2c-.3,1.2-2.2,5.4-4.1,9.5-5.6,11.7-10.9,22.9-12.6,26.7-1,2-4.3,9.1-7.5,15.8s-8.4,18.2-11.7,25.7c-3.3,7.5-7.7,16.7-9.5,20.7s-5.5,11.7-8.1,17.1c-7.3,15.5-11.4,24.1-15.2,32.1-3.2,6.8-8.3,17.6-12.7,27.3-3.2,7-8,17.2-11.7,25.2-2.2,4.5-5.1,11.2-6.8,14.9-1.6,3.8-3.4,7.7-3.9,8.6-.9,1.5-6.5,13.6-9.1,19.3-.5,1.3-1.4,2.9-1.7,3.6-2.8,5-4.7,9.1-4.7,10.2s-.8,2.2-1.8,3.3-1.8,2.6-1.8,3.3-.8,2.7-1.8,4.5c-1,1.9-1.8,3.9-1.8,4.4s-.6,1.5-1.4,2.2-1.5,2.4-1.9,4.1c-.3,1.6-1.1,3.4-1.7,4-.7.5-1.5,2.2-1.8,3.6s-1.2,3.1-1.9,3.7c-.7.5-1.3,1.6-1.3,2.3s-.8,2.8-1.7,4.6c-1.8,3.5-3.6,7.3-12.5,26.7-5.2,11.5-8.5,18.5-15.7,33.8-2,4.2-4.4,9.5-5.4,11.7-1.1,2.3-2.3,4.7-2.7,5.4-.4.7-1.2,2.3-1.7,3.6-2,4.3-8.3,17.6-9,18.9-.5.7-1.1,2-1.4,2.7-1,2.4-5,11.1-9.1,19.8-5.5,11.5-11.1,24-11.1,24.6s-2.9,6.5-6.4,13.9c-3.5,7.3-7.6,15.9-9.1,19.2-16.4,35.5-18.1,38.5-27.4,49.2-6.6,7.6-24.4,19.3-29.4,19.3s-2.6.5-3.7,1.3c-3.2,2.1-18.8,3.2-41.9,3.2s-21.7-.3-22.5-1.1ZM1419,1240.9c-.6-.6-1.1-3.7-1.1-7.5s.4-6.8,1.8-8.1c1-.9,1.8-2.3,1.8-3.2s.8-2.6,1.8-3.9c1-1.3,1.8-2.7,1.8-3.3s2.1-5.2,4.7-9.9c.4-.7,1.2-2.3,1.7-3.6s1.8-3.9,2.7-5.9c1-2.1,1.7-4.1,1.7-4.6s.6-1.4,1.4-2.1,1.4-1.7,1.4-2.5,3.1-7.6,6.8-15.2,6.8-14.1,6.8-14.3,1.6-3.9,3.7-8.2c2-4.4,5.7-12.4,8.2-17.8,2.5-5.4,7-14.9,9.9-21.2,3-6.2,6.2-13.1,7.3-15.3,1-2.3,2.2-4.7,2.6-5.4.4-.7,1-2,1.3-2.7.6-1.4,3.2-7.2,7.1-15.6,1.4-2.8,2.8-5.4,3.2-5.6.4-.3,1-1.5,1.3-2.8.4-1.4,2.7-6.7,5.1-12,4.9-10.3,5.2-11,15.2-33,3.6-7.9,8.7-19.1,11.4-24.8s6.6-13.8,8.6-18c4.8-10,4.8-10.1,5.9-12.2,2.3-4.2,9.6-20.2,24.6-53.1,8.4-18.5,13.4-29.4,14.5-31.1.5-.7,1.3-2.3,1.7-3.6.5-1.3,2.4-5.3,4.1-9,1.8-3.7,4.1-8.6,5.1-10.8,1-2.3,2.2-4.7,2.6-5.4.4-.7,1.1-2.2,1.5-3.2,2.3-5.3,2.9-6.4,3.6-7.7.7-1.3,2.2-4.3,6.7-14.4,1-2.3,2.2-4.7,2.6-5.4.4-.7,1-2,1.3-2.7.3-.7,1.3-3,2.2-5s2.1-4.6,2.6-5.9,1.4-2.9,1.8-3.6,2.6-5.4,4.9-10.4,5.1-11.4,6.5-14.4c6.2-13.7,15.5-33.3,18.5-39.2.4-.7,1.6-3.4,2.7-5.9,1.1-2.4,2.3-5.1,2.7-5.9s1.3-2.3,1.8-3.6c4.1-9.3,6.2-13,12.1-20.3,4.2-5.3,12.4-13.1,13.7-13.1s1.5-.6,2.2-1.4c1.2-1.4,11.4-6.7,13.1-6.7s1.4-.5,2-1.1c.6-.6,3.2-1.6,5.9-2.2,2.5-.6,6.5-1.5,8.7-2.1,2.6-.7,13.3-.9,30.2-.8l26.1.3v7.2c0,6.9-.3,7.6-5.6,18.5-3,6.2-10,21.2-15.6,33.3-5.5,12.2-11.4,24.9-13.1,28.4s-3.4,7.3-4,8.6-1.4,2.9-1.7,3.6c-.5.7-1.7,3.4-2.9,5.9s-2.5,5.3-3,6.3c-1.2,2.3-1.4,2.8-5.9,12.2-8.7,18.4-11.5,24.6-16.8,36.5-3.2,6.9-7.9,17.4-10.7,23.2s-5,10.9-5,11.2-2.4,5.6-5.5,11.9c-3.1,6.2-7.1,14.7-9,18.8-5.1,10.8-9.9,20.9-15.5,32.6-2.8,5.8-5.3,11.5-5.6,12.8-.4,1.4-1.2,2.9-1.9,3.5-.7.5-1.3,1.4-1.3,1.9,0,1-.8,2.9-7.8,17.6-2.6,5.7-4.8,10.4-4.8,10.6,0,.4-2.7,6.1-11.7,25.1-.9,2-4.1,8.9-7.2,15.3-8,16.7-12.5,26.4-14.7,31.1-1,2.3-2.2,4.7-2.6,5.4-.4.7-1,2-1.3,2.7-.3.7-1.4,3.4-2.6,5.9-1.1,2.4-2.9,6.3-3.9,8.6-1,2.3-4.5,9.6-7.7,16.6-3.2,6.8-5.9,12.6-5.9,12.8,0,.5-12.9,27.9-17.6,37.6-1.7,3.3-3.1,6.7-3.1,7.2s-.8,2.1-1.8,3.2-1.8,2.6-1.8,3.3c0,1.1-1.8,5-4.7,10.2-.4.7-1.2,2.3-1.7,3.6s-2.2,4.9-3.7,8.1c-5.3,11.5-6.9,14.9-9.7,21.2-11.6,25.3-33.3,41.1-60,43.7-13.3,1.3-51.1,1.2-52.4-.2ZM460.4,1055.2c-13.8-3.1-25.8-9.7-35.7-20-7.7-7.8-10.6-11.3-12.2-14.7-.5-1.3-1.4-2.9-2-3.6-1.3-1.9-11.3-23.4-12.1-25.8-.4-1-1.2-2.4-1.9-3-1.7-1.4-1.9-14.4-.3-16,.8-.8,70.7-1.1,309-1.1s308.9.3,310.1.5c1.8.5,2,1.1,2,7.7s0,7.2-7.2,21.9c-4,8.1-7.2,15-7.2,15.4s-1.9,3.3-4.1,6.8c-3.3,5-12.6,14.7-19.4,20.2-3.6,3-13.8,7.9-20.7,10.3l-7.6,2.4-242.7.2c-198.4,0-243.6,0-248.1-1.1ZM379.8,871c-1.7-.4-5.6-1.2-8.6-1.8-5.8-1.2-16.3-5.9-23-10.3-4.6-3.1-15.6-13.8-19.1-18.5-2.3-3.2-10.6-19-10.6-20.2s-1.6-3.9-3.6-7.8c-2-4-3.6-7.7-3.6-8.1s-.8-1.6-1.8-2.6c-1.4-1.4-1.8-3-1.8-8s.5-6.5,1.1-6.9c.7-.5,173.3-.7,398.4-.5l397.3.2v6.8c0,5.5-.4,7.3-1.8,9.1-1,1.3-1.8,3.1-1.8,3.9s-.6,2.1-1.4,2.7c-.7.5-1.5,2-1.9,3-1.8,6.4-12.5,26.1-17.4,32-5.3,6.5-16.1,15.8-21.2,18.4-1.4.7-3.5,1.7-4.5,2.2-1,.5-3.2,1.7-5,2.5-1.7.9-5.1,2-7.7,2.4-2.4.5-6.3,1.2-8.6,1.7-5,1-649,1.1-653.7,0ZM309.7,685.8c-1.7-.6-1.5-14.1.3-15.6.7-.6,1.4-1.5,1.4-2,0-.8,2.3-6,10-22.1,2.4-5,4.4-9.5,4.4-9.7s1.8-4.3,4.1-9.1c2.3-4.7,4.1-8.6,4.1-8.9s2.7-5.9,5.9-12.7c3.2-6.8,7.4-15.5,9.1-19.2,3.4-7.3,4.1-8.6,5.4-11.3.5-1,1.5-3.2,2.3-5,.7-1.7,3.9-8.5,6.9-14.9,8.9-18.8,9.4-19.9,17.6-37.8,4.3-9.4,9.5-20.8,11.7-25.2,4.8-10,10.5-22.4,14.1-30.2,4.7-10.2,9.9-21.1,10.7-22.5.5-.7,1.1-2,1.4-2.7.6-1.4,2.7-6.1,5.9-13.3,1.1-2.3,3.7-8.1,5.9-12.8,4.9-10.3,6.3-13.4,10.9-23.4,2-4.2,5-10.7,6.8-14.4,1.7-3.7,4.9-10.4,6.9-14.9,10.3-22.2,13.7-29.3,14.6-29.8.5-.3.7-1.4.7-2.5s.6-2.6,1.4-3.2,1.4-1.5,1.4-2.1.8-2.6,1.7-4.6c1-2.1,2.3-4.7,2.7-5.9.5-1.3,1.4-2.9,1.8-3.6s1.8-3.4,2.9-5.9c1.1-2.4,3.5-7.7,5.3-11.7,1.9-4,6.8-14.5,10.8-23.4s10-21.6,13.1-28.1c3.2-6.6,5.8-12.4,5.8-13s.8-2,1.8-3.2c1-1.3,1.8-2.9,1.8-3.5s1.6-4.2,3.6-8c2-3.8,3.6-7.3,3.6-7.7s.8-2,1.8-3.2c1-1.3,1.8-3.2,1.8-4.3s.5-2.5,1.3-3.1c.7-.6,1.5-2.2,1.9-3.5s1.1-3.1,1.8-3.8c.6-.7,1.4-2.3,1.8-3.6.7-2.4,6.6-15.2,9.6-21.2,9.2-17.6,25.4-30.8,46.2-37.4,5.9-1.8,8.4-2,33.8-2.3,15.1-.2,28.2,0,29,.2,1.4.4,1.6,1.6,1.6,7.2s-.5,8.2-5.5,17.6c-.5.9-1.2,2.3-1.5,3.2-.5.9-1.6,3.3-2.7,5.4-1.1,2.1-2,4.3-2,5s-.5,1.8-1.3,2.3c-.7.6-1.6,2.3-1.9,3.7s-1.1,3.1-1.8,3.6-1.5,2.2-1.8,3.6c-.4,1.4-1.8,5-3.2,7.8-1.5,2.9-4.5,9.5-6.8,14.7s-4.7,10.4-5.4,11.4c-.7,1.1-2.1,4-3,6.3-.9,2.3-3.8,8.7-6.3,14.2-2.6,5.5-5.5,11.7-6.6,14-1.1,2.3-2.3,4.7-2.7,5.4-.4.7-1.2,2.3-1.7,3.6-2.5,5.8-11.5,25-12.8,27.5-3.9,7.3-6,11.9-6,13.1s-.6,2-1.4,2.6-1.4,1.5-1.4,2c0,.8-1,3.1-7.8,17.7-1.7,3.6-3.5,7.5-4,8.6-.5,1-1.2,2.5-1.6,3.2s-2.3,4.8-4.1,9c-3.5,8.1-6.6,14.7-12.2,26.6-5.5,11.6-10.8,23.1-12.8,27.5-1.1,2.3-2.3,4.7-2.7,5.4-.4.7-1.2,2.3-1.8,3.6-3.5,7.7-7.7,16.7-10.6,23-6,12.6-10.8,23.1-10.8,23.4s-2.8,6.5-10.4,22.5c-1.6,3.5-4,8.6-5.2,11.3-1.2,2.7-4.3,9.4-6.9,14.9-7.3,15.5-10.4,21.9-14.4,30.6-2.1,4.4-4.1,8.7-4.6,9.5s-1.1,2-1.4,2.7c-.8,2-4.6,10.3-8,17.6-3.9,8.2-6.7,14.3-16.2,35.1-7.8,17.1-13.8,29.7-20.2,43.2-1.9,4-4.6,9.6-6,12.6-5.5,11.8-15.1,23.4-25.8,31.2-4.7,3.3-15.4,8.4-22.7,10.5-5.7,1.8-8.9,2-34.2,2.3-15.4.2-28.5.2-29.1,0ZM719.4,685.5c-1.8-.6-2-1.4-2-6.7s-.8-4.2,12.2-31.5c2.2-4.5,5.1-10.9,6.8-14.4,6.8-14.7,8.3-18.1,9.1-19.4.5-.7,1.1-2,1.4-2.7.4-.7,2.4-5.2,4.6-9.9,5.4-11.5,6.8-14.4,11.2-23.9,2.1-4.5,5.2-11.3,7.1-15.3,1.9-4,5.3-11.4,7.7-16.7,5.3-11.7,8.5-18.5,14.1-30.6,2.4-5.2,5-10.7,5.7-12.2,3-6.6,8.9-19,9.6-20.3.4-.7,1.2-2.3,1.7-3.6,1.9-4.3,8.3-17.6,9-18.9.5-.7,1.3-2.3,1.7-3.6.5-1.3,1.5-3.5,2.2-5,.7-1.4,2.5-5.3,4-8.6,1.5-3.2,4.3-9.5,6.3-14s5.9-13,8.7-18.9c10.7-22.5,12-25.4,14.8-31.2,1.5-3.4,4.1-8.8,5.6-12.2,1.5-3.3,3.2-6.7,3.6-7.4s1.3-2.3,1.8-3.6c.5-1.3,1.5-3.5,2.3-5,.6-1.4,1.6-3.7,2.2-5,.5-1.3,1.3-2.9,1.7-3.6,1.1-1.9,6.7-13.9,15.4-32.9,7.8-17.3,19.4-40.9,23-46.8,1.2-2,2.4-4.2,2.8-5,.4-.7,2.2-3.5,3.9-6.3,1.8-2.7,3.7-5.7,4.1-6.4,1-1.5,7.2-10.6,9.5-13.8,19.4-27.1,43.1-50,70.2-67.8,3.2-2.2,6.3-4.1,6.8-4.6.5-.4,5.6-3.2,11.3-6.2,14.2-7.6,30.9-14.4,47.3-19.4,12-3.6,40-9.6,45.3-9.6s6.6-.6,10.5-1.4c10.8-1.9,406.7-2,410.1,0,1.3.7,3.2,1.3,4.4,1.4,3,0,12,4.1,19.3,8.7,10.6,6.8,22.2,20.3,27.1,31.8,2.3,5.6,8.5,18.6,10.5,22.6,1.3,2.4,1.7,5.2,1.7,10.5s-.5,7.6-.9,7.8c-.5.4-94,.5-207.8.5-205.2,0-231.5.3-250.5,3-16.7,2.4-35.8,7.4-46.6,11.9-1.5.7-3.1,1.3-3.4,1.3-.7,0-10.4,4.3-12.2,5.5-.7.5-2.3,1.3-3.6,1.7-1.3.5-2.9,1.3-3.6,1.8-.7.5-2.6,1.5-4.1,2.3-3,1.4-3.7,2-14.9,9.6-16.7,11.3-35.1,30.1-49.2,50-5.7,8.1-12.2,17.9-13,19.5-.5,1.1-2,4-3.3,6.4-6.6,12.1-7.2,13.3-20.7,42.8-9.6,21.2-11.6,25.5-15.1,32.9-1.6,3.5-3.6,7.7-4.4,9.5-.7,1.7-1.7,3.8-2.1,4.5-.8,1.4-2.5,5-6.6,14-1.1,2.4-2.3,5.1-2.8,5.9-.4.7-1.2,2.3-1.8,3.6-.5,1.3-2.5,5.5-4.4,9.5-1.8,4-5,10.6-6.9,14.9s-5.7,12.1-8.3,17.6-5.3,11.5-5.9,13.4c-.7,2-1.6,4-2.2,4.6-.5.5-2.3,4.2-4,8.3-3.2,7.7-10.2,22.2-15.9,33.9-1.9,3.9-3.5,7.6-3.5,8.3s-.5,1.6-1.3,2.2c-.7.6-1.6,2.4-2,4-.3,1.6-1.4,3.9-2.3,5-1,1.2-1.7,2.7-1.7,3.4s-.8,2.3-1.8,3.6c-1,1.3-1.8,3.2-1.8,4.1s-.8,2.8-1.8,4.1c-1,1.3-1.8,2.9-1.8,3.5s-1.4,3.8-3.1,6.9c-1.6,3.2-3.4,6.9-4,8.4-.9,2.5-9.6,21.6-18.5,40.4-2.3,5-5.1,10.8-6.1,13.1-.9,2.3-2.2,4.7-2.6,5.4s-1.2,2.2-1.6,3.2c-2.6,5.9-14.4,19.2-21.3,24-5.9,4.1-16.7,9.5-20.3,10.2-1.9.3-4.5,1.2-5.9,1.8-2,1-9.5,1.4-30.5,1.6-15.4.3-28.9,0-30-.3ZM513.7,684.9c-.4-.3-.6-3.2-.6-6.5,0-5.2.5-6.9,4-14,2.2-4.5,4.4-9.1,5-10.4.5-1.3,1.4-2.9,1.7-3.6.5-.7,1.7-3.4,2.9-5.9s2.4-5.1,2.9-5.9c.4-.7,1-2,1.3-2.7.7-1.8,4-8.7,8.3-18,7-14.9,10.1-21.5,10.1-22s2.1-4.8,4.6-10.2c2.5-5.3,5.9-12.3,7.3-15.6,4.1-9,10.6-22.8,11.6-24.5,1.6-3.1,2.4-4.8,4.7-9.7,3.9-8.6,8.4-18.1,13.6-29,2.8-5.8,5-10.7,5-11s1.8-4.2,4-8.8c3.9-8.1,11.8-25.3,17.6-38.1,1.5-3.5,4.9-10.5,7.4-15.8,9-18.8,16.8-35.6,20.8-44.1,1-2.3,2.2-4.7,2.6-5.4.4-.7,1.2-2.3,1.6-3.6.5-1.3,1.5-3.5,2.2-5,.7-1.4,2.7-5.8,4.4-9.5,1.7-3.7,5.4-11.5,8.2-17.4s5-10.9,5-11.1c0-.6,8.6-18.9,20.6-43.7,2-4.2,3.7-8.3,3.7-9s.8-2.3,1.8-3.5,1.8-2.9,1.8-3.7.5-2,1.3-2.5c.7-.6,1.6-2.4,2-4,.3-1.6,1.4-3.9,2.3-5,1-1.2,1.7-2.6,1.7-3.2s2.3-5.6,5-11.3c2.7-5.7,5.5-11.5,6.1-13.1,2.6-5.9,16.6-36.1,21.9-47.3,1.8-3.7,4.9-10.2,6.8-14.4,3.8-8.1,4.7-9.8,5.9-12.4.5-.8,1.3-2.5,1.8-3.8,6.1-13.3,19.7-26.9,33.4-33.3,1.3-.6,3.2-1.6,4.5-2.3s5-1.9,8.6-3c5.6-1.5,9.7-1.9,34.8-2.3,20.5-.4,28.8-.2,29.5.5.5.5,1,3.7,1,7s-.5,6.5-1.8,8.3c-1,1.3-1.8,2.6-1.8,3s-1.6,4-3.5,7.9c-3.1,6.4-14.1,30.3-20.6,44.7-3.2,7.2-9.3,20.1-10.3,21.6-.4.7-1.2,2.3-1.7,3.6-1.2,2.5-6.2,13.4-11.5,24.5-2,4.1-4.7,9.9-5.9,12.9-4.6,10.2-7.7,17.1-9.5,20.7-5.2,11-13.5,28.6-13.5,28.9s-1.9,4.3-4.1,9.1c-2.3,4.9-5.5,11.7-7.1,15.1s-5.5,11.6-8.6,18c-8.3,17.5-12.1,25.5-19.1,41-1.7,3.7-4.1,8.8-5.2,11.3-1.1,2.4-4.4,9.6-7.3,15.9-2.9,6.3-7.3,15.8-9.8,21.2-9,18.9-10.6,22.3-11.6,24.6-.5,1.3-1.4,2.9-1.7,3.6-2.8,5-4.7,9.1-4.7,10.2s-.8,2.3-1.8,3.6c-1,1.3-1.8,3.1-1.8,4.1s-.5,2.3-1.3,2.8c-.7.6-1.6,2.3-1.9,3.7s-1.2,3.1-1.8,3.6c-.7.6-1.5,2.4-1.9,4.1-.3,1.6-1.1,3.4-1.8,4.1-.7.5-1.3,1.4-1.3,1.9s-1.2,3.3-2.6,6.4c-1.4,3.1-4.4,9.6-6.7,14.6s-5.9,13.1-8.3,18-5.1,11.1-6.3,13.5c-1.1,2.4-4.3,9.4-7.2,15.3-2.8,5.9-6.1,13.1-7.4,15.8-1.3,2.7-2.6,5.6-3.1,6.3s-1.3,2.3-1.8,3.6c-1.3,2.8-5.8,12.3-10.7,23-2.1,4.5-4.6,9.9-5.6,12.2-4.1,9.2-10.3,21.4-12.6,24.9-1.4,2.1-6.1,7.2-10.5,11.3-6.3,6-9.7,8.5-16.4,11.7-4.7,2.3-9.9,4.4-11.6,4.8s-4.2,1.3-5.6,1.9c-1.9,1-8.6,1.3-31.6,1.3s-29.4-.3-29.7-.6ZM1363.9,574.8l-389.4-.5v-8.1c0-7.1.3-8.5,2-10.7,1.2-1.4,2.1-3.3,2.1-4.1s.6-2.1,1.4-2.7,1.5-2.4,1.9-4.1c.3-1.6,1.1-3.4,1.8-4.1.7-.5,1.3-1.4,1.3-1.9,0-1.5,5.3-12.2,6.7-13.2.8-.7,1.4-1.8,1.4-2.5,0-1.7,17.7-19.6,20.7-21,1.3-.5,4.3-2.2,6.8-3.6,2.4-1.5,5-2.9,5.4-3.1,5.7-2.2,10.3-3.4,16.7-4.6,6.7-1.2,47.5-1.4,328-1.4s332.7,0,340.6,4.1c1.4.7,3.2,1.4,3.7,1.4,1.6,0,12,5.7,17.3,9.5,6.2,4.3,18,18.4,21.4,25.2.9,2,2.2,4.4,2.7,5.4.5,1,1.5,3.2,2.3,5,.8,1.7,3.2,7,5.5,11.8,3.8,7.9,4.1,9.3,4.1,15.4s-.5,7.1-1.1,7.7c-.7.7-3.4,1-7.5.9-3.4-.2-181.5-.5-395.7-.7ZM1061.3,390c-1.4-.5-1.7-1.5-1.7-6.9s.5-7.1,5-16.8c9.1-19.4,12.2-25.5,13.5-26.6.7-.5,1.3-1.4,1.3-2,0-2.2,12.3-15.2,18.9-20,4.3-3.2,16.7-9,23.1-11,5-1.5,17.6-1.6,247.1-1.8,264.8-.4,247.8-.6,261.1,4.9,12,5,24.9,15,31.3,24.3,3.7,5.3,8,12.6,8.8,14.7.3.7,2.1,4.6,4,8.6,9.2,19.4,9,18.7,9,25.6s-.4,6.6-1.1,6.8c-1.9.7-618.4,1-620.3.3Z"/><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="39" d="M2361.5,1042.1c-60.1,0-112.8-15.2-158-45.7-45.3-30.4-78-71.8-98.3-124.1l73.7-35.1c17.9,38.2,43.1,68.7,75.5,91.3,32.4,22.6,68.1,33.9,107.1,33.9s69.1-9.2,94.8-27.5c25.8-18.3,38.6-42.3,38.6-72s-6.2-39.2-18.7-52.1c-12.5-12.9-26.9-22.8-43.3-29.8s-30.8-12.1-43.3-15.2l-90.1-25.8c-57.7-16.4-99.5-39.4-125.2-69.1s-38.6-64-38.6-103,9.4-68.7,28.1-96,44.1-48.4,76.1-63.2c32-14.8,67.5-22.2,106.5-22.2s101.3,13.9,144.6,41.6c43.3,27.7,73.9,66.1,91.9,115.3l-74.9,35.1c-15.6-35.1-38-62.6-67.3-82.5-29.3-19.9-61.8-29.8-97.7-29.8s-63.2,9-84.3,26.9c-21.1,17.9-31.6,40.6-31.6,67.9s5.5,37.8,16.4,50.3c10.9,12.5,23.6,21.8,38,28.1s27.1,10.9,38,14l104.2,30.4c50.7,14.8,90.3,37.8,118.8,69.1,28.5,31.2,42.7,67.9,42.7,110s-9.6,65.2-28.7,92.5c-19.1,27.3-45.5,48.6-79,63.8-33.6,15.2-72.2,22.8-115.9,22.8ZM2979.5,1035.1c-56.2,0-99.5-16.4-129.9-49.2s-45.7-79.6-45.7-140.5v-357h-115.9v-87.8h29.3c26.5,0,47.6-8.8,63.2-26.3s23.4-39.6,23.4-66.1v-52.7h87.8v145.1h138.1v87.8h-138.1v357c0,21.1,3.1,39.6,9.4,55.6,6.2,16,17,28.7,32.2,38,15.2,9.4,35.7,14,61.5,14s13.7-.4,22.2-1.2,16-1.6,22.2-2.3v78.4c-9.4,2.3-19.9,4.1-31.6,5.3-11.7,1.2-21.1,1.8-28.1,1.8ZM3363.4,1042.1c-39.8,0-75.3-7.6-106.5-22.8-31.2-15.2-55.8-36.1-73.7-62.6-17.9-26.5-26.9-57-26.9-91.3s7-62.6,21.1-89.5c14-26.9,35.9-49.7,65.5-68.5,29.7-18.7,67.5-32,113.5-39.8l245.8-41v79.6l-224.7,37.5c-45.3,7.8-77.8,22.2-97.7,43.3s-29.8,46-29.8,74.9,11.1,51.9,33.4,71.4c22.2,19.5,50.9,29.3,86,29.3s80.4-9.2,112.4-27.5c32-18.3,57-43.1,74.9-74.3,17.9-31.2,26.9-65.9,26.9-104.2v-159.2c0-37.5-13.7-67.9-41-91.3s-62.8-35.1-106.5-35.1-71.8,9.6-100.7,28.7c-28.9,19.1-50.3,43.9-64.4,74.3l-79.6-43.3c11.7-26.5,30.2-50.7,55.6-72.6,25.4-21.8,54.4-39.2,87.2-52.1,32.8-12.9,66.7-19.3,101.8-19.3s86.8,9,122.3,26.9c35.5,17.9,63.2,42.7,83.1,74.3,19.9,31.6,29.8,68.1,29.8,109.4v430.8h-87.8v-125.2l12.9,12.9c-10.9,23.4-27.9,44.7-50.9,63.8-23,19.1-49.9,34.3-80.8,45.7-30.8,11.3-64.6,17-101.3,17ZM3915.9,1028.1V488.5h-125.2v-87.8h125.2v-56.2c0-43.7,9.8-80.6,29.3-110.6,19.5-30,45.3-52.9,77.3-68.5s66.3-23.4,103-23.4,16.8.6,26.9,1.8,18.3,2.5,24.6,4.1v79.6c-5.5-1.6-12.9-2.5-22.2-2.9s-16-.6-19.9-.6c-37.5,0-68.7,9-93.6,26.9-25,17.9-37.5,49.2-37.5,93.6v56.2h352.3v87.8h-352.3v539.6h-87.8ZM4730.6,1028.1V400.7h87.8v627.4h-87.8ZM4364.2,1028.1V488.5h-125.2v-87.8h125.2v-56.2c0-43.7,9.8-80.6,29.3-110.6s45.3-52.9,77.3-68.5c32-15.6,66.3-23.4,103-23.4s16.8.6,26.9,1.8,18.3,2.5,24.6,4.1v79.6c-5.5-1.6-12.9-2.5-22.2-2.9s-16-.6-19.9-.6c-37.5,0-68.7,9-93.6,26.9-25,17.9-37.5,49.2-37.5,93.6v56.2h352.3v87.8h-352.3v539.6h-87.8ZM4981.1,1028.1V400.7h87.8v121.7l-19.9-4.7c15.6-40.6,41.2-72.6,76.7-96,35.5-23.4,76.7-35.1,123.5-35.1s84.5,10.1,120,30.4c35.5,20.3,63.6,48.2,84.3,83.7,20.7,35.5,31,75.5,31,120v407.3h-87.8v-373.4c0-38.2-6.8-70.6-20.5-97.2s-32.8-47-57.4-61.5-52.9-21.7-84.9-21.7-60.5,7.2-85.4,21.7c-25,14.4-44.5,35.1-58.5,62s-21.1,59.1-21.1,96.6v373.4h-87.8ZM5891.8,1035.1c-56.2,0-99.5-16.4-129.9-49.2-30.4-32.8-45.7-79.6-45.7-140.5v-357h-115.9v-87.8h29.3c26.5,0,47.6-8.8,63.2-26.3,15.6-17.6,23.4-39.6,23.4-66.1v-52.7h87.8v145.1h138.1v87.8h-138.1v357c0,21.1,3.1,39.6,9.4,55.6,6.2,16,17,28.7,32.2,38s35.7,14,61.5,14,13.7-.4,22.2-1.2,16-1.6,22.2-2.3v78.4c-9.4,2.3-19.9,4.1-31.6,5.3-11.7,1.2-21.1,1.8-28.1,1.8ZM6106,1028.1V400.7h87.8v103l-11.7-15.2c14.8-29.7,37.3-53.1,67.3-70.2,30-17.2,66.5-25.8,109.4-25.8h39.8v87.8h-55c-45.3,0-81.5,14-108.9,42.1-27.3,28.1-41,67.9-41,119.4v386.3h-87.8ZM6683.1,1042.1c-39.8,0-75.3-7.6-106.5-22.8-31.2-15.2-55.8-36.1-73.7-62.6-17.9-26.5-26.9-57-26.9-91.3s7-62.6,21.1-89.5c14-26.9,35.9-49.7,65.5-68.5s67.5-32,113.5-39.8l245.8-41v79.6l-224.7,37.5c-45.3,7.8-77.8,22.2-97.7,43.3-19.9,21.1-29.8,46-29.8,74.9s11.1,51.9,33.4,71.4c22.2,19.5,50.9,29.3,86,29.3s80.4-9.2,112.4-27.5c32-18.3,57-43.1,74.9-74.3,17.9-31.2,26.9-65.9,26.9-104.2v-159.2c0-37.5-13.7-67.9-41-91.3-27.3-23.4-62.8-35.1-106.5-35.1s-71.8,9.6-100.7,28.7c-28.9,19.1-50.3,43.9-64.4,74.3l-79.6-43.3c11.7-26.5,30.2-50.7,55.6-72.6,25.4-21.8,54.4-39.2,87.2-52.1,32.8-12.9,66.7-19.3,101.8-19.3s86.8,9,122.3,26.9c35.5,17.9,63.2,42.7,83.1,74.3,19.9,31.6,29.8,68.1,29.8,109.4v430.8h-87.8v-125.2l12.9,12.9c-10.9,23.4-27.9,44.7-50.9,63.8-23,19.1-49.9,34.3-80.8,45.7-30.8,11.3-64.6,17-101.3,17Z"/></symbol></svg>
+
+<!-- ============ custom icon set (stroke, no emojis) ============ -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="17" rx="3"/><path d="M8 2.5V7M16 2.5V7M3 11h18"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.6"/><path d="M2.5 20c.8-3.4 3.4-5 6.5-5s5.7 1.6 6.5 5M16 3.6a4 4 0 010 7.6M18 15.4c2 .7 3.3 2.2 3.7 4.6"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 2.5H6.5A2 2 0 004.5 4.5v15a2 2 0 002 2h11a2 2 0 002-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h5"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11.5 12 4l8.5 7.5M5.5 10v10.5h13V10"/></symbol>
+  <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13.5h5l1.5 2.5h4l1.5-2.5h5"/><path d="M5 4.5h14l1.5 9v6h-17v-6z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.4L19 10l-5.1 1.6L12 17l-1.9-5.4L5 10l5.1-1.6zM19 16l.9 2.4L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.6z"/></symbol>
+  <symbol id="i-case" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2.5"/><path d="M8.5 7V5a2 2 0 012-2h3a2 2 0 012 2v2"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 4.5-9 4.5-9-4.5zM3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5"/></symbol>
+  <symbol id="i-form" viewBox="0 0 24 24"><rect x="4.5" y="3" width="15" height="18" rx="2.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4.5"/></symbol>
+  <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="M3.5 10.5v3a1.5 1.5 0 001.5 1.5h2l5.5 4V5l-5.5 4H5a1.5 1.5 0 00-1.5 1.5zM16.5 9a4.5 4.5 0 010 6M19 6.5a8 8 0 010 11"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M21 3.5 3 10.5l7 2.5M21 3.5 14.5 21l-4.5-8M21 3.5 10 13"/></symbol>
+  <symbol id="i-money" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="3"/><path d="M6 9.5h.01M18 14.5h.01"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M21.5 19a2 2 0 01-2 2h-15a2 2 0 01-2-2V5.5a2 2 0 012-2h4.5l2 2.8h8.5a2 2 0 012 2z"/></symbol>
+</svg>
+
+<!-- ================= NAV ================= -->
+<nav id="nav">
+  <div class="pill">
+    <a href="#" aria-label="StaffIntra"><svg class="lockup" viewBox="0 0 7600 1344"><use href="#si-lockup"/></svg></a>
+    <div class="nlinks">
+      <a href="#products">Product <svg class="ic"><use href="#i-chev"/></svg></a>
+      <a href="#audiences">Solutions <svg class="ic"><use href="#i-chev"/></svg></a>
+      <a href="#snapshot">Platform</a>
+      <a href="#">Pricing</a>
+      <a href="#">Resources <svg class="ic"><use href="#i-chev"/></svg></a>
+    </div>
+    <div class="nav-cta">
+      <a class="login" href="#">Log in</a>
+      <button class="btn btn-accent">Book a demo</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wide">
+    <div class="hero-panel">
+      <div class="hero-grid">
+        <div>
+          <h1 class="reveal">Take control of your <span class="em">workforce operations.</span></h1>
+          <p class="lead reveal d1">Join over 1,000 businesses using StaffIntra to manage people, time, productivity and everyday operations — with confidence.</p>
+          <div class="ctas reveal d2">
+            <button class="btn btn-white">Open an account</button>
+            <button class="btn btn-accent">Book a demo <svg class="ic"><use href="#i-arrow"/></svg></button>
+          </div>
+          <div class="fine reveal d3">
+            <span><svg class="ic"><use href="#i-check"/></svg> Free to start</span>
+            <span><svg class="ic"><use href="#i-check"/></svg> Set up in a day</span>
+            <span><svg class="ic"><use href="#i-check"/></svg> SOC 2 ready</span>
+          </div>
+        </div>
+
+        <div class="hero-vis reveal d2">
+          <!-- app window -->
+          <div class="appwin">
+            <div class="awtop">
+              <svg class="lockup" viewBox="0 0 7600 1344"><use href="#si-lockup"/></svg>
+              <div class="awsearch"><svg class="ic" style="width:10px;height:10px"><use href="#i-doc"/></svg> Search anything&hellip;</div>
+            </div>
+            <div class="awbody">
+              <div class="awside">
+                <div class="it"><svg class="ic"><use href="#i-home"/></svg>Home</div>
+                <div class="it"><svg class="ic"><use href="#i-inbox"/></svg>Inbox</div>
+                <div class="it on"><svg class="ic"><use href="#i-clock"/></svg>Timesheets</div>
+                <div class="it"><svg class="ic"><use href="#i-chart"/></svg>Productivity</div>
+                <div class="it"><svg class="ic"><use href="#i-case"/></svg>Cases</div>
+                <div class="it"><svg class="ic"><use href="#i-users"/></svg>HR &amp; Payroll</div>
+              </div>
+              <div class="awmain">
+                <h6>Timesheets</h6>
+                <div class="awtabs"><b>This week</b><span>Needs review</span><span>Approved</span><span>Scheduled</span></div>
+                <table class="aw">
+                  <tr><td><span class="nm"><span class="awav" style="background:#B03A5B">RA</span>Ruth Adeyemi</span></td><td>38h 40m</td><td>Client Success</td><td><span class="awchip" style="background:var(--ok-soft);color:var(--ok)">Approved</span></td></tr>
+                  <tr><td><span class="nm"><span class="awav" style="background:#C0392B">UI</span>Usman Ibrahim</span></td><td>41h 05m</td><td>Sales</td><td><span class="awchip" style="background:var(--ok-soft);color:var(--ok)">Approved</span></td></tr>
+                  <tr><td><span class="nm"><span class="awav" style="background:#2563B8">EO</span>Emmanuel Okafor</span></td><td>39h 55m</td><td>Engineering</td><td><span class="awchip" style="background:var(--warn-soft);color:var(--warn)">Review</span></td></tr>
+                  <tr><td><span class="nm"><span class="awav" style="background:#8E44AD">JD</span>Jemimah Dogara</span></td><td>36h 20m</td><td>Intake</td><td><span class="awchip" style="background:var(--ok-soft);color:var(--ok)">Approved</span></td></tr>
+                  <tr><td><span class="nm"><span class="awav" style="background:#178A63">BA</span>Blossom Adeh</span></td><td>40h 00m</td><td>Sales</td><td><span class="awchip" style="background:var(--accent-soft);color:var(--accent-deep)">Auto-built</span></td></tr>
+                  <tr><td><span class="nm"><span class="awav" style="background:#55555E">JO</span>Joseph Obi</span></td><td>28h 10m</td><td>Delivery</td><td><span class="awchip" style="background:var(--warn-soft);color:var(--warn)">2 gaps</span></td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- staff badge card -->
+          <div class="badgecard">
+            <svg class="bclogo lockup" viewBox="0 0 7600 1344"><use href="#si-lockup"/></svg>
+            <div class="chip"></div>
+            <div class="who">SAMUEL JOHNSON</div>
+            <div class="role">MD / CEO · BLU-0001</div>
+          </div>
+          <!-- toast -->
+          <div class="toast"><span class="dotp"><svg class="ic"><use href="#i-check"/></svg></span>14 of 16 clocked in · live</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= LOGO STRIP ================= -->
+<section class="strip">
+  <div class="cap">TRUSTED BY GROWING BUSINESSES</div>
+  <div class="row">
+    <span>ZENITHBUILD</span><span>NOVABANK</span><span>AJOCREDIT</span><span>HAVILY</span>
+    <span>OJAFRESH</span><span>PRIMERETAIL</span><span>GREENTREE</span><span>SWIFTLINE</span>
+  </div>
+</section>
+
+<!-- ================= PRODUCT TABS ================= -->
+<section class="prod content" id="products">
+  <h2 class="reveal">Everything your team needs, and complete visibility.</h2>
+  <p class="sub reveal d1">One platform for the entire employee workday — from clock-in to payslip.</p>
+
+  <div class="ptabs reveal d2">
+    <button class="ptab on" data-p="p1">Time &amp; Attendance</button>
+    <button class="ptab" data-p="p2">Productivity &amp; Performance</button>
+    <button class="ptab" data-p="p3">People &amp; Operations</button>
+  </div>
+
+  <div class="pane on" id="p1">
+    <div class="pgrid">
+      <div class="pcard reveal">
+        <div class="art">
+          <div class="mrow2"><span class="mic" style="background:var(--accent-soft);color:var(--accent-deep)"><svg class="ic"><use href="#i-clock"/></svg></span>Clock in — Lagos HQ<span class="val">08:58</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--ok-soft);color:var(--ok)"><svg class="ic"><use href="#i-check"/></svg></span>On time streak<span class="val">14 days</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--warn-soft);color:var(--warn)"><svg class="ic"><use href="#i-users"/></svg></span>Late today<span class="val">1 of 16</span></div>
+        </div>
+        <h4>Smart clock-in</h4>
+        <p>One tap from desktop or mobile, with device health and location context built in.</p>
+      </div>
+      <div class="pcard reveal d1">
+        <div class="art">
+          <div class="bigfig">14h 45m</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">tracked this week · auto-built from clock events</div>
+          <div class="meter"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="off"></i><i class="off"></i><i class="off"></i><i class="off"></i></div>
+          <div style="display:flex;align-items:center;gap:8px"><div class="avstack"><span class="awav" style="background:#B03A5B">R</span><span class="awav" style="background:#C0392B">U</span><span class="awav" style="background:#2563B8">E</span></div><span style="font-size:10.5px;color:var(--muted)">3 pending approvals</span></div>
+        </div>
+        <h4>Timesheets that build themselves</h4>
+        <p>Clock events become payroll-ready timesheets. No re-entry, no chasing.</p>
+      </div>
+      <div class="pcard reveal d2">
+        <div class="art">
+          <div class="mrow2"><span class="mic" style="background:var(--accent-soft);color:var(--accent-deep)"><svg class="ic"><use href="#i-plane"/></svg></span>Annual leave<span class="val">12 / 20 days</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--info-soft);color:var(--info)"><svg class="ic"><use href="#i-cal"/></svg></span>Jemimah · Thu–Fri<span class="val">pending</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--ok-soft);color:var(--ok)"><svg class="ic"><use href="#i-check"/></svg></span>Auto-routed to HR<span class="val">rule §4</span></div>
+        </div>
+        <h4>Leave without the paperwork</h4>
+        <p>Requests route themselves by your rules — balances stay right, always.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pane" id="p2">
+    <div class="pgrid">
+      <div class="pcard reveal">
+        <div class="art">
+          <div class="hbars"><i style="height:35%"></i><i class="md" style="height:55%"></i><i class="hi" style="height:88%"></i><i class="hi" style="height:96%"></i><i class="md" style="height:60%"></i><i style="height:26%"></i><i class="md" style="height:70%"></i><i class="hi" style="height:82%"></i></div>
+          <div style="font-size:10.5px;color:var(--muted);margin-top:10px;text-align:center">Focused vs idle, hour by hour — no screenshots, ever</div>
+        </div>
+        <h4>Activity insights</h4>
+        <p>Real activity beside clock-in data. Transparent to staff by design.</p>
+      </div>
+      <div class="pcard reveal d1">
+        <div class="art">
+          <div class="donut"><i><b>82</b><span>score /100</span></i></div>
+          <div class="gradechips">
+            <span class="gc" style="background:var(--ok-soft);color:var(--ok)">A</span>
+            <span class="gc" style="background:var(--accent-soft);color:var(--accent-deep)">B</span>
+            <span class="gc" style="background:var(--warn-soft);color:var(--warn)">C</span>
+            <span class="gc" style="background:#FBE9E9;color:var(--danger)">D</span>
+          </div>
+        </div>
+        <h4>Performance grades</h4>
+        <p>Attendance × activity × approved output. One transparent formula for everyone.</p>
+      </div>
+      <div class="pcard reveal d2">
+        <div class="art">
+          <div class="mrow2"><span class="mic" style="background:var(--ok-soft);color:var(--ok)"><svg class="ic"><use href="#i-check"/></svg></span>KYC validation states<span class="val">approved</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--ok-soft);color:var(--ok)"><svg class="ic"><use href="#i-check"/></svg></span>Payout webhook retries<span class="val">2h 10m</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--warn-soft);color:var(--warn)"><svg class="ic"><use href="#i-doc"/></svg></span>Empty-state designs<span class="val">in review</span></div>
+        </div>
+        <h4>Work logs</h4>
+        <p>What was actually delivered, task by task — output that counts toward the grade.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pane" id="p3">
+    <div class="pgrid">
+      <div class="pcard reveal">
+        <div class="art">
+          <div class="bigfig">&#8358;48.2m</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px">August payroll · 312 staff · 2 of 2 approvals</div>
+          <div class="mrow2"><span class="mic" style="background:var(--ok-soft);color:var(--ok)"><svg class="ic"><use href="#i-money"/></svg></span>Run scheduled<span class="val">28 Aug</span></div>
+        </div>
+        <h4>Payroll, connected</h4>
+        <p>Timesheets flow straight into pay runs with statutory deductions handled.</p>
+      </div>
+      <div class="pcard reveal d1">
+        <div class="art">
+          <div class="mrow2"><span class="mic" style="background:var(--accent-soft);color:var(--accent-deep)"><svg class="ic"><use href="#i-megaphone"/></svg></span>Town hall Friday<span class="val">14 read</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--info-soft);color:var(--info)"><svg class="ic"><use href="#i-users"/></svg></span>New analyst onboarding<span class="val">day 2/5</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--warn-soft);color:var(--warn)"><svg class="ic"><use href="#i-form"/></svg></span>Exit checklist · contractor<span class="val">3 items</span></div>
+        </div>
+        <h4>Staff lifecycle</h4>
+        <p>Onboarding to exit — one continuous record, with comms people actually see.</p>
+      </div>
+      <div class="pcard reveal d2">
+        <div class="art">
+          <div class="mrow2"><span class="mic" style="background:var(--accent-soft);color:var(--accent-deep)"><svg class="ic"><use href="#i-case"/></svg></span>Expense &gt; &#8358;50k rule<span class="val">4 steps</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--ok-soft);color:var(--ok)"><svg class="ic"><use href="#i-check"/></svg></span>Team lead review<span class="val">done</span></div>
+          <div class="mrow2"><span class="mic" style="background:var(--warn-soft);color:var(--warn)"><svg class="ic"><use href="#i-shield"/></svg></span>CEO sign-off<span class="val">waiting</span></div>
+        </div>
+        <h4>Cases &amp; approvals</h4>
+        <p>Model any process as a case. Your rules, enforced consistently, every time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DARK BENTO / ISO ART ================= -->
+<section class="bento" id="audiences">
+  <div class="wide">
+    <div class="bento-inner">
+      <h2 class="reveal">Built for teams that don't work the same way.</h2>
+      <p class="sub reveal d1">However your business runs, StaffIntra bends to fit — not the other way round.</p>
+      <div class="bgrid">
+
+        <div class="bcard reveal">
+          <!-- ISO ART: time jar -->
+          <svg class="iso" viewBox="0 0 400 260" fill="none">
+            <ellipse cx="200" cy="212" rx="118" ry="26" fill="#7B5CFF" opacity=".1"/>
+            <path d="M132 92c0-10 30-18 68-18s68 8 68 18v96c0 20-30 34-68 34s-68-14-68-34z" stroke="#C4B5FD" stroke-width="3" fill="rgba(196,181,253,.06)"/>
+            <ellipse cx="200" cy="92" rx="68" ry="18" stroke="#C4B5FD" stroke-width="3" fill="none"/>
+            <ellipse cx="200" cy="74" rx="46" ry="12" stroke="#fff" stroke-width="4" fill="none"/>
+            <ellipse cx="200" cy="64" rx="46" ry="12" stroke="#fff" stroke-width="4" fill="#0F0F16"/>
+            <ellipse cx="196" cy="172" rx="44" ry="12" fill="#7B5CFF"/>
+            <ellipse cx="196" cy="162" rx="44" ry="12" fill="#8F6DFF" stroke="#fff" stroke-width="2"/>
+            <ellipse cx="202" cy="146" rx="44" ry="12" fill="#7B5CFF"/>
+            <ellipse cx="202" cy="136" rx="44" ry="12" fill="#A78BFA" stroke="#fff" stroke-width="2"/>
+            <g transform="translate(238 120) rotate(24)">
+              <ellipse cx="0" cy="0" rx="30" ry="30" fill="#8F6DFF" stroke="#fff" stroke-width="3"/>
+              <path d="M0 -14v14l9 7" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+            </g>
+          </svg>
+          <h4>Startups</h4>
+          <p>Time, tasks and pay ready before the chaos starts — free to begin, grows as you do.</p>
+          <a class="go" href="#">Explore for startups <svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="bcard reveal d1">
+          <!-- ISO ART: staff badge card -->
+          <svg class="iso" viewBox="0 0 400 260" fill="none">
+            <ellipse cx="205" cy="216" rx="130" ry="24" fill="#7B5CFF" opacity=".1"/>
+            <g transform="translate(200 128)">
+              <path d="M-128 26 0 -46l128 46L0 98z" fill="#15151E" stroke="#C4B5FD" stroke-width="3"/>
+              <path d="M-128 26 0 -46l128 46L0 98z" transform="translate(0 -14)" fill="#1B1B26" stroke="#C4B5FD" stroke-width="3"/>
+              <path d="M-92 0 -22 -40 8 -29 -62 11z" fill="#8F6DFF"/>
+              <path d="M-74 10 -4 -30 14 -23 -56 17z" fill="#fff" opacity=".9"/>
+              <rect x="-30" y="16" width="34" height="24" rx="4" transform="skewY(-16) skewX(30)" fill="#C4B5FD"/>
+              <path d="M58 30l26 9-14 8-26-9z" fill="#7B5CFF"/>
+              <circle cx="86" cy="52" r="7" fill="#fff"/>
+            </g>
+          </svg>
+          <h4>Mid-sized businesses</h4>
+          <p>Empower every team with clear time, fair grades and approvals that route themselves.</p>
+          <a class="go" href="#">Explore for mid-size <svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="bcard reveal">
+          <!-- ISO ART: ops console -->
+          <svg class="iso" viewBox="0 0 400 260" fill="none">
+            <ellipse cx="200" cy="216" rx="132" ry="24" fill="#7B5CFF" opacity=".1"/>
+            <g transform="translate(200 120)">
+              <path d="M-120 40 0 -28l120 68L0 108z" fill="#8F6DFF" stroke="#fff" stroke-width="2.5"/>
+              <path d="M-120 40v16L0 124l120-68V40L0 108z" fill="#5B3DD9" stroke="#fff" stroke-width="2.5"/>
+              <path d="M-84 34 -6 -10l10 6-78 44z" fill="#2A1B70"/>
+              <path d="M-58 52 20 8l10 6-78 44z" fill="#2A1B70"/>
+              <path d="M-32 70 46 26l10 6-78 44z" fill="#2A1B70"/>
+              <g><path d="M-52 24l16 9-10 6-16-9z" fill="#fff"/><path d="M-52 24v7l16 9v-7z" fill="#C4B5FD"/></g>
+              <g><path d="M-6 42l16 9-10 6-16-9z" fill="#fff"/><path d="M-6 42v7l16 9v-7z" fill="#C4B5FD"/></g>
+              <g><path d="M4 76l16 9-10 6-16-9z" fill="#fff"/><path d="M4 76v7l16 9v-7z" fill="#C4B5FD"/></g>
+              <path d="M-96 4l34 20a6 6 0 010 8l-8 5a8 8 0 01-8 0l-34-20a6 6 0 010-8l8-5a8 8 0 018 0z" fill="#17102E" stroke="#C4B5FD" stroke-width="2"/>
+            </g>
+          </svg>
+          <h4>Field &amp; operations teams</h4>
+          <p>Shifts, cases and multi-step sign-offs — model your real operations, stage by stage.</p>
+          <a class="go" href="#">Explore for operations <svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+
+        <div class="bcard reveal d1">
+          <!-- ISO ART: layered platform steps -->
+          <svg class="iso" viewBox="0 0 400 260" fill="none">
+            <ellipse cx="200" cy="218" rx="132" ry="24" fill="#7B5CFF" opacity=".1"/>
+            <g transform="translate(200 138)" stroke-width="2.5">
+              <path d="M-124 30 -44 -16l80 46-80 46z" fill="#221656" stroke="#C4B5FD"/>
+              <path d="M-124 30v18l80 46v-18z" fill="#160E3C" stroke="#C4B5FD"/>
+              <path d="M-44 76v18l80-46V30z" fill="#2A1B70" stroke="#C4B5FD"/>
+              <path d="M-76 2 4 -44l80 46-80 46z" fill="#5B3DD9" stroke="#fff"/>
+              <path d="M-76 2v16l80 46V48z" fill="#3B27A8" stroke="#fff"/>
+              <path d="M4 64v16l80-46V18z" fill="#4A30C4" stroke="#fff"/>
+              <path d="M-28 -26 28 -58l56 32-56 32z" fill="#8F6DFF" stroke="#fff"/>
+              <path d="M-28 -26v14l56 32v-14z" fill="#6B4BE8" stroke="#fff"/>
+              <path d="M28 20v14l56-32v-14z" fill="#7B58F2" stroke="#fff"/>
+              <circle cx="28" cy="-58" r="10" fill="#fff"/>
+              <path d="M28 -58l0 -18" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+            </g>
+          </svg>
+          <h4>Established organizations</h4>
+          <p>Consolidate the sprawl — HR, time, productivity and operations under one branded roof.</p>
+          <a class="go" href="#">Explore for enterprise <svg class="ic"><use href="#i-arrow"/></svg></a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SNAPSHOT ================= -->
+<section class="snap" id="snapshot">
+  <div class="wide">
+    <div class="kick reveal">THE PLATFORM</div>
+    <h2 class="reveal d1">One home for the whole workday.</h2>
+    <p class="sub reveal d2">Every person starts their day on a personal command center — clock, work queue, team pulse and quick actions in one calm surface.</p>
+
+    <div class="shot reveal d2">
+      <div class="shot-top">
+        <span class="dot" style="background:#F87171"></span><span class="dot" style="background:#FBBF24"></span><span class="dot" style="background:#34D399"></span>
+        <span class="url">app.staffintra.com/blueinc/home</span>
+      </div>
+      <div class="shot-body">
+        <div class="rail">
+          <div class="rtile" style="background:#2A2A33"><svg class="ic"><use href="#i-layers"/></svg></div>
+          <div class="rtile" style="background:var(--accent)"><svg class="ic"><use href="#i-check"/></svg></div>
+          <div class="rtile" style="background:#2A2A33"><svg class="ic"><use href="#i-doc"/></svg></div>
+        </div>
+        <div class="sbar">
+          <div class="slog"><svg class="lockup" viewBox="0 0 7600 1344"><use href="#si-lockup"/></svg></div>
+          <div class="sit on"><svg class="ic"><use href="#i-home"/></svg>Home</div>
+          <div class="sit"><svg class="ic"><use href="#i-inbox"/></svg>Inbox<span class="b99">99+</span></div>
+          <div class="sgroup">PINNED</div>
+          <div class="sit"><svg class="ic"><use href="#i-check"/></svg>My Tasks</div>
+          <div class="sit"><svg class="ic"><use href="#i-megaphone"/></svg>Announcements</div>
+          <div class="sit"><svg class="ic"><use href="#i-clock"/></svg>Timesheets</div>
+          <div class="sgroup">WORK</div>
+          <div class="sit"><svg class="ic"><use href="#i-layers"/></svg>Workspaces</div>
+          <div class="sit"><svg class="ic"><use href="#i-case"/></svg>Case Management</div>
+          <div class="sit"><svg class="ic"><use href="#i-chart"/></svg>Productivity</div>
+          <div class="sit"><svg class="ic"><use href="#i-form"/></svg>Forms</div>
+          <div class="sgroup">PEOPLE</div>
+          <div class="sit"><svg class="ic"><use href="#i-users"/></svg>HR</div>
+          <div class="sit"><svg class="ic"><use href="#i-folder"/></svg>Staff Lifecycle</div>
+        </div>
+        <div class="smain">
+          <div class="greet">
+            <div><h5>Good morning, Samuel</h5><div class="gd">Wednesday, August 12, 2026 · Lagos (GMT+1)</div></div>
+            <div class="brief"><svg class="ic"><use href="#i-spark"/></svg>Your briefing</div>
+          </div>
+          <div class="clockrow">
+            <div><div class="cl">NOW</div><div class="cv">08:25</div><div class="cs">Africa/Lagos · not clocked in yet</div></div>
+            <div><div class="cl">TODAY</div><div class="cv">0h 00m</div><div class="cs">No sessions yet</div></div>
+            <div><div class="cl">THIS WEEK</div><div class="cv">14h 45m</div><div class="cs">View timesheet</div></div>
+            <div><div class="cl">ELSEWHERE</div><div class="cv">08:25</div><div class="cs">London · Toronto 03:25</div></div>
+          </div>
+          <div class="smain-grid">
+            <div class="wcard">
+              <div class="wh"><b>My Work</b><span class="cnt5">5</span><span style="color:var(--muted);font-size:9.5px">5 things need you</span><span class="openb">Open</span></div>
+              <div class="taskcard">
+                <span class="tag">TASK</span>
+                <b>Task overdue — payout webhook retries</b>
+                <div class="tm">Assigned to you · ≈6 min to clear</div>
+                <div class="sugg"><svg class="ic"><use href="#i-spark"/></svg><span><b style="display:inline;font-size:9.5px">Suggested:</b> start the next step to keep it moving.</span></div>
+                <div class="row"><span class="ob">Open</span><span class="ago">17h ago</span></div>
+              </div>
+              <div class="taskcard" style="border-left-color:var(--warn)">
+                <span class="tag" style="background:var(--warn-soft);color:var(--warn)">APPROVAL</span>
+                <b>Leave request — Jemimah, Thu–Fri</b>
+                <div class="tm">Waiting on your sign-off · rule §4 routed</div>
+              </div>
+            </div>
+            <div>
+              <div class="wcard" style="margin-bottom:12px">
+                <div class="wh"><b>Quick actions</b></div>
+                <div class="qa">
+                  <div><svg class="ic"><use href="#i-plane"/></svg>Request leave</div>
+                  <div><svg class="ic"><use href="#i-money"/></svg>Claim expense</div>
+                  <div><svg class="ic"><use href="#i-clock"/></svg>My timesheet</div>
+                  <div><svg class="ic"><use href="#i-check"/></svg>Review approvals</div>
+                </div>
+              </div>
+              <div class="wcard">
+                <div class="wh"><b>Team today</b><span style="margin-left:auto;color:var(--accent-deep);font-weight:600;font-size:9.5px">Directory</span></div>
+                <div class="teamrow">
+                  <div class="tdonut"><i><b>1</b><span>OF 15</span></i></div>
+                  <div class="tl-legend">
+                    <div><i style="background:var(--ok)"></i>In office <b>1</b> &nbsp;<i style="background:#7B5CFF"></i>Remote <b>0</b></div>
+                    <div><i style="background:var(--warn)"></i>On leave <b>1</b> &nbsp;<i style="background:var(--line-strong)"></i>Not in yet <b>13</b></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= INTEGRATIONS ================= -->
+<section class="integ">
+  <div class="wide">
+    <div class="integ-inner">
+      <div class="kick reveal">INTEGRATIONS</div>
+      <h2 class="reveal d1">Connected to your stack</h2>
+      <p class="sub reveal d2">StaffIntra connects seamlessly with the systems your business already uses.</p>
+      <div class="imar"><div class="itrack" id="row1"></div></div>
+      <div class="imar"><div class="itrack rev" id="row2"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="fcta">
+    <div class="wide">
+      <h2 class="reveal">Run your workforce with confidence.</h2>
+      <div class="b2 reveal d1">
+        <button class="btn btn-white">Open an account</button>
+        <button class="btn btn-accent">Book a demo <svg class="ic"><use href="#i-arrow"/></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="wide">
+    <div class="fgrid">
+      <div class="fbrand">
+        <svg class="lockup" style="height:24px;color:#fff" viewBox="0 0 7600 1344"><use href="#si-lockup"/></svg>
+        <p>One workspace built around the way your business actually works. A Blueinc Technologies product.</p>
+        <div class="fbadges">
+          <div class="fbadge"><b>SOC 2</b>Type 2 ready</div>
+          <div class="fbadge"><b>ISO 27001</b>Aligned</div>
+          <div class="fbadge"><b>NDPR</b>Compliant</div>
+        </div>
+        <div class="fsub"><input placeholder="Work email"><button class="btn btn-accent">Subscribe</button></div>
+      </div>
+      <div>
+        <h5>Product</h5>
+        <a href="#">Time &amp; Attendance</a><a href="#">Productivity</a><a href="#">Performance</a>
+        <a href="#">HR &amp; Payroll</a><a href="#">Cases &amp; Approvals</a><a href="#">Forms</a>
+      </div>
+      <div>
+        <h5>Solutions</h5>
+        <a href="#">Startups</a><a href="#">Mid-sized businesses</a><a href="#">Field &amp; operations</a>
+        <a href="#">Enterprises</a><a href="#">System consolidation</a>
+      </div>
+      <div>
+        <h5>Resources</h5>
+        <a href="#">Blog</a><a href="#">Help center</a><a href="#">API docs</a>
+        <a href="#">Privacy &amp; tracking policy</a><a href="#">Status</a>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <a href="#">About</a><a href="#">Customers</a><a href="#">Careers</a>
+        <a href="#">Partners</a><a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="flegal">
+      <span>&copy; StaffIntra 2026 · Blueinc Technologies. All rights reserved.</span>
+      <span><a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a> &nbsp;·&nbsp; <a href="#">Security</a></span>
+    </div>
+  </div>
+  <div class="fwater"><svg class="lockup" viewBox="0 0 7600 1344"><use href="#si-lockup"/></svg></div>
+</footer>
+
+<script>
+/* nav shadow */
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), {passive:true});
+
+/* reveals */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+}), {threshold:.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* product tabs */
+document.querySelectorAll('.ptab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.ptab').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('on'));
+  const pane = document.getElementById(t.dataset.p);
+  pane.classList.add('on');
+  pane.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+}));
+
+/* integration chips */
+const apps = [
+  ['Sl','#4A154B'],['Gm','#D93025'],['Tm','#4E5FBF'],['Qb','#2CA01C'],['Xe','#13B5EA'],
+  ['Xl','#1D6F42'],['Wa','#25D366'],['Zp','#FF4F00'],['SP','#0FAAFF'],['Sg','#00D639'],
+  ['Ms','#5B5FC7'],['Pk','#0BA4DB'],['Zh','#E42527'],['Gs','#0F9D58'],['Nt','#151515']
+];
+function fillRow(id, offset){
+  const el = document.getElementById(id);
+  let html = '';
+  for (let k=0;k<2;k++) apps.forEach((a,i)=>{
+    const [t,c] = apps[(i+offset)%apps.length];
+    html += `<div class="ichip" style="background:${c}">${t}</div>`;
+  });
+  el.innerHTML = html;
+}
+fillRow('row1',0); fillRow('row2',7);
+</script>
+</body>
+</html>

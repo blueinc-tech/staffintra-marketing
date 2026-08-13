@@ -1,144 +1,110 @@
-/* The three product pillars, and the moments that play inside each panel.
-   Names and copy come straight from the nav taxonomy in navData.jsx, so the
-   menu and this section describe the same product rather than two guesses.
+/* The three product pillars, to the v3 taxonomy: Time & Attendance,
+   Productivity & Performance, People & Operations. Names, features and copy
+   come from the v3 landing content, adapted only where the house style bans
+   long dashes.
 
    `tone` picks the panel surface and the eyebrow/tab tint. Large surfaces stay
-   in the purple family plus ink — the brand kit reserves saturated fills for
-   Brand Purple — while the small marks carry a per-pillar accent, which is how
-   the reference gives each pillar an identity.
+   in the purple family plus ink; the small marks carry a per-pillar accent.
 
-   Every moment is sample product data, deliberately generic: no customer
-   names, no organisations, nothing that reads as a claim about a real user. */
+   Time & Attendance runs on real product footage. The other six features are
+   drawn cards until their recordings exist. All sample data is the v3 cast
+   and deliberately generic. */
 
 export const PILLARS = [
   {
-    id: 'scheduling',
-    name: 'Scheduling & shifts',
+    id: 'time',
+    name: 'Time & Attendance',
     tone: 'a',
-    headline: 'Every shift, visible to everyone.',
+    headline: 'From clock-in to payslip.',
     body:
-      'Build the rota in minutes, not evenings. Drag shifts into place, catch clashes ' +
-      'before they happen, and publish to every phone at once.',
-    href: '#features',
-    story: 'How an operations team cut rota admin from a full evening to under an hour',
-    storyLabel: 'Customer story',
+      'One tap from desktop or mobile, with device health and location context built in. ' +
+      'Clock events become payroll-ready timesheets, and leave routes itself by your rules.',
+    href: '/product#time',
+    story: null,
     steps: [
       {
-        label: 'Rota builder',
-        /* Every step here holds for its own clip plus a beat. On the shared
-           5.2s dwell the carousel moved on a quarter of the way through.
-           18.8s of footage after the two-second intro fade was trimmed. */
-        dwell: 18800,
-        /* The one moment that is real footage rather than a drawn card: the
-           actual rota builder, shifts dragged into place and the week
-           published. A drawing cannot make that case as well as the thing
-           itself can. */
-        moment: {
-          shape: 'video',
-          src: '/assets/rota-builder.mp4',
-          poster: '/assets/rota-builder-poster.jpg',
-          alt: 'Building the week of 10 August: shifts dragged into place across the grid, clashes flagged, then the week published',
-        },
-      },
-      {
-        label: 'Open shifts',
-        /* 19.8s of footage plus a beat, same rule as the rota builder. */
-        dwell: 17800,
-        moment: {
-          shape: 'video',
-          src: '/assets/open-shifts.mp4',
-          poster: '/assets/open-shifts-poster.jpg',
-          alt: 'An unfilled Saturday shift offered out to eight people, then claimed from a phone: first to claim gets it',
-        },
-      },
-      {
-        label: 'Time tracking',
-        /* 19.8s of footage plus a beat. */
+        label: 'Smart clock-in',
+        /* Each video step holds for its own clip; a timer stays only as a
+           backstop for playback that never starts. */
         dwell: 17800,
         moment: {
           shape: 'video',
           src: '/assets/time-tracking.mp4',
           poster: '/assets/time-tracking-poster.jpg',
-          alt: 'Live timers running against open shifts, counting up from each clock-in',
+          alt: 'Live timers counting up from each clock-in, with location context on every session',
         },
       },
       {
         label: 'Timesheets',
-        /* 19.0s of footage plus a beat. */
         dwell: 19000,
         moment: {
           shape: 'video',
           src: '/assets/timesheets.mp4',
           poster: '/assets/timesheets-poster.jpg',
-          alt: 'The week of 10 August reconciled: hours totalled per person, variances flagged, each timesheet signed off',
+          alt: 'The week reconciled: hours totalled per person, variances flagged, each timesheet signed off',
         },
       },
-    ],
-  },
-
-  {
-    id: 'leave',
-    name: 'Leave & approvals',
-    tone: 'b',
-    headline: 'Approvals that don’t sit in inboxes.',
-    body:
-      'Requests arrive with the context to decide: balances, cover, and policy. A fair ' +
-      'answer takes seconds and nothing gets lost in email.',
-    href: '#features',
-    story: 'How a multi-site team brought approvals down from four days to the same shift',
-    storyLabel: 'Customer story',
-    steps: [
       {
-        label: 'Leave requests',
-        /* 18.6s of footage after the two-second intro fade was trimmed. */
+        label: 'Leave',
         dwell: 18600,
         moment: {
           shape: 'video',
           src: '/assets/leave-requests.mp4',
           poster: '/assets/leave-requests-poster.jpg',
-          alt: 'The approvals queue: a leave request opened with balance and cover alongside it, then approved',
+          alt: 'A leave request routed by rule, opened with balance and cover alongside it, then approved',
         },
       },
+    ],
+  },
+
+  {
+    id: 'productivity',
+    name: 'Productivity & Performance',
+    tone: 'b',
+    headline: 'One transparent formula for everyone.',
+    body:
+      'Real activity beside clock-in data, transparent to staff by design. Attendance, ' +
+      'activity and approved output become one grade everyone can see.',
+    href: '/product#productivity',
+    story: null,
+    steps: [
       {
-        label: 'Balances',
+        label: 'Activity insights',
         moment: {
           shape: 'bars',
-          title: 'Balances · this year',
-          meta: 'Accrual and carry-over handled',
+          title: 'Activity · today',
+          meta: 'No screenshots, ever',
           rows: [
-            { label: 'Sofia Reyes', value: '9 days left', p: 0.36 },
-            { label: 'Tunde Okafor', value: '14 days left', p: 0.56 },
-            { label: 'Priya Sharma', value: '3 days left', p: 0.12 },
-            { label: 'Kofi Mensah', value: '19 days left', p: 0.76 },
+            { label: 'Focused', value: '5h 40m', p: 0.82 },
+            { label: 'Meetings', value: '1h 10m', p: 0.35 },
+            { label: 'Admin', value: '0h 55m', p: 0.24 },
+            { label: 'Idle', value: '0h 50m', p: 0.18 },
           ],
         },
       },
       {
-        label: 'Cover',
+        label: 'Performance grades',
         moment: {
           shape: 'list',
-          title: 'Cover · 12–14 Aug',
-          meta: 'Every shift accounted for',
+          title: 'Grade · August',
+          meta: '82 / 100',
           rows: [
-            { name: 'Thu 12 Aug · Late', meta: 'Covered by Kofi Mensah', chip: 'Set', tone: 'ok' },
-            { name: 'Fri 13 Aug · Morning', meta: 'Covered by Priya Sharma', chip: 'Set', tone: 'ok' },
-            { name: 'Sat 14 Aug · Floor', meta: 'Offered to 4 people', chip: 'Open', tone: 'warn' },
+            { name: 'Attendance', meta: '96% on time this month', chip: 'A', tone: 'ok' },
+            { name: 'Activity', meta: '5h 40m focused daily', chip: 'B', tone: 'accent' },
+            { name: 'Approved output', meta: '14 work logs signed off', chip: 'A', tone: 'ok' },
           ],
         },
       },
       {
-        label: 'Approvals inbox',
+        label: 'Work logs',
         moment: {
-          shape: 'steps',
-          title: 'This week',
-          pct: '92%',
-          note: 'answered within a shift',
+          shape: 'list',
+          title: 'Work logs · this week',
+          meta: 'Counts toward the grade',
           rows: [
-            { t: 'Annual leave · 12–14 Aug', s: 'done' },
-            { t: 'Shift swap · Sat 15 Aug', s: 'done' },
-            { t: 'Overtime · Fri 13 Aug', s: 'done' },
-            { t: 'Unpaid leave · 22 Aug', s: 'current' },
-            { t: 'Annual leave · 2–6 Sep', s: '' },
+            { name: 'KYC validation states', meta: 'Delivered and approved', chip: 'Approved', tone: 'ok' },
+            { name: 'Payout webhook retries', meta: '2h 10m tracked', chip: 'Open', tone: 'warn' },
+            { name: 'Empty-state designs', meta: 'Sent for review', chip: 'In review', tone: 'accent' },
           ],
         },
       },
@@ -146,68 +112,52 @@ export const PILLARS = [
   },
 
   {
-    id: 'onboarding',
-    name: 'Onboarding journeys',
+    id: 'operations',
+    name: 'People & Operations',
     tone: 'c',
-    headline: 'Day one, already sorted.',
+    headline: 'Payroll, people and process in one place.',
     body:
-      'Turn new-hire chaos into a guided journey. Paperwork, sign-off, kit, and introductions get ' +
-      'sequenced automatically before anyone walks in.',
-    href: '#features',
+      'Timesheets flow straight into pay runs with statutory deductions handled. Onboarding ' +
+      'to exit stays one continuous record, and any process becomes a case your rules enforce.',
+    href: '/product#operations',
     story: null,
     steps: [
       {
-        label: 'Guided journeys',
+        label: 'HR & Payroll',
+        moment: {
+          shape: 'timer',
+          title: 'August payroll',
+          site: '312 staff · 2 of 2 approvals',
+          time: '₦48.2m',
+          note: 'Statutory deductions handled',
+          action: 'Run scheduled · 28 Aug',
+        },
+      },
+      {
+        label: 'Staff lifecycle',
+        moment: {
+          shape: 'list',
+          title: 'Lifecycle',
+          meta: 'One continuous record',
+          rows: [
+            { name: 'Town hall Friday', meta: 'Announcement', chip: '14 read', tone: 'quiet' },
+            { name: 'New analyst onboarding', meta: 'Day 2 of 5', chip: 'On track', tone: 'ok' },
+            { name: 'Exit checklist · contractor', meta: '3 items left', chip: 'Open', tone: 'warn' },
+          ],
+        },
+      },
+      {
+        label: 'Cases & approvals',
         moment: {
           shape: 'steps',
-          title: 'Kofi Mensah · starts Monday',
-          pct: '80%',
-          note: 'Floor supervisor',
+          title: 'Expense above ₦50k',
+          pct: '75%',
+          note: 'Your rule, enforced · 4 steps',
           rows: [
-            { t: 'Contract signed', s: 'done' },
-            { t: 'Policies acknowledged', s: 'done' },
-            { t: 'Payroll details verified', s: 'done' },
-            { t: 'Meet your team · scheduled', s: 'current' },
-            { t: 'First-week shadow shifts', s: '' },
-          ],
-        },
-      },
-      {
-        label: 'Policy sign-off',
-        moment: {
-          shape: 'list',
-          title: 'Policies',
-          meta: '4 of 5 acknowledged',
-          rows: [
-            { name: 'Health & safety', meta: 'Signed 8 Aug', chip: 'Signed', tone: 'ok' },
-            { name: 'Code of conduct', meta: 'Signed 8 Aug', chip: 'Signed', tone: 'ok' },
-            { name: 'Data handling', meta: 'Sent 9 Aug', chip: 'Waiting', tone: 'warn' },
-          ],
-        },
-      },
-      {
-        label: 'Task routing',
-        moment: {
-          shape: 'list',
-          title: 'Tasks routed',
-          meta: 'Assigned automatically',
-          rows: [
-            { name: 'Create accounts & kit', meta: 'Routed to IT', chip: 'Done', tone: 'ok' },
-            { name: 'Add to payroll run', meta: 'Routed to Payroll', chip: 'Done', tone: 'ok' },
-            { name: 'Book induction', meta: 'Routed to Manager', chip: 'Today', tone: 'accent' },
-          ],
-        },
-      },
-      {
-        label: 'Documents',
-        moment: {
-          shape: 'list',
-          title: 'Documents',
-          meta: 'Stored against the record',
-          rows: [
-            { name: 'Signed contract', meta: 'PDF · 8 Aug', chip: 'Filed', tone: 'quiet' },
-            { name: 'Right to work', meta: 'Verified · 8 Aug', chip: 'Filed', tone: 'quiet' },
-            { name: 'Bank details', meta: 'Encrypted · 9 Aug', chip: 'Filed', tone: 'quiet' },
+            { t: 'Submitted with receipts', s: 'done' },
+            { t: 'Team lead review', s: 'done' },
+            { t: 'Finance check', s: 'current' },
+            { t: 'CEO sign-off', s: '' },
           ],
         },
       },

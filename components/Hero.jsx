@@ -35,29 +35,34 @@ export default function Hero() {
       data-idle={idle ? '' : undefined}
     >
       <div className="container hero-inner">
-        {/* Deliberately not animated — the copy paints immediately, as the
-            reference does, and the motion budget goes on the artwork. */}
+        {/* Deliberately not animated: the copy paints immediately and the
+            motion budget goes on the artwork. */}
         <div className="hero-copy">
-          <span className="eyebrow">The connected workforce platform</span>
           <h1>
-            One workspace for
+            Take control of your
             <br />
-            your <span className="accent">whole team</span>.
+            <span className="accent">workforce operations</span>.
           </h1>
           <p className="hero-sub">
-            How modern operators manage rotas, leave, onboarding, and time in one place.
+            Join over 1,000 businesses using StaffIntra to manage people, time, productivity
+            and everyday operations, with confidence.
           </p>
           <div className="hero-ctas">
-            <a className="btn btn-primary btn-lg btn-swap" href="#demo">
+            <a className="btn btn-primary btn-lg btn-swap" href="/pricing">
               <span className="swap">
-                <span>Book a demo</span>
-                <span aria-hidden="true">Book a demo</span>
+                <span>Open an account</span>
+                <span aria-hidden="true">Open an account</span>
               </span>
             </a>
-            <a className="btn btn-secondary btn-lg" href="#product">
-              See how it works
+            <a className="btn btn-secondary btn-lg" href="#demo">
+              Book a demo
             </a>
           </div>
+          <ul className="hero-chips" aria-label="Why teams start">
+            <li>Free to start</li>
+            <li>Set up in a day</li>
+            <li>SOC 2 ready</li>
+          </ul>
         </div>
 
         <div className="hero-visual">

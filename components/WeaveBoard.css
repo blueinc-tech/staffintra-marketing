@@ -1,0 +1,115 @@
+/* The Weave at board scale, on the dark integrations panel.
+
+   Unlike the hero's version this one is allowed to be bright: it is the
+   subject of its section rather than an ornament behind copy, so the strands
+   carry real weight and the pulse runs on a much shorter cycle.
+
+   Two pulses per strand, one in each direction. The record is shared both
+   ways, and a single outbound pulse would quietly claim a one way sync. */
+
+.wb { position: relative; }
+.wb svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* ---------- strands ---------- */
+
+.wb-s {
+  fill: none;
+  stroke-width: 13;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wb-s--near { stroke: #8E75F2; }
+/* Opaque rather than translucent, so where a far strand rides back over a
+   near one the crossing stays crisp instead of going glassy. */
+.wb-s--far { stroke: #3A2E6B; }
+
+[data-mo] .wb-s {
+  stroke-dashoffset: 1000;
+  animation: wbDraw 1.05s var(--ease) both;
+  animation-delay: calc(var(--i) * 90ms);
+}
+.wb-s--far { animation-delay: calc(var(--i) * 90ms); }
+.wb-s--near { animation-delay: calc(240ms + var(--i) * 90ms); }
+
+@keyframes wbDraw {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* ---------- the two way pulse ---------- */
+
+.wb-p {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 70 3000;
+  stroke-dashoffset: 70;
+  opacity: 0;
+}
+.wb-p--near { stroke: #D9CEFF; }
+.wb-p--far { stroke: #6E5BC4; }
+
+[data-mo] .wb-p {
+  opacity: 1;
+  animation: wbOut 7s cubic-bezier(.4, .05, .4, .96) infinite;
+  animation-delay: calc(1.5s + var(--i) * 220ms);
+}
+/* The return leg, offset half a cycle so the board always has traffic in one
+   direction and never in both at the same instant, which would read as noise. */
+[data-mo] .wb-p--back {
+  animation-name: wbBack;
+  animation-delay: calc(5s + var(--i) * 220ms);
+}
+
+@keyframes wbOut {
+  0% { stroke-dashoffset: 70; }
+  26%, 100% { stroke-dashoffset: -1000; }
+}
+@keyframes wbBack {
+  0% { stroke-dashoffset: -1000; }
+  26%, 100% { stroke-dashoffset: 70; }
+}
+
+/* ---------- entry tags ---------- */
+
+.wb-tag circle { fill: #0F0D1A; stroke: #8E75F2; stroke-width: 2.5; }
+.wb-tag text {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  fill: #CFCBE4;
+}
+
+[data-mo] .wb-tag {
+  opacity: 0;
+  animation: wbTag .5s var(--ease) both;
+  animation-delay: calc(760ms + var(--k) * 80ms);
+}
+@keyframes wbTag {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- caption ---------- */
+
+.wb-caption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+  font-family: var(--font-ui);
+  font-size: .8125rem;
+  color: #8E8AA6;
+}
+.wb-caption i {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, #3A2E6B, #8E75F2);
+}
+.wb-caption span:last-child { color: #CFCBE4; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-mo] .wb-s { stroke-dashoffset: 0; animation: none; }
+  [data-mo] .wb-p { animation: none; opacity: 0; }
+  [data-mo] .wb-tag { opacity: 1; animation: none; }
+}

@@ -147,24 +147,13 @@ main{margin:0 var(--rail);position:relative;z-index:1}
   gap:clamp(20px,2.4vw,36px);align-items:start;text-align:left;
   padding-top:34px;
 }
-/* Reserves the band the illustration sits in, so it is never crowded out.
-   Deeper than it needs to be on purpose: the section was reading cramped. */
-.hero-copy{padding-bottom:clamp(196px,25vw,300px)}
+/* The illustration that used to sit below the copy has moved to the
+   integrations section, where the weave's meaning and the section's meaning
+   are the same sentence. Without it the hero no longer reserves a deep empty
+   band, so the copy and the product surface sit level and the section gets
+   back roughly 200px it was not using. */
+.hero-copy{padding-bottom:clamp(32px,5vw,64px)}
 .hero-visual{position:relative;z-index:2;min-width:0}
-
-/* Sits in the cleared band below the copy and to the left of the phone, on the
-   section's ground plane — the shadow is what reads as "further back". */
-.hero-art{
-  /* -12px trims only the empty floor below the drawing's lowest vertex. */
-  position:absolute;left:5%;bottom:26px;z-index:0;
-  width:min(400px,31vw);pointer-events:none;
-  filter:drop-shadow(0 16px 22px rgba(23,23,28,.12));
-}
-.hero-art svg{width:100%;height:auto;display:block;overflow:visible}
-/* The reference drops its hero illustration below 1024px rather than scaling
-   it — the drive-in reads badly at narrow widths. */
-@media (max-width:1120px){.hero-art{left:auto;right:2%;width:min(360px,30vw)}}
-@media (max-width:1024px){.hero-art{display:none}}
 
 /* ---------- Hero reveal ----------
    Timings taken from the reference: guide lines slide in at 700/800ms over

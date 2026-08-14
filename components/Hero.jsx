@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import HeroMockup from './HeroMockup';
-import HeroArt from './HeroArt';
 import { SplitText } from './motion/Text';
 import { Magnet } from './motion/Surfaces';
 import Reveal from './motion/Reveal';
@@ -80,8 +79,6 @@ export default function Hero() {
           <HeroMockup />
         </div>
       </div>
-
-      <HeroArt />
     </section>
   );
 }

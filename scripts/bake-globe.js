@@ -44,12 +44,20 @@ for (const line of src) {
 
 /* Recentre and normalise.
 
-   The centre must come from the SHELL's bounding box, not from the mean of
-   the drawn points. Land is not evenly distributed over a globe, so a
-   centroid of coastline and hatch points sits well off the true axis: the
-   first attempt put dots between 0.67 and 1.0 of the radius, which would have
-   rendered as a lumpy potato. The shell is a complete sphere, so its box is
-   exactly concentric and its half-extent is exactly the radius. */
+   The CENTRE comes from the shell's bounding box. Land is not evenly spread
+   over a globe, so a centroid of the drawn points sits well off the true
+   axis; the shell is a complete sphere, so its box is exactly concentric.
+
+   The RADIUS has to come from the drawn points themselves, not from the
+   shell. Coastline and hatch sit fractionally proud of the shell surface, at
+   0.25220 against the shell's 0.25000. Dividing by the shell radius pushed
+   those points past 1.0, so (v / r) * 32767 exceeded 32767 and **wrapped
+   negative in Int16**, flinging points to the opposite side of the world.
+   That, not any flaw in the source, drew the chords that slashed across the
+   globe: the raw mesh's longest segment is 0.014, and there are none.
+
+   So the radius is the true maximum, and every write is clamped as well, so
+   a future export that sits even further proud cannot silently wrap again. */
 let mnx = Infinity, mny = Infinity, mnz = Infinity;
 let mxx = -Infinity, mxy = -Infinity, mxz = -Infinity;
 for (const p of shellVerts) {
@@ -58,14 +66,20 @@ for (const p of shellVerts) {
   if (p[2] < mnz) mnz = p[2]; if (p[2] > mxz) mxz = p[2];
 }
 const cx = (mnx + mxx) / 2, cy = (mny + mxy) / 2, cz = (mnz + mxz) / 2;
-const r = Math.max(mxx - mnx, mxy - mny, mxz - mnz) / 2;
 
+let r = 0;
+for (const p of hatch.concat(coast)) {
+  r = Math.max(r, Math.hypot(p[0] - cx, p[1] - cy, p[2] - cz));
+}
+
+const CAP = 32767;
+const enc = (v) => Math.max(-CAP, Math.min(CAP, Math.round((v / r) * CAP)));
 const q = (arr) => {
   const out = new Int16Array(arr.length * 3);
   arr.forEach((p, i) => {
-    out[i * 3] = Math.round(((p[0] - cx) / r) * 32767);
-    out[i * 3 + 1] = Math.round(((p[1] - cy) / r) * 32767);
-    out[i * 3 + 2] = Math.round(((p[2] - cz) / r) * 32767);
+    out[i * 3] = enc(p[0] - cx);
+    out[i * 3 + 1] = enc(p[1] - cy);
+    out[i * 3 + 2] = enc(p[2] - cz);
   });
   return out;
 };

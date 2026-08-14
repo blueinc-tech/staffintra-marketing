@@ -6,7 +6,12 @@
 .cov {
   position: relative;
   overflow: hidden;
-  background: #0B0A14;
+  /* Deep brand purple rather than near black. A true black band on a mostly
+     white site reads as a hole punched in the page; the same value carried
+     toward the brand hue reads as the darkest step of one palette. */
+  --cov-ground: #1B1049;
+  --cov-ground-2: #241461;
+  background: linear-gradient(150deg, var(--cov-ground) 0%, var(--cov-ground-2) 100%);
   color: #F2F2F5;
   padding: clamp(84px, 10vw, 140px) 0;
   border-radius: var(--r-lg);
@@ -20,7 +25,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(100deg, #0B0A14 34%, rgba(11, 10, 20, .72) 52%, transparent 74%);
+  background: linear-gradient(100deg, var(--cov-ground) 32%, rgba(27, 16, 73, .74) 52%, transparent 76%);
   pointer-events: none;
 }
 
@@ -28,7 +33,7 @@
 .cov-inner { position: relative; z-index: 2; }
 
 .cov-copy { max-width: 34rem; }
-.cov-eyebrow { color: #9C8DF0; }
+.cov-eyebrow { color: #B7A7FF; }
 
 .cov h2 {
   margin-top: 18px;
@@ -41,7 +46,7 @@
   margin-top: 18px;
   font-size: 1.0625rem;
   line-height: 1.6;
-  color: #A8A8B6;
+  color: #B3ABD6;
 }
 
 .cov-facts {
@@ -61,7 +66,7 @@
 .cov-facts dt {
   font-family: var(--font-ui);
   font-size: .8125rem;
-  color: #8E8E9E;
+  color: #9E95C6;
 }
 .cov-facts dd {
   margin: 0;
@@ -73,14 +78,14 @@
 }
 
 .cov-link { margin-top: 26px; color: #F2F2F5; }
-.cov-link:hover { color: #9C8DF0; }
+.cov-link:hover { color: #B7A7FF; }
 
 @media (max-width: 860px) {
   .cov { margin: 0; border-radius: 0; padding: 72px 0 clamp(280px, 62vw, 380px); }
   /* On a phone the globe moves below the copy rather than behind it, so the
      text never sits on a busy field. */
   .cov::before {
-    background: linear-gradient(180deg, #0B0A14 46%, rgba(11, 10, 20, .55) 62%, transparent 78%);
+    background: linear-gradient(180deg, var(--cov-ground) 46%, rgba(27, 16, 73, .58) 62%, transparent 78%);
   }
   .cov-copy { max-width: none; }
 }

@@ -125,10 +125,10 @@ export default function Globe({ className = '' }) {
       // Body. One arc, no mesh.
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(11,10,20,${(0.92 * gShell).toFixed(3)})`;
+      ctx.fillStyle = `rgba(20,11,56,${(0.86 * gShell).toFixed(3)})`;
       ctx.fill();
       ctx.lineWidth = 1 * dpr;
-      ctx.strokeStyle = `rgba(255,255,255,${(0.14 * gShell).toFixed(3)})`;
+      ctx.strokeStyle = `rgba(167,146,255,${(0.26 * gShell).toFixed(3)})`;
       ctx.stroke();
 
       // Project a unit-sphere point. Spin about Y, then tilt the axis toward
@@ -143,7 +143,7 @@ export default function Globe({ className = '' }) {
 
       // Graticule, generated rather than stored.
       ctx.lineWidth = 0.7 * dpr;
-      ctx.strokeStyle = `rgba(255,255,255,${(0.1 * gShell).toFixed(3)})`;
+      ctx.strokeStyle = `rgba(150,128,244,${(0.17 * gShell).toFixed(3)})`;
       for (let a = 0; a < 12; a++) {
         const lon = (a / 12) * Math.PI * 2;
         ctx.beginPath();
@@ -177,7 +177,7 @@ export default function Globe({ className = '' }) {
       // side, which is cheap and correct enough at this scale.
       const S = data.segs;
       ctx.lineWidth = 0.9 * dpr;
-      ctx.strokeStyle = 'rgba(255,255,255,.5)';
+      ctx.strokeStyle = 'rgba(198,182,255,.58)';
       ctx.beginPath();
       // Drawn in stored order, which follows the coastline itself, so the
       // outlines appear to trace round the continents rather than dissolve in.
@@ -201,7 +201,7 @@ export default function Globe({ className = '' }) {
         const o = i * 3;
         const [px, py, pz] = proj(D[o] / 32767, D[o + 1] / 32767, D[o + 2] / 32767);
         if (pz <= 0.02) continue;
-        ctx.fillStyle = `rgba(255,255,255,${0.22 + pz * 0.62})`;
+        ctx.fillStyle = `rgba(186,166,255,${0.2 + pz * 0.66})`;
         ctx.fillRect(px - s / 2, py - s / 2, s, s);
       }
 

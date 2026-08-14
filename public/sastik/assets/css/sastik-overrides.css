@@ -1,0 +1,10 @@
+/* Sastik page scoped overrides.
+   The host StaffIntra app ships a global reset (globals.css: `img{display:block}`)
+   that is NOT present in the original Sastik template, where images use the
+   browser default (inline). That reset breaks inline image flows on this page
+   (hero breadcrumb flags, inline star/rating icons, etc.). Restore the original
+   inline behaviour, scoped to the Sastik body class so the rest of the app is
+   unaffected. Sastik's own more-specific rules still win where they set display. */
+.automation-saas img {
+  display: inline;
+}

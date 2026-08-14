@@ -73,6 +73,11 @@ export default function Globe({ className = '' }) {
     let raf = 0;
     let spin = -0.6;
     let last = 0;
+    /* Arrival. The globe assembles rather than appearing: it eases up to full
+       size while the graticule fades in, then the coastlines draw around it,
+       then the land fills in behind them. Progress is one number and every
+       stage is a window on it, so the sequence cannot drift apart. */
+    let intro = reduced ? 1 : 0;
 
     const size = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
@@ -87,15 +92,24 @@ export default function Globe({ className = '' }) {
       const w = cv.width;
       const h = cv.height;
       // Sits low and right, so the sphere reads as bigger than its panel.
-      const R = Math.min(w, h) * 0.62;
+      const R = Math.min(w, h) * 0.62 * (0.94 + 0.06 * e);
       const cx = w * 0.62;
       const cy = h * 0.52;
 
+      const dt = last ? Math.min(t - last, 60) : 16;
       if (!reduced) {
-        const dt = last ? Math.min(t - last, 60) : 16;
         spin += dt * 0.000065;
+        intro = Math.min(1, intro + dt / 1500);
       }
       last = t;
+
+      // Ease out, so it settles into place instead of stopping dead.
+      const e = 1 - (1 - intro) ** 3;
+      // Each stage occupies its own window of the same progress value.
+      const win = (a, b) => Math.min(1, Math.max(0, (e - a) / (b - a)));
+      const gShell = win(0, 0.35);
+      const gCoast = win(0.25, 0.75);
+      const gLand = win(0.4, 1);
 
       const cs = Math.cos(spin);
       const sn = Math.sin(spin);
@@ -107,10 +121,10 @@ export default function Globe({ className = '' }) {
       // Body. One arc, no mesh.
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(11,10,20,.92)';
+      ctx.fillStyle = `rgba(11,10,20,${(0.92 * gShell).toFixed(3)})`;
       ctx.fill();
       ctx.lineWidth = 1 * dpr;
-      ctx.strokeStyle = 'rgba(255,255,255,.14)';
+      ctx.strokeStyle = `rgba(255,255,255,${(0.14 * gShell).toFixed(3)})`;
       ctx.stroke();
 
       // Project a unit-sphere point. Spin about Y, then tilt the axis toward
@@ -125,7 +139,7 @@ export default function Globe({ className = '' }) {
 
       // Graticule, generated rather than stored.
       ctx.lineWidth = 0.7 * dpr;
-      ctx.strokeStyle = 'rgba(255,255,255,.10)';
+      ctx.strokeStyle = `rgba(255,255,255,${(0.1 * gShell).toFixed(3)})`;
       for (let a = 0; a < 12; a++) {
         const lon = (a / 12) * Math.PI * 2;
         ctx.beginPath();
@@ -161,7 +175,10 @@ export default function Globe({ className = '' }) {
       ctx.lineWidth = 0.9 * dpr;
       ctx.strokeStyle = 'rgba(255,255,255,.5)';
       ctx.beginPath();
-      for (let i = 0; i < data.nSegs; i++) {
+      // Drawn in stored order, which follows the coastline itself, so the
+      // outlines appear to trace round the continents rather than dissolve in.
+      const segCut = Math.floor(data.nSegs * gCoast);
+      for (let i = 0; i < segCut; i++) {
         const o = i * 6;
         const [ax, ay, az] = proj(S[o] / 32767, S[o + 1] / 32767, S[o + 2] / 32767);
         if (az <= 0) continue;
@@ -175,7 +192,8 @@ export default function Globe({ className = '' }) {
       // Land dots. Fading them toward the limb is what sells the curvature.
       const D = data.dots;
       const s = 1.15 * dpr;
-      for (let i = 0; i < data.nDots; i++) {
+      const dotCut = Math.floor(data.nDots * gLand);
+      for (let i = 0; i < dotCut; i++) {
         const o = i * 3;
         const [px, py, pz] = proj(D[o] / 32767, D[o + 1] / 32767, D[o + 2] / 32767);
         if (pz <= 0.02) continue;
@@ -183,7 +201,9 @@ export default function Globe({ className = '' }) {
         ctx.fillRect(px - s / 2, py - s / 2, s, s);
       }
 
-      if (!reduced) raf = requestAnimationFrame(draw);
+      // Keeps running while the intro finishes even under reduced motion, so
+      // the assembled state is reached; it simply gets there on frame one.
+      if (!reduced || intro < 1) raf = requestAnimationFrame(draw);
     };
 
     raf = requestAnimationFrame(draw);

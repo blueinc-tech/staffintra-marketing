@@ -1,61 +1,156 @@
-/* Audiences: a 2x2 bordered grid inside the page frame, cells divided by
-   hairlines rather than gaps, the same construction as the platform box. */
+/* Solutions: a full-bleed side scroll with depth falloff.
 
-.audiences {
+   The row deliberately escapes the page's max width. Content that runs off
+   both edges tells the reader there is more than fits, which is the right
+   promise for a set of audiences, and it is the one band on the page allowed
+   to break the measure. */
+
+.aud {
   position: relative;
   background: var(--surface);
-  /* Inner gutter: the frame's solid line sits on the container's padding edge,
-     so the grid's own border landed straight on top of it. Everything in the
-     column steps in by this, and the rule reads as a margin instead. */
-  --frame-gut: clamp(18px, 2.6vw, 36px);
-}
-
-/* Header and grid share one left edge, both clear of the rule. */
-.audiences .sec-head {
-  padding-inline: var(--frame-gut);
-  padding-block: clamp(96px, 10vw, 168px) clamp(64px, 7.6vw, 116px);
-}
-
-.aud-frame { padding-bottom: clamp(76px, 9vw, 132px); }
-
-.aud-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-inline: var(--frame-gut);
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
+  padding: clamp(84px, 10vw, 140px) 0 clamp(72px, 8vw, 116px);
   overflow: hidden;
-  background: var(--surface);
 }
+
+.aud-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  gap: clamp(20px, 4vw, 64px);
+  align-items: end;
+  padding-bottom: clamp(40px, 5vw, 72px);
+}
+.aud-head h2 {
+  margin-top: 18px;
+  font-size: clamp(1.9rem, 3.2vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.022em;
+  max-width: 20ch;
+}
+.aud-head .sec-lede { margin: 0; padding-bottom: 6px; }
+
+/* ---------- the track ---------- */
+
+.aud-track {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  cursor: grab;
+  /* The scrollbar is noise under a row of cards; the progress bar below is
+     the affordance instead. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Room for the scale-up of the focused card, which would otherwise clip. */
+  padding-block: 14px;
+}
+.aud-track::-webkit-scrollbar { display: none; }
+.aud-track:active { cursor: grabbing; }
+.aud-track.was-dragged a { pointer-events: none; }
+
+.aud-row {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  /* Starts and ends level with the page gutter, so the first card lines up
+     with the heading above it while the row still bleeds off the edges. */
+  padding-inline: max(calc((100vw - 1260px) / 2), clamp(24px, 4vw, 72px));
+}
+
+/* ---------- cards ---------- */
 
 .aud-card {
+  scroll-snap-align: center;
+  flex: 0 0 clamp(280px, 27vw, 380px);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  /* Driven by the measurement pass: 0 at the centre of the track, 1 a card
+     away. Everything below is a function of it, so one number carries the
+     whole depth effect. */
+  --d: 0;
+  opacity: calc(1 - var(--d) * .55);
+  transform: scale(calc(1 - var(--d) * .05));
+  filter: blur(calc(var(--d) * 1.4px));
+  transition: opacity .28s var(--ease), transform .28s var(--ease), filter .28s var(--ease), border-color .28s var(--ease);
+}
+.aud-card:hover { border-color: var(--line-strong); }
+
+.aud-card-in {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 46px 48px 50px;
+  height: 100%;
+  padding: 34px 32px 32px;
 }
-/* Internal hairlines: right edge on the left column, bottom edge on row one. */
-.aud-card:nth-child(odd) { border-right: 1px solid var(--line); }
-.aud-card:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
+
+.aud-n {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  letter-spacing: .12em;
+  color: var(--ink-3);
+}
+.aud-card-in > svg,
+.aud-card-in .chip-mark { margin-top: 18px; }
 
 .aud-card h3 {
-  margin-top: 26px;
-  font-size: clamp(1.15rem, 1.5vw, 1.4rem);
-  font-weight: 600;
-  letter-spacing: -.01em;
+  margin-top: 20px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -.014em;
 }
 .aud-card p {
-  margin-top: 16px;
-  max-width: 44ch;
-  font-size: 1.0625rem;
-  line-height: 1.5;
+  margin-top: 12px;
+  font-size: .9688rem;
+  line-height: 1.55;
   color: var(--ink-2);
 }
-.aud-card .turn-link { margin-top: 26px; }
 
-@media (max-width: 720px) {
-  .aud-grid { grid-template-columns: minmax(0, 1fr); }
-  .aud-card { padding: 34px 26px 38px; }
-  .aud-card:nth-child(odd) { border-right: 0; }
-  .aud-card:not(:last-child) { border-bottom: 1px solid var(--line); }
+.aud-fact {
+  margin-top: 18px;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-family: var(--font-ui);
+  font-size: .75rem;
+  font-weight: 500;
+}
+
+.aud-card .turn-link { margin-top: auto; padding-top: 24px; }
+
+/* ---------- progress ---------- */
+
+.aud-bar {
+  margin-top: clamp(26px, 3vw, 40px);
+  height: 2px;
+  background: var(--line);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+.aud-bar span {
+  display: block;
+  height: 100%;
+  width: 28%;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  /* Position by margin rather than transform: the thumb has to travel the
+     bar's own width minus its length, which transform percentages cannot
+     express against a differently sized parent. */
+  margin-left: calc(var(--p, 0) * 72%);
+  transition: margin-left .12s linear;
+}
+
+@media (max-width: 860px) {
+  .aud-head { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .aud-card-in { padding: 26px 24px 26px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aud-card {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+  .aud-bar span { transition: none; }
 }

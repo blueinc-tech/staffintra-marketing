@@ -24,29 +24,33 @@ export default function Coverage() {
       <Globe className="cov-globe" />
 
       <div className="container cov-inner">
-        <Reveal className="cov-copy" distance={16}>
-          <span className="sec-eyebrow cov-eyebrow">Coverage</span>
-          <h2>Wherever the work happens.</h2>
-          <p>
+        <div className="cov-copy">
+          <Reveal as="span" className="sec-eyebrow cov-eyebrow" distance={10}>Coverage</Reveal>
+          <Reveal as="h2" delay={90} distance={16}>Wherever the work happens.</Reveal>
+          <Reveal as="p" delay={190} distance={14}>
             A shift on a site in Lagos and a laptop in another timezone are the same record
             here. StaffIntra stores where a clock event happened and which timezone it
             happened in, so the hours reconcile no matter where the person was standing.
-          </p>
+          </Reveal>
 
+          {/* Each row on its own beat: the list reads as filling in rather
+              than as a block that was always there. */}
           <dl className="cov-facts">
-            {FACTS.map((f) => (
-              <div key={f.k}>
+            {FACTS.map((f, i) => (
+              <Reveal key={f.k} delay={300 + i * 90} distance={12}>
                 <dt>{f.k}</dt>
                 <dd>{f.v}</dd>
-              </div>
+              </Reveal>
             ))}
           </dl>
 
-          <a className="turn-link cov-link" href="/geofencing">
-            <TurnArrow />
-            How geofencing works
-          </a>
-        </Reveal>
+          <Reveal delay={600} distance={12}>
+            <a className="turn-link cov-link" href="/geofencing">
+              <TurnArrow />
+              How geofencing works
+            </a>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

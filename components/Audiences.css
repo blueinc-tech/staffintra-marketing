@@ -34,8 +34,6 @@
 .aud-track {
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x proximity;
-  scroll-padding-inline: max(calc((100vw - 1260px) / 2), clamp(24px, 4vw, 72px));
   cursor: grab;
   /* The scrollbar is noise under a row of cards; the progress bar below is
      the affordance instead. */
@@ -63,7 +61,6 @@
 /* ---------- cards ---------- */
 
 .aud-card {
-  scroll-snap-align: start;
   flex: 0 0 clamp(280px, 27vw, 380px);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
@@ -122,10 +119,39 @@
 
 .aud-card .turn-link { margin-top: auto; padding-top: 24px; }
 
-/* ---------- progress ---------- */
+/* ---------- controls ---------- */
+
+.aud-foot {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 28px);
+  margin-top: clamp(26px, 3vw, 40px);
+}
+
+.aud-dots { display: inline-flex; gap: 4px; }
+.aud-dot {
+  border: 0; background: none; cursor: pointer;
+  padding: 6px 9px; border-radius: var(--r-sm);
+  font-family: var(--font-mono); font-size: .6875rem; letter-spacing: .08em;
+  color: var(--ink-3); transition: color .2s var(--ease), background-color .2s var(--ease);
+}
+.aud-dot:hover { color: var(--ink-2); background: var(--surface-2); }
+.aud-dot.is-on { color: var(--accent-ink); background: var(--accent-soft); }
+
+.aud-arrows { display: inline-flex; gap: 6px; margin-left: auto; }
+.aud-arrows button {
+  display: grid; place-items: center;
+  width: 34px; height: 34px; padding: 0;
+  border: 1px solid var(--line-strong); border-radius: var(--r-pill);
+  background: var(--surface); color: var(--ink-2); cursor: pointer;
+  transition: border-color .2s var(--ease), color .2s var(--ease), opacity .2s var(--ease);
+}
+.aud-arrows button svg { width: 15px; height: 15px; }
+.aud-arrows button:hover:not(:disabled) { border-color: var(--ink); color: var(--ink); }
+.aud-arrows button:disabled { opacity: .35; cursor: default; }
 
 .aud-bar {
-  margin-top: clamp(26px, 3vw, 40px);
+  flex: 1;
   height: 2px;
   background: var(--line);
   border-radius: var(--r-pill);

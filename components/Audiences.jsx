@@ -61,40 +61,56 @@ export default function Audiences() {
   const track = useRef(null);
   const drag = useRef(null);
   const [p, setP] = useState(0);
+  const [at, setAt] = useState(0);
 
   /* Depth falloff plus the progress bar, both from one measurement pass.
 
      Measured off viewport rectangles rather than offsetLeft, because the
      cards' offsetParent is the spotlight wrapper rather than the track, so
      offset arithmetic would silently be relative to the wrong box. */
+  /* Focus is measured in CARD INDEX space, not in pixels.
+
+     Two geometric attempts failed. A focal point pinned to the centre of the
+     track meant card one could never be focused, because at scroll zero the
+     middle of the viewport already falls on card two. Sliding that point
+     across the viewport fixed the two ends but not the middle: the focus
+     travels a full viewport width while the cards only travel maxScroll, and
+     with five cards on a wide screen maxScroll is barely two cards, so the
+     two rates disagree and some cards are skipped.
+
+     Indexing removes the geometry from the question entirely. Scroll
+     progress maps straight onto the card list, so card i is exactly in focus
+     at progress i/(n-1), every card gets an equal share of the travel, and it
+     holds at any viewport width because no pixel measurement is involved. */
   const measure = useCallback(() => {
     const el = track.current;
     if (!el) return;
-    const box = el.getBoundingClientRect();
     const max = el.scrollWidth - el.clientWidth;
     const prog = max > 0 ? el.scrollLeft / max : 0;
 
-    /* The focal point TRAVELS with the scroll rather than sitting at the
-       track's centre.
-
-       Pinned to the centre, the first card can never be the focused one,
-       because at scroll zero the middle of the viewport already falls on the
-       second card; the same happens in reverse at the far end, which left the
-       row opening on 02 and closing on 04. Sliding the focus from the left
-       edge to the right edge as the track scrolls means card one is in focus
-       when you arrive and card five when you reach the end, with no dead
-       padding needed at either end to fake it. */
-    const first = el.querySelector('.aud-card');
-    const half = first ? first.getBoundingClientRect().width / 2 : 0;
-    const pad = 24;
-    const focus = (box.left + half + pad) + prog * (box.width - 2 * (half + pad));
-
-    el.querySelectorAll('.aud-card').forEach((c) => {
-      const r = c.getBoundingClientRect();
-      const d = Math.min(1, Math.abs(r.left + r.width / 2 - focus) / (r.width * 1.35));
+    const cards = el.querySelectorAll('.aud-card');
+    const focusIdx = prog * (cards.length - 1);
+    cards.forEach((c, i) => {
+      const d = Math.min(1, Math.abs(i - focusIdx));
       c.style.setProperty('--d', d.toFixed(3));
     });
     setP(prog);
+    setAt(Math.round(focusIdx));
+  }, []);
+
+  /* Explicit navigation. Snapping alone gave only three resting positions,
+     because maxScroll is about two cards wide, so several cards could never
+     be settled on. These scroll to a card by name. */
+  const goTo = useCallback((i) => {
+    const el = track.current;
+    if (!el) return;
+    const cards = el.querySelectorAll('.aud-card');
+    const max = el.scrollWidth - el.clientWidth;
+    const n = cards.length - 1;
+    el.scrollTo({
+      left: (Math.min(Math.max(i, 0), n) / n) * max,
+      behavior: 'smooth',
+    });
   }, []);
 
   useEffect(() => {
@@ -187,9 +203,34 @@ export default function Audiences() {
         </div>
       </div>
 
-      <div className="container">
+      <div className="container aud-foot">
+        <div className="aud-dots" role="tablist" aria-label="Choose an audience">
+          {AUDIENCES.map((a, i) => (
+            <button
+              key={a.id}
+              type="button"
+              role="tab"
+              aria-selected={i === at}
+              aria-label={a.name}
+              className={`aud-dot${i === at ? ' is-on' : ''}`}
+              onClick={() => goTo(i)}
+            >
+              <span>{a.n}</span>
+            </button>
+          ))}
+        </div>
+
         <div className="aud-bar" aria-hidden="true">
           <span style={{ '--p': p }} />
+        </div>
+
+        <div className="aud-arrows">
+          <button type="button" aria-label="Previous" onClick={() => goTo(at - 1)} disabled={at === 0}>
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </button>
+          <button type="button" aria-label="Next" onClick={() => goTo(at + 1)} disabled={at === AUDIENCES.length - 1}>
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </button>
         </div>
       </div>
     </section>

@@ -21,7 +21,7 @@
      container's padding edge, so anything sitting at that edge butts straight
      into the rule. Every block of copy and every panel steps in by this much,
      which turns the line into a margin rule instead of a border. */
-  --frame-gut: clamp(18px, 2.6vw, 36px);
+  --frame-gut: 0px; /* was an inset to clear the frame rule, which no longer exists */
 }
 
 /* The header steps in with the rest of the column. It used to sit flush on the

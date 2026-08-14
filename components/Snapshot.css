@@ -6,7 +6,7 @@
   background: var(--surface);
   /* Inner gutter: the browser frame's own border used to sit on the page
      frame's solid line. It steps in by this so the two never touch. */
-  --frame-gut: clamp(18px, 2.6vw, 36px);
+  --frame-gut: 0px; /* was an inset to clear the frame rule, which no longer exists */
 }
 
 /* Header and browser share one left edge, both clear of the rule. */

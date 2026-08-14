@@ -53,7 +53,12 @@ h4,h5{line-height:1.2}
    down each edge: solid for the length of the hero, then dotted from the hero's
    bottom edge to the end of the customer band. A section sets --rail-line to
    choose which; dotted is the default. */
-main{margin:0 var(--rail);position:relative;z-index:1}
+main{margin:0;position:relative;z-index:1}
+/* The rail gutter now belongs to the hero band alone. The trusted band keeps
+   it too because the two share ONE continuous line, solid down the hero and
+   dotted through the logos, and insetting only half of it would break the
+   line in the middle. Everything below runs full bleed. */
+.hero,.logos{margin-inline:var(--rail)}
 
 .has-rails{position:relative}
 .has-rails::before,.has-rails::after{
@@ -66,18 +71,17 @@ main{margin:0 var(--rail);position:relative;z-index:1}
 .has-rails::before{left:0}
 .has-rails::after{right:0}
 
-/* The page frame below the customer band: two SOLID lines at the container's
-   own content edge, so the framed sections are the width of the nav bar
-   rather than of the page. The dotted rails above stop at the customer band,
-   so the two systems never appear together. z-index 0 keeps the lines under
-   anything a section paints over them, like a full-height coloured panel. */
+/* The nav-width frame lines are gone.
+
+   They were two solid verticals at the container's own content edge, and
+   they were the reference site's device rather than ours. Every section that
+   carried them needed its own inner gutter to stop headings and cards
+   sitting on the rule, and it still read as cramped. Deleting the rule
+   deletes the problem instead of negotiating with it in five stylesheets.
+
+   .has-frame is kept as a no-op hook so the sections that reference it do not
+   need editing, and so the frame could be reinstated in one place. */
 .has-frame{position:relative}
-.has-frame::before,.has-frame::after{
-  content:"";position:absolute;top:0;bottom:0;width:1px;
-  background:var(--line);pointer-events:none;z-index:0;
-}
-.has-frame::before{left:calc(max(0px,(100% - 1260px)/2) + clamp(24px,4vw,72px))}
-.has-frame::after{right:calc(max(0px,(100% - 1260px)/2) + clamp(24px,4vw,72px))}
 
 /* A band's closing rule, carried past the rails to both page edges. It has to
    sit on an element whose ancestors do not clip — see .logos::before. */

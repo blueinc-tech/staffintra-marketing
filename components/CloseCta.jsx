@@ -1,17 +1,20 @@
-import MagnetField from './MagnetField';
+import Cubes from './Cubes';
 import './CloseCta.css';
 
-/* The closing band's field of strokes.
+/* The closing band's cube field.
 
    The Weave used to sit in both corners here, but it now carries the
    integrations section, and the same mark doing the same job twice on one
-   page dilutes it. This is a field instead, and it points at the button. */
+   page dilutes it. The field of strokes that briefly replaced it is gone too.
+
+   The copy sits on its own layer above the cubes, so the field can take the
+   pointer across the whole panel while the buttons keep their own. */
 
 export default function CloseCta() {
   return (
     <section className="close-cta">
       <div className="cc-panel">
-        <MagnetField focusSelector=".cc-ctas .btn-primary" />
+        <Cubes gridSize={22} maxAngle={38} radius={4.4} rippleSpeed={1.6} />
 
         <div className="container">
           <div className="cc-copy">

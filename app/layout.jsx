@@ -39,7 +39,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en-GB" className={`${jakarta.variable} ${inter.variable} ${mono.variable}`}>
+    <html
+      lang="en-GB"
+      className={`${jakarta.variable} ${inter.variable} ${mono.variable}`}
+      /* The head script below stamps data-mo on this element before React
+         hydrates, so the server HTML and the client DOM differ by that one
+         attribute and React logs a hydration mismatch. This is the sanctioned
+         way to say that difference is deliberate: it is the same pattern a
+         theme-flash guard uses, and without it React warns on every load. */
+      suppressHydrationWarning
+    >
       <head>
         {/* Marks the document as able to animate, synchronously, before the
             first paint.

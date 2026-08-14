@@ -13,6 +13,9 @@
 }
 
 .cc-panel {
+  /* The cube field paints at z-index 0 inside this; the copy must sit above
+     it and keep its own pointer events. */
+  isolation: isolate;
   position: relative;
   overflow: hidden;
   border-radius: var(--r-lg);
@@ -95,3 +98,12 @@
   color: var(--ink-2);
 }
 .cc-chips strong { font-weight: 700; color: var(--ink); font-size: .8125rem; }
+
+
+/* Above the cube field, and still clickable while the field takes the pointer
+   everywhere else. */
+.cc-panel > .container { position: relative; z-index: 1; }
+.cc-copy { pointer-events: none; }
+.cc-copy .btn,
+.cc-copy a,
+.cc-chips { pointer-events: auto; }

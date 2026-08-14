@@ -1,0 +1,76 @@
+/* The cube field. Every rule here replaces a Tailwind utility from the
+   original, which this project has no build step for.
+
+   Faces are near-white with a dashed brand edge rather than the original's
+   dark tiles: the closing band is a light tinted panel, and dark cubes on it
+   would read as a second section dropped on top of the first rather than as
+   texture belonging to it. --lit is what the click ripple animates, so the
+   colour stays in CSS and can be themed rather than being hardcoded in JS. */
+
+.cubes {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cubes-scene {
+  /* Square, and larger than the panel so the grid bleeds past every edge
+     instead of ending in a visible border of cubes. */
+  /* Small enough to read as a woven texture rather than as tiles. At a wide
+     panel this puts a cube near 60px, where the dashed grid becomes a surface
+     the copy sits on instead of shapes competing with it. */
+  width: max(108vh, 118%);
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--n), 1fr);
+  grid-template-rows: repeat(var(--n), 1fr);
+  gap: 1.6%;
+  perspective: 6000px;
+  /* The field takes the pointer; the copy above it sits on a higher layer and
+     keeps its own. */
+  pointer-events: auto;
+}
+
+.cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  --lit: 0;
+}
+
+.cube-face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  /* Mixes toward the accent as the ripple passes, then back. One property
+     drives the whole effect. */
+  /* Barely off the panel colour, so the field is texture the copy sits on
+     rather than blocks stacked behind it. The dashed edge does the drawing. */
+  background: color-mix(in srgb, var(--accent) calc(var(--lit) * 55%), #FCFBFE);
+  border: 1px dashed color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+/* The six faces, translated out to half a cell and turned outward. These are
+   the original's transforms, kept exactly. */
+.cube-face--t { transform: translateY(-50%) rotateX(90deg); }
+.cube-face--b { transform: translateY(50%) rotateX(-90deg); }
+.cube-face--l { transform: translateX(-50%) rotateY(-90deg); }
+.cube-face--r { transform: translateX(50%) rotateY(90deg); }
+.cube-face--f { transform: rotateY(-90deg) translateX(50%) rotateY(90deg); }
+.cube-face--k { transform: rotateY(90deg) translateX(-50%) rotateY(-90deg); }
+
+@media (max-width: 860px) {
+  .cubes-scene { width: max(92vh, 136%); gap: 2%; }
+}
+
+/* Flat and still. The JS also skips its loops, so this is belt and braces for
+   a preference that changes after mount. */
+@media (prefers-reduced-motion: reduce) {
+  .cube { transform: none !important; }
+  .cube-face { background: var(--surface); }
+}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { BAR, armPoint, decide } from './navHide';
 
 /* Retracts the header on the way down the page and brings it back on the way
    up.
@@ -23,9 +24,6 @@ import { useEffect } from 'react';
      - it ignores movements under a few pixels, so a trackpad's jitter or the
        rubber band at the end of a page cannot flicker it */
 
-const BAR = 64;
-const ARM_AT = 220;
-const NOISE = 6;
 
 export default function NavAutoHide() {
   useEffect(() => {
@@ -41,19 +39,18 @@ export default function NavAutoHide() {
       root.dataset.nav = next ? 'away' : 'here';
     };
 
+    /* Recomputed on resize rather than every frame: the first section's
+       height only changes when the window does. */
+    let armAt = armPoint(document, window.innerHeight);
+    const remeasure = () => { armAt = armPoint(document, window.innerHeight); };
+    window.addEventListener('resize', remeasure);
+
     const measure = () => {
       frame = 0;
-      const y = window.scrollY;
-      const dy = y - last;
-      if (Math.abs(dy) < NOISE) return;
-
-      // A menu is open, or the mobile sheet is: the header stays put.
-      const busy = document.querySelector('.nav-root[data-open], .nav-root[data-mobile-open]');
-      if (busy) { last = y; apply(false); return; }
-
-      if (y < ARM_AT) apply(false);
-      else apply(dy > 0);
-      last = y;
+      const busy = !!document.querySelector('.nav-root[data-open], .nav-root[data-mobile-open]');
+      const next = decide({ y: window.scrollY, last, hidden, busy, armAt });
+      last = next.last;
+      apply(next.hidden);
     };
 
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(measure); };
@@ -63,6 +60,7 @@ export default function NavAutoHide() {
     return () => {
       if (frame) cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', remeasure);
       root.style.removeProperty('--nav-shift');
       delete root.dataset.nav;
     };

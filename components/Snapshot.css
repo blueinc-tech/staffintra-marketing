@@ -1,13 +1,26 @@
 /* Platform snapshot: the timesheets surface in a browser frame, on the page
    frame's hairlines. Product face inside, site face outside. */
 
-.snapshot { position: relative; background: var(--surface); }
+.snapshot {
+  position: relative;
+  background: var(--surface);
+  /* Inner gutter: the browser frame's own border used to sit on the page
+     frame's solid line. It steps in by this so the two never touch. */
+  --frame-gut: clamp(18px, 2.6vw, 36px);
+}
 
-.snap-frame { padding-bottom: clamp(56px, 7vw, 92px); }
+/* Header and browser share one left edge, both clear of the rule. */
+.snapshot .sec-head {
+  padding-inline: var(--frame-gut);
+  padding-block: clamp(96px, 10vw, 168px) clamp(64px, 7.6vw, 116px);
+}
+
+.snap-frame { padding-bottom: clamp(76px, 9vw, 132px); }
 
 .snap-browser {
+  margin-inline: var(--frame-gut);
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   background: var(--surface);
 }
@@ -28,7 +41,7 @@
   color: var(--ink-3-text);
 }
 
-.snap-body { padding: 26px clamp(20px, 3vw, 40px) 0; font-family: var(--font-product); }
+.snap-body { padding: 30px clamp(22px, 3vw, 40px) 0; font-family: var(--font-product); }
 
 .snap-head {
   display: flex;
@@ -41,13 +54,13 @@
 .snap-filters { display: inline-flex; gap: 6px; font-family: var(--font-ui); font-size: .75rem; }
 .snap-filters span {
   padding: 6px 12px;
-  border-radius: 14px;
+  border-radius: var(--r-pill);
   border: 1px solid var(--line);
   color: var(--ink-2);
 }
 .snap-filters .is-on { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-.snap-table { margin-top: 18px; }
+.snap-table { margin-top: 22px; }
 .snap-row {
   display: grid;
   grid-template-columns: 34px minmax(0, 1.4fr) minmax(0, .7fr) minmax(0, 1fr) auto;
@@ -75,7 +88,7 @@
 .snap-chip {
   justify-self: end;
   padding: 4px 10px;
-  border-radius: 2px;
+  border-radius: var(--r-sm);
   font-size: .6875rem;
   font-weight: 500;
   white-space: nowrap;
@@ -93,8 +106,8 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 6px calc(-1 * clamp(20px, 3vw, 40px)) 0;
-  padding: 14px clamp(20px, 3vw, 40px);
+  margin: 10px calc(-1 * clamp(22px, 3vw, 40px)) 0;
+  padding: 16px clamp(22px, 3vw, 40px);
   background: var(--surface-2);
   border-top: 1px solid var(--line);
   font-family: var(--font-ui);
@@ -116,7 +129,8 @@
 }
 @keyframes snapPulse { 50% { opacity: .35; } }
 
-.snap-more { margin-top: 22px; }
+/* Matches the browser frame's own indent, so link and panel share a left edge. */
+.snap-more { margin-top: 30px; margin-left: var(--frame-gut); }
 
 @media (max-width: 720px) {
   .snap-row { grid-template-columns: 34px minmax(0, 1fr) auto; }

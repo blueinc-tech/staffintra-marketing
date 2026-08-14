@@ -17,11 +17,11 @@
 }
 .pmx-toggle {
   display: inline-flex; padding: 3px;
-  border: 1px solid var(--line-strong); border-radius: 9999px;
+  border: 1px solid var(--line-strong); border-radius: var(--r-pill);
   background: var(--surface);
 }
 .pmx-toggle button {
-  padding: 8px 18px; border: 0; border-radius: 9999px; cursor: pointer;
+  padding: 8px 18px; border: 0; border-radius: var(--r-pill); cursor: pointer;
   background: none; color: var(--ink-2);
   font-family: var(--font-ui); font-size: .875rem; font-weight: 500;
   transition: background-color .18s var(--ease), color .18s var(--ease);

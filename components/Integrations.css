@@ -5,25 +5,31 @@
 .integrations {
   position: relative;
   background: var(--surface);
-  padding: clamp(64px, 9vw, 150px) 0 clamp(56px, 7vw, 92px);
+  padding: clamp(88px, 9.5vw, 150px) 0 clamp(76px, 9vw, 132px);
+  /* Smaller than the framed sections': there is no hairline to clear here,
+     only the dark panel's own edge, which the container already holds off. */
+  --frame-gut: clamp(14px, 2vw, 28px);
 }
 
 .int-panel {
   background: var(--ink);
   color: #fff;
-  padding: clamp(48px, 6vw, 76px) 0;
+  padding: clamp(56px, 6.6vw, 92px) 0;
+  border-radius: var(--r-lg);
+  overflow: hidden;
 }
 
 .int-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
-  gap: clamp(32px, 5vw, 68px);
+  gap: clamp(36px, 5vw, 76px);
   align-items: center;
+  padding-inline: var(--frame-gut);
 }
 
 .int-head .sec-eyebrow { color: rgba(255, 255, 255, .5); }
 .int-head h2 {
-  margin-top: 22px;
+  margin-top: 26px;
   max-width: 18ch;
   font-size: clamp(1.55rem, 2.4vw, 2.1rem);
   font-weight: 700;
@@ -32,7 +38,7 @@
   color: #fff;
 }
 .int-head p {
-  margin-top: 18px;
+  margin-top: 20px;
   max-width: 46ch;
   font-size: 1.0625rem;
   line-height: 1.5;
@@ -41,9 +47,9 @@
 .btn-light {
   display: inline-flex;
   align-items: center;
-  margin-top: 28px;
+  margin-top: 32px;
   padding: 12px 18px;
-  border-radius: 2px;
+  border-radius: var(--r-pill);
   background: var(--surface);
   color: var(--ink);
   font-family: var(--font-ui);
@@ -59,12 +65,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: clamp(30px, 3.5vw, 44px);
+  margin-top: clamp(34px, 4vw, 54px);
 }
 .int-tab {
   padding: 10px 15px;
   border: 1px solid rgba(255, 255, 255, .16);
-  border-radius: 2px;
+  border-radius: var(--r-pill);
   background: transparent;
   font-family: var(--font-ui);
   font-size: .875rem;
@@ -119,6 +125,7 @@
   fill: rgba(255, 255, 255, .045);
   stroke: rgba(255, 255, 255, .16);
   stroke-width: 1;
+  rx: var(--r-sm);
 }
 .ib-node text {
   fill: rgba(255, 255, 255, .82);
@@ -127,7 +134,7 @@
   text-anchor: middle;
 }
 
-.ib-hub rect { fill: var(--accent); stroke: none; }
+.ib-hub rect { fill: var(--accent); stroke: none; rx: var(--r-sm); }
 
 @media (max-width: 940px) {
   .int-grid { grid-template-columns: minmax(0, 1fr); gap: 34px; }

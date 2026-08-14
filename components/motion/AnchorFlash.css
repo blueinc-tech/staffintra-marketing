@@ -1,0 +1,33 @@
+/* The arrival mark. Decoration only: a pseudo element that fades in and out,
+   so nothing in the document reflows and no scroll position shifts. */
+
+.is-anchor-flash { position: relative; }
+.is-anchor-flash::after {
+  content: "";
+  position: absolute;
+  inset: -10px clamp(-24px, -2vw, -10px);
+  border-radius: var(--r-lg);
+  pointer-events: none;
+  z-index: 5;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+  animation: anchorFlash 1.5s var(--ease) forwards;
+}
+
+@keyframes anchorFlash {
+  0%   { opacity: 0; }
+  12%  { opacity: 1; }
+  62%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Sections need somewhere to land: without this the sticky header covers the
+   heading you just asked to see. */
+[id] { scroll-margin-top: 96px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .is-anchor-flash::after {
+    animation: none;
+    opacity: 1;
+  }
+}

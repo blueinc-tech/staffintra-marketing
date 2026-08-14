@@ -3,6 +3,7 @@ import Hero from '../components/Hero';
 import Logos from '../components/Logos';
 import Pillars from '../components/Pillars';
 import Audiences from '../components/Audiences';
+import Coverage from '../components/Coverage';
 import Snapshot from '../components/Snapshot';
 import Integrations from '../components/Integrations';
 import CloseCta from '../components/CloseCta';
@@ -23,6 +24,7 @@ export default function Home() {
         <Logos />
         <Pillars />
         <Audiences />
+        <Coverage />
         <Snapshot />
         <Integrations />
         <CloseCta />

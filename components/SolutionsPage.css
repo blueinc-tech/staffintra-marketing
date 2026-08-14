@@ -110,6 +110,7 @@
 .sol-visual {
   display: block;
   border: 1px solid var(--line);
+  border-radius: var(--r-lg);
   background: var(--surface);
   transition: border-color .28s var(--ease);
 }

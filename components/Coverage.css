@@ -1,0 +1,86 @@
+/* Dark band with the globe bleeding off the right edge. The sphere is
+   deliberately larger than the panel: a globe cropped by the frame reads as a
+   real object the page is looking at, where a whole one centred in a box
+   reads as an icon. */
+
+.cov {
+  position: relative;
+  overflow: hidden;
+  background: #0B0A14;
+  color: #F2F2F5;
+  padding: clamp(84px, 10vw, 140px) 0;
+  border-radius: var(--r-lg);
+  margin: 0 var(--rail);
+  isolation: isolate;
+}
+
+/* Keeps the copy legible where it crosses the sphere. */
+.cov::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(100deg, #0B0A14 34%, rgba(11, 10, 20, .72) 52%, transparent 74%);
+  pointer-events: none;
+}
+
+.cov-globe { z-index: 0; }
+.cov-inner { position: relative; z-index: 2; }
+
+.cov-copy { max-width: 34rem; }
+.cov-eyebrow { color: #9C8DF0; }
+
+.cov h2 {
+  margin-top: 18px;
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -.022em;
+}
+.cov p {
+  margin-top: 18px;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: #A8A8B6;
+}
+
+.cov-facts {
+  margin: 30px 0 0;
+  display: grid;
+  gap: 0;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+}
+.cov-facts > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 13px 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+.cov-facts dt {
+  font-family: var(--font-ui);
+  font-size: .8125rem;
+  color: #8E8E9E;
+}
+.cov-facts dd {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: .9375rem;
+  font-weight: 500;
+  color: #F2F2F5;
+  text-align: right;
+}
+
+.cov-link { margin-top: 26px; color: #F2F2F5; }
+.cov-link:hover { color: #9C8DF0; }
+
+@media (max-width: 860px) {
+  .cov { margin: 0; border-radius: 0; padding: 72px 0 clamp(280px, 62vw, 380px); }
+  /* On a phone the globe moves below the copy rather than behind it, so the
+     text never sits on a busy field. */
+  .cov::before {
+    background: linear-gradient(180deg, #0B0A14 46%, rgba(11, 10, 20, .55) 62%, transparent 78%);
+  }
+  .cov-copy { max-width: none; }
+}

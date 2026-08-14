@@ -10,7 +10,7 @@
   --danger:#C93838; --danger-soft:#FBEAEA;
   /* Surface treatment follows the reference site: near-square corners and a
      flat, borders-only elevation model. Brand colour and display face are ours. */
-  --r-sm:2px; --r-md:2px; --r-lg:2px;
+  --r-sm:8px; --r-md:12px; --r-lg:18px; --r-pill:9999px;
   --shadow-sm:none; --shadow-md:none; --shadow-lg:none;
   --ease:cubic-bezier(.22,.61,.36,1);
   /* The mockups depict the product, which uses the same face as the headlines. */
@@ -44,8 +44,8 @@ a{color:inherit;text-decoration:none}
 /* The display face is reserved for headline-scale type; h4/h5 are label tier. */
 h1,h2,h3{font-family:var(--font-display);font-weight:800;line-height:1.16;letter-spacing:-.006em}
 h4,h5{line-height:1.2}
-.container{max-width:1185px;margin:0 auto;padding:0 40px}
-@media (max-width:600px){.container{padding:0 22px}}
+.container{max-width:1260px;margin:0 auto;padding:0 clamp(24px,4vw,72px)}
+@media (max-width:600px){.container{padding:0 20px}}
 
 /* Page rails: white gutters down both edges, and the section backgrounds inset
    between them, so each band reads as sitting IN the page.
@@ -76,8 +76,8 @@ main{margin:0 var(--rail);position:relative;z-index:1}
   content:"";position:absolute;top:0;bottom:0;width:1px;
   background:var(--line);pointer-events:none;z-index:0;
 }
-.has-frame::before{left:calc(max(0px,(100% - 1185px)/2) + 40px)}
-.has-frame::after{right:calc(max(0px,(100% - 1185px)/2) + 40px)}
+.has-frame::before{left:calc(max(0px,(100% - 1260px)/2) + clamp(24px,4vw,72px))}
+.has-frame::after{right:calc(max(0px,(100% - 1260px)/2) + clamp(24px,4vw,72px))}
 
 /* A band's closing rule, carried past the rails to both page edges. It has to
    sit on an element whose ancestors do not clip — see .logos::before. */

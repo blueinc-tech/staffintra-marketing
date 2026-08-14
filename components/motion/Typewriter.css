@@ -1,0 +1,12 @@
+.tw { white-space: nowrap; }
+.tw-caret {
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: -.14em;
+  background: currentColor;
+  animation: twBlink 1.05s steps(1) infinite;
+}
+@keyframes twBlink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .tw-caret { animation: none; opacity: 0; } }

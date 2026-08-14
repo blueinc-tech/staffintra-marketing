@@ -63,6 +63,7 @@
   display: grid;
   place-items: center;
   height: 210px;
+  border-radius: var(--r-md);
   overflow: hidden;
 }
 .ins-card[data-tone='a'] .ins-cover { background: var(--accent); color: rgba(255, 255, 255, .5); }
@@ -92,7 +93,7 @@
 .ins-tags { display: flex; gap: 8px; margin-top: 18px; }
 .ins-tag {
   padding: 6px 11px;
-  border-radius: 2px;
+  border-radius: var(--r-sm);
   background: var(--surface-2);
   font-family: var(--font-ui);
   font-size: .8125rem;

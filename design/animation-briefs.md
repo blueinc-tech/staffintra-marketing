@@ -26,8 +26,11 @@ scenes. One screen, one thing happening on it, held at the end.
 > Tints for status pills: green #E4F5EE, amber #FBF0DE, red #FBEAEA, purple
 > #ECE8FB.
 >
-> **Surface rules:** 2px corner radius on everything. No drop shadows at all,
-> ever. Separation comes from 1px hairline borders. Generous white space.
+> **Surface rules:** rounded corners on everything: 8px on small chips and
+> inputs, 12px on cards and panels, 18px on large panels and media frames.
+> Nothing square. No drop shadows at all, ever: separation comes from 1px
+> hairline borders. Generous white space. Where a card sits inside another
+> rounded container, its corner is smaller than the parent's, never equal.
 >
 > **Type:** Plus Jakarta Sans for headings and numbers, Inter for body and
 > labels. Tabular figures for anything numeric. Never use a long dash or an
@@ -157,6 +160,27 @@ Beats:
 ---
 
 ## Priority 3: the new pages
+
+### 6b. Approvals, the picker
+
+**Where:** the approvals page hero. **New, and high value.**
+
+Screen: the "New approval request" picker, open. Four group headings with
+their types listed under each.
+
+Beats:
+1. Cursor clicks **New request**. The picker opens.
+2. The four groups reveal in order, their types listing under each:
+   **Attendance** (early departure, lateness), **Leave** (nine types),
+   **Shift** (location change, schedule adjustment, shift change),
+   **Other** (upfront loan request).
+3. Cursor hovers **Study leave**, then **Upfront loan request**, pausing on
+   each so both are legible.
+4. Cursor selects one; the picker gives way to that request's short form.
+5. Hold.
+
+Those two hovers are the whole point of the clip. They are the two types that
+show this was built for Nigerian workplaces rather than imported.
 
 ### 6. Geofence and breaks
 

@@ -58,7 +58,9 @@
   display: flex;
   background: var(--d-bg);
   border: 1px solid var(--d-line);
-  border-radius: 6px 0 0 6px;
+  /* The frame takes the upgraded radius. Only the two visible corners: the
+     right edge runs off the page, so it has no corners to round. */
+  border-radius: var(--r-lg) 0 0 var(--r-lg);
   border-right: 0;
   overflow: hidden;
   /* Fixed, not min: a changing height would shunt the phone. */
@@ -332,7 +334,7 @@
 }
 /* Geometrically these are centred: measured, every glyph's ink sits on the box
    centre. They still read left, which is what an eye beats a ruler at. 1.5px
-   was invisible on a 13px glyph, so this is 4px — a third of the icon, which
+   was invisible on a 13px glyph, so this is 4px, a third of the icon, which
    cannot be missed. One value if it wants more or less. */
 .hm-rec-i svg { translate: 4px 0; }
 .hm-rec span { min-width: 0; display: block; }
@@ -410,7 +412,9 @@
   padding: 4px;
   background: #E4E4E9;
   border: 1px solid #CFCFD6;
-  border-radius: 20px;
+  /* Bezel and screen are concentric: the outer radius is the inner one plus
+     the 4px of bezel between them. */
+  border-radius: calc(var(--r-lg) + 4px);
   box-shadow: 0 5px 16px rgba(23, 23, 28, .09), 0 22px 52px rgba(23, 23, 28, .15);
   transition: opacity .38s var(--ease), translate .38s var(--ease);
 }
@@ -421,7 +425,7 @@
   display: flex;
   flex-direction: column;
   height: 404px;
-  border-radius: 15px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   background: var(--d-bg);
   color: var(--d-ink);
@@ -482,9 +486,167 @@
 .hm-p-card .hm-donut { width: 52px; height: 52px; }
 .hm-p-card .hm-legend { font-size: .44rem; }
 
+/* ---------------- arrival ---------------- */
+
+/* The screen assembles the way the app itself paints, rather than appearing
+   whole: the frame rises, the sidebar slides in behind it, the top bar
+   settles, the briefing strip fills cell by cell left to right, the phone
+   lands over the corner, and the body cards come last.
+
+   Three rules hold it together:
+
+     - the resting state is the finished state. Every hidden start is scoped
+       behind [data-mo], which layout.jsx stamps on <html> before first paint,
+       so with no JS at all the dashboard just renders.
+     - the arrival is animation, never transition, and it fills forwards, so
+       the interactive transitions underneath survive it intact: the sidebar's
+       width, the theme switch, the phone's hide on scroll all still run once
+       the sequence has finished, and nothing snaps back.
+     - the phone is the one exception to that fill. Its hide-on-scroll state
+       owns opacity and translate, and a filled animation on those would
+       outrank the [data-hide] rule for good and strand the phone on screen.
+       So the phone arrives on transform and filter, which nothing else uses,
+       and leaves the scroll handler's two properties alone.
+
+   Timings live in one place so the sequence can be retuned without hunting
+   through the rules. */
+.hm {
+  --hm-ease: var(--ease-drive, cubic-bezier(.53, .17, .21, 1.03));
+  --hm-ease-soft: var(--ease, cubic-bezier(.22, .61, .36, 1));
+
+  --hm-t-dash: .06s;    /* 1. the frame */
+  --hm-t-side: .3s;     /* 2. the sidebar */
+  --hm-t-top: .44s;     /* 3. the top bar */
+  --hm-t-greet: .54s;   /*    the greeting, with the bar */
+  --hm-t-strip: .62s;   /*    the strip's own frame */
+  --hm-t-cell: .72s;    /* 4. the first briefing cell */
+  --hm-cell-step: .085s;
+  --hm-t-num: .2s;      /*    a readout lands after its cell */
+  --hm-t-phone: 1.06s;  /* 5. the phone */
+  --hm-t-cards: 1.16s;  /* 6. the body cards */
+  --hm-card-step: .07s;
+}
+
+/* 1. the frame */
+[data-mo] .hero .hm-dash { opacity: 0; transform: translateY(14px); }
+.hero[data-ready] .hm-dash {
+  animation: hmArrive .58s var(--hm-ease) var(--hm-t-dash) both;
+}
+
+/* 2. the sidebar, from the left. The animation is on the inner column, never
+   on .hm-side itself, whose width transition is the collapse control. The
+   panel's own overflow:hidden is the mask it slides out of. */
+[data-mo] .hero .hm-side-in { opacity: 0; transform: translateX(-16px); }
+.hero[data-ready] .hm-side-in {
+  animation: hmArrive .5s var(--hm-ease) var(--hm-t-side) both;
+}
+
+/* 3. the top bar */
+[data-mo] .hero .hm-top { opacity: 0; transform: translateY(-9px); }
+.hero[data-ready] .hm-top {
+  animation: hmArrive .46s var(--hm-ease) var(--hm-t-top) both;
+}
+
+[data-mo] .hero .hm-greet { opacity: 0; transform: translateY(9px); }
+.hero[data-ready] .hm-greet {
+  animation: hmArrive .44s var(--hm-ease-soft) var(--hm-t-greet) both;
+}
+
+/* 4. the briefing strip: the frame draws, then the four cells fill it left to
+   right. Each cell carries its own step in --hm-cell, which its readout
+   inherits, so a cell and its number stay tied together. */
+[data-mo] .hero .hm-strip { opacity: 0; transform: translateY(9px); }
+.hero[data-ready] .hm-strip {
+  animation: hmArrive .44s var(--hm-ease-soft) var(--hm-t-strip) both;
+}
+.hm-strip > div:nth-child(2) { --hm-cell: var(--hm-cell-step); }
+.hm-strip > div:nth-child(3) { --hm-cell: calc(var(--hm-cell-step) * 2); }
+.hm-strip > div:nth-child(4) { --hm-cell: calc(var(--hm-cell-step) * 3); }
+[data-mo] .hero .hm-strip > div { opacity: 0; transform: translateY(8px); }
+.hero[data-ready] .hm-strip > div {
+  animation: hmArrive .46s var(--hm-ease-soft) calc(var(--hm-t-cell) + var(--hm-cell, 0s)) both;
+}
+
+/* The readouts that could plausibly be counting get a scale-and-settle, so
+   they read as landing on a figure. No count-up is attempted here: the digits
+   are text, and counting them is another mechanism's job. */
+.hm-strip .hm-mono,
+.hm-p-now .hm-mono,
+.hm-p-two .hm-mono { transform-origin: left center; }
+.hero[data-ready] .hm-strip .hm-mono {
+  animation: hmLand .5s var(--hm-ease-soft)
+    calc(var(--hm-t-cell) + var(--hm-cell, 0s) + var(--hm-t-num)) both;
+}
+.hero[data-ready] .hm-p-now .hm-mono,
+.hero[data-ready] .hm-p-two .hm-mono {
+  animation: hmLand .5s var(--hm-ease-soft) calc(var(--hm-t-phone) + .24s) both;
+}
+
+/* 5. the phone, up from below and over the corner. transform and filter only;
+   see the note above on why it may not touch opacity or translate. */
+[data-mo] .hero .hm-phone { filter: opacity(0); transform: translateY(30px) scale(.985); }
+.hero[data-ready] .hm-phone {
+  animation: hmPhoneIn .66s var(--hm-ease) var(--hm-t-phone) both;
+}
+
+/* 6. the cards. Three inherited offsets add up to one delay: the row within
+   the column, a half-step for the right column so the two do not march in
+   lockstep, and a nudge for the second card of a side-by-side pair. */
+.hm-col > :nth-child(2) { --hm-row: var(--hm-card-step); }
+.hm-col > :nth-child(3) { --hm-row: calc(var(--hm-card-step) * 2); }
+.hm-col > :nth-child(4) { --hm-row: calc(var(--hm-card-step) * 3); }
+.hm-col:last-child { --hm-col-off: .05s; }
+.hm-pair > .hm-card + .hm-card { --hm-pair: .06s; }
+[data-mo] .hero .hm-cols .hm-card { opacity: 0; transform: translateY(12px); }
+.hero[data-ready] .hm-cols .hm-card {
+  animation: hmArrive .48s var(--hm-ease-soft)
+    calc(var(--hm-t-cards) + var(--hm-row, 0s) + var(--hm-col-off, 0s) + var(--hm-pair, 0s)) both;
+}
+
+/* One set of keyframes for every stage. There is no from: the start of each
+   animation is the element's own [data-mo] offset, so the direction a piece
+   travels is stated once, where that piece is described, and this only ever
+   says "and then it is here". */
+@keyframes hmArrive { to { opacity: 1; transform: none; } }
+@keyframes hmPhoneIn { to { filter: none; transform: none; } }
+/* Slight overshoot, then settle. The element is already visible by now, so
+   this is weight rather than an entrance. */
+@keyframes hmLand {
+  0% { transform: scale(.9); }
+  58% { transform: scale(1.028); }
+  100% { transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hm-dash, .hm-side, .hm-switch, .hm-switch::after { transition: none; }
   /* The phone still leaves and returns; it just does not travel to do it. */
   .hm-phone { transition: opacity .01ms; }
   .hm-phone[data-hide] { translate: none; }
+
+  /* Nothing arrives. Every hidden start is released and every stage of the
+     sequence is off, so the screen is simply there, finished and in place. */
+  [data-mo] .hero .hm-dash,
+  [data-mo] .hero .hm-side-in,
+  [data-mo] .hero .hm-top,
+  [data-mo] .hero .hm-greet,
+  [data-mo] .hero .hm-strip,
+  [data-mo] .hero .hm-strip > div,
+  [data-mo] .hero .hm-cols .hm-card {
+    opacity: 1;
+    transform: none;
+  }
+  [data-mo] .hero .hm-phone { filter: none; transform: none; }
+  .hero[data-ready] .hm-dash,
+  .hero[data-ready] .hm-side-in,
+  .hero[data-ready] .hm-top,
+  .hero[data-ready] .hm-greet,
+  .hero[data-ready] .hm-strip,
+  .hero[data-ready] .hm-strip > div,
+  .hero[data-ready] .hm-strip .hm-mono,
+  .hero[data-ready] .hm-p-now .hm-mono,
+  .hero[data-ready] .hm-p-two .hm-mono,
+  .hero[data-ready] .hm-phone,
+  .hero[data-ready] .hm-cols .hm-card {
+    animation: none;
+  }
 }

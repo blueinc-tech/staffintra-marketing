@@ -17,6 +17,18 @@
    banner below so one unbroken line runs through both sections. */
 .pillars {
   background: var(--surface);
+  /* Inner gutter for framed content. The frame's two solid lines land on the
+     container's padding edge, so anything sitting at that edge butts straight
+     into the rule. Every block of copy and every panel steps in by this much,
+     which turns the line into a margin rule instead of a border. */
+  --frame-gut: clamp(18px, 2.6vw, 36px);
+}
+
+/* The header steps in with the rest of the column. It used to sit flush on the
+   line, which read as squashed once the frame went solid. */
+.pillars .sec-head {
+  padding-inline: var(--frame-gut);
+  padding-block: clamp(96px, 10vw, 168px) clamp(64px, 7.6vw, 116px);
 }
 
 /* ---------- sticky tab bar ---------- */
@@ -52,7 +64,7 @@
   left: 6px;
   width: calc(100% / 3 - 12px);
   background: var(--tint);
-  border-radius: 2px;
+  border-radius: var(--r-md);
   pointer-events: none;
   transition:
     translate .32s cubic-bezier(.4, 0, .2, 1),
@@ -99,7 +111,7 @@
 .pillar {
   position: relative;
   z-index: 1;
-  --copy-pad: clamp(22px, 5.5vw, 78px);
+  --copy-pad: clamp(30px, 5.5vw, 84px);
 }
 
 .pillar-row {
@@ -111,7 +123,7 @@
 .pillar-copy {
   display: flex;
   flex-direction: column;
-  padding: 68px 48px 56px var(--copy-pad);
+  padding: clamp(72px, 6.4vw, 94px) 48px clamp(60px, 5.4vw, 78px) var(--copy-pad);
 }
 
 .pillar-eyebrow {
@@ -128,7 +140,7 @@
   width: 24px;
   height: 24px;
   flex-shrink: 0;
-  border-radius: 2px;
+  border-radius: var(--r-sm);
 }
 .pe-glyph { width: 14px; height: 14px; display: block; }
 .pillar[data-tone='a'] .pe-chip { background: var(--accent-soft); color: var(--accent); }
@@ -138,7 +150,7 @@
 /* Spans the frame, from the left side line across to the visual panel. */
 .pillar-rule {
   height: 1px;
-  margin: 26px -48px 46px calc(-1 * var(--copy-pad));
+  margin: 30px -48px 52px calc(-1 * var(--copy-pad));
   background-image: var(--rule-h);
   background-size: var(--dot-step) 1px;
   background-repeat: repeat-x;
@@ -152,7 +164,7 @@
   max-width: 12ch;
 }
 .pillar-copy > p {
-  margin-top: 20px;
+  margin-top: 22px;
   max-width: 40ch;
   font-size: 1.0625rem;
   line-height: 1.5;
@@ -164,7 +176,7 @@
   align-items: center;
   gap: 10px;
   align-self: flex-start;
-  margin-top: 26px;
+  margin-top: 30px;
   font-family: var(--font-ui);
   font-size: .9375rem;
   color: var(--ink);
@@ -182,7 +194,7 @@
   align-items: center;
   gap: 12px 26px;
   margin-top: auto;
-  padding-top: 48px;
+  padding-top: clamp(48px, 5vw, 68px);
 }
 .pstep {
   display: inline-flex;
@@ -299,7 +311,7 @@
   width: min(420px, 88%);
   padding: 20px 22px 22px;
   background: var(--surface);
-  border-radius: 2px;
+  border-radius: var(--r-md);
   font-family: var(--font-ui);
 }
 .pm-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
@@ -311,7 +323,7 @@
 .pm-chip {
   flex-shrink: 0;
   padding: 3px 9px;
-  border-radius: 2px;
+  border-radius: var(--r-sm);
   font-size: .6875rem;
   font-weight: 500;
   white-space: nowrap;
@@ -325,7 +337,7 @@
 .pm-rota { margin-top: 16px; display: flex; flex-direction: column; gap: 7px; }
 .pm-rota-row { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 10px; }
 .pm-day { font-size: .6875rem; color: var(--ink-3-text); }
-.pm-track { position: relative; height: 24px; background: var(--surface-2); border-radius: 2px; }
+.pm-track { position: relative; height: 24px; background: var(--surface-2); border-radius: var(--r-sm); overflow: hidden; }
 .pm-shift {
   position: absolute;
   top: 0;
@@ -335,7 +347,7 @@
   display: flex;
   align-items: center;
   padding: 0 7px;
-  border-radius: 2px;
+  border-radius: calc(var(--r-sm) - 3px);
   font-size: .625rem;
   white-space: nowrap;
   overflow: hidden;
@@ -367,7 +379,7 @@
   place-items: center;
   gap: 8px;
   background: var(--ok-soft);
-  border-radius: 2px;
+  border-radius: var(--r-sm);
 }
 .pm-clock {
   font-family: var(--font-mono);
@@ -385,7 +397,7 @@
   padding: 11px;
   background: var(--accent);
   color: #fff;
-  border-radius: 2px;
+  border-radius: var(--r-sm);
   text-align: center;
   font-size: .8125rem;
   font-weight: 500;
@@ -395,8 +407,8 @@
 .pm-bars { margin-top: 16px; display: flex; flex-direction: column; gap: 13px; }
 .pm-bar-row { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; align-items: center; gap: 11px; }
 .pm-bar-label { font-size: .75rem; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pm-bar { height: 6px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
-.pm-bar span { display: block; height: 100%; width: var(--p); background: var(--accent); border-radius: 2px; }
+.pm-bar { height: 6px; background: var(--surface-2); border-radius: var(--r-pill); overflow: hidden; }
+.pm-bar span { display: block; height: 100%; width: var(--p); background: var(--accent); border-radius: var(--r-pill); }
 .pm-bar-value { font-size: .6875rem; color: var(--ink-3-text); white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 /* steps */
@@ -416,7 +428,7 @@
   height: 18px;
   flex-shrink: 0;
   border: 1px solid var(--line-strong);
-  border-radius: 2px;
+  border-radius: var(--r-sm);
   font-size: .625rem;
   color: var(--ink-3);
 }
@@ -432,7 +444,7 @@
   display: flex;
   align-items: center;
   gap: 30px;
-  padding: 22px var(--copy-pad);
+  padding: clamp(24px, 2.4vw, 32px) var(--copy-pad);
   border-top: 1px solid var(--line);
   text-decoration: none;
 }
@@ -461,7 +473,7 @@
 
 /* Full bleed past the rails, which is why .pillars must not clip its overflow. */
 .pillar-hatch {
-  height: 62px;
+  height: 76px;
   margin-inline: calc(-1 * var(--rail));
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -481,8 +493,8 @@
 
 @media (max-width: 940px) {
   .pillar-row { grid-template-columns: minmax(0, 1fr); }
-  .pillar-copy { padding: 52px var(--copy-pad) 40px; }
-  .pillar-steps { padding-top: 34px; }
+  .pillar-copy { padding: clamp(56px, 7vw, 68px) var(--copy-pad) clamp(46px, 5.6vw, 56px); }
+  .pillar-steps { padding-top: 40px; }
   .pillar-visual { min-height: 420px; }
   .ptab { font-size: .875rem; gap: 8px; padding: 0 10px; }
   .pt-mark { width: 20px; height: 20px; }
@@ -490,6 +502,7 @@
 
 @media (max-width: 620px) {
   .pillar-tabs { height: 64px; }
+  .pillar-hatch { height: 56px; }
   .pillar-anchor { scroll-margin-top: 128px; }
   .ptab { flex-direction: column; gap: 3px; font-size: .6875rem; line-height: 1.2; text-align: center; }
   .pillar-story { flex-direction: column; align-items: flex-start; gap: 8px; }

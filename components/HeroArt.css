@@ -1,36 +1,172 @@
-/* The Weave. Strands draw themselves in sequence once, then hold.
+/* The Weave.
 
-   It is a page ornament, so it never loops: a permanently moving graphic in
-   the corner of a hero competes with the copy for attention and wins, which
-   is not what you want the visitor reading. */
+   Three things happen here, in this order.
 
-.wv { width: 100%; height: auto; display: block; color: var(--accent); }
+   The draw. Each strand is dashed off its own normalised length and pulled
+   back on, staggered, while the group rotates closed on its turn centre: the
+   strands arrive fanned open and settle into parallel as the ink lands. It
+   runs once.
+
+   The pulse. Once the draw is over, a single short bright dash travels each
+   strand from its start to its end, one strand a third of a second behind the
+   last, like current finding its way through the cloth. The travel takes
+   two and a half seconds and the cycle is thirteen, so the whole fabric is
+   still for around seven seconds out of every thirteen. That gap is the point:
+   this sits behind the hero copy, and a graphic that moves continuously in the
+   corner of a hero competes with the words and wins.
+
+   The breath. The whole composition scales by two percent over seventeen
+   seconds while the far group counter-scales by half a percent over
+   twenty-three. Nothing about that is legible frame to frame. It only stops
+   the art from looking like a screenshot.
+
+   Everything rests in its FINISHED state. The undrawn start is scoped to
+   [data-mo], which the inline script in the document head sets before first
+   paint, so with scripting off the weave renders complete rather than blank. */
+
+.wv {
+  width: 100%;
+  height: auto;
+  display: block;
+
+  /* Depth is carried by value, not by translucency. The far group is an
+     opaque tint of the brand purple, so where a far strand rides over a near
+     one it covers it outright and the crossing stays crisp instead of going
+     glassy. */
+  --wv-far: color-mix(in srgb, var(--accent) 30%, var(--surface));
+  --wv-lit-near: color-mix(in srgb, var(--surface) 76%, var(--accent));
+  --wv-lit-far: color-mix(in srgb, var(--accent) 58%, var(--surface));
+}
+
+.wv-k0 { stop-color: var(--accent-ink); }
+.wv-k1 { stop-color: var(--accent); }
+.wv-k2 { stop-color: var(--info); }
+
+/* ---------- strands ---------- */
 
 .wv-s {
-  /* Long enough to cover any strand in the set; the exact figure only has to
-     exceed the true path length for the dash trick to work. */
-  stroke-dasharray: 620;
-  stroke-dashoffset: 620;
-  animation: wvDraw 1.15s cubic-bezier(.22, .61, .36, 1) forwards;
-  animation-delay: calc(var(--i) * 110ms + 260ms);
+  fill: none;
+  stroke-width: 11;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dashoffset: 0;
+  /* The fan pivots on a point given in viewBox units, not on each path's own
+     box, because the five strands of a group must share one centre. */
+  transform-box: view-box;
 }
-/* The crossing group sits back a shade so the weave reads as depth rather
-   than as one flat tangle. */
-.wv-s--b { opacity: .42; }
-/* The overpaint has to arrive after the strand it hides, or the tuck pops. */
-.wv-s--over { animation-delay: calc(var(--i) * 110ms + 300ms); }
+
+/* Quiet enough to sit under copy, dark enough to still be the near group. */
+.wv-near { opacity: .92; }
+
+.wv-near .wv-s {
+  stroke: url(#wvInk);
+  transform-origin: 194px 136px;
+  --d: calc(360ms + var(--i) * 95ms);
+}
+.wv-far .wv-s,
+.wv-tuck .wv-s {
+  stroke: var(--wv-far);
+  transform-origin: 230px 122px;
+  /* The far group lands first, so the near group has something to land on. */
+  --d: calc(200ms + var(--i) * 95ms);
+}
+
+[data-mo] .wv-s {
+  stroke-dashoffset: 1000;
+  animation: wvDraw 1.15s var(--ease) both, wvFan 1.75s var(--ease) both;
+  animation-delay: var(--d), var(--d);
+}
 
 @keyframes wvDraw {
+  from { stroke-dashoffset: 1000; }
   to { stroke-dashoffset: 0; }
 }
 
-/* Paused until the hero is on screen, so the draw is not already over by the
-   time anybody looks at it. .hero sets data-ready on its first frame. */
-.hero:not([data-ready]) .wv-s { animation-play-state: paused; }
+/* Each strand pivots a little further than the one inside it, all on the
+   group's own turn centre, so the group opens like a fan. The fan runs half a
+   second longer than the draw, which is what stops the two from resolving on
+   the same frame and reading as one hard snap. */
+@keyframes wvFan {
+  from { transform: rotate(var(--fan, 0deg)); }
+  to { transform: rotate(0deg); }
+}
 
+/* ---------- the travelling pulse ---------- */
+
+.wv-p {
+  fill: none;
+  stroke-width: 4.6;
+  stroke-linecap: round;
+  /* One dash of 84, then a gap three times the length of the path. Only one
+     pulse can ever be on a strand, and at rest the dash sits entirely off the
+     front of it, so a strand with no animation carries no highlight at all. */
+  stroke-dasharray: 84 3000;
+  stroke-dashoffset: 84;
+}
+
+.wv-near .wv-p {
+  stroke: var(--wv-lit-near);
+  --pd: calc(2600ms + var(--i) * 340ms);
+}
+.wv-far .wv-p,
+.wv-tuck .wv-p {
+  stroke: var(--wv-lit-far);
+  /* Offset by half a step from the near group, so the two groups interleave
+     rather than firing as two blocks. */
+  --pd: calc(2770ms + var(--i) * 340ms);
+}
+
+/* Gated on the hero being on screen, like every other loop on this page. The
+   first pulse waits out the draw. */
+.hero[data-idle] .wv-p {
+  animation: wvPulse 13s cubic-bezier(.42, .04, .4, .98) var(--pd) infinite;
+}
+
+/* Offset 84 puts the dash just off the head of the path, offset -1000 just off
+   the tail, so the pulse slides in, runs, and slides out. It reaches the tail
+   at 19 percent and holds there for the rest of the cycle. */
+@keyframes wvPulse {
+  0% { stroke-dashoffset: 84; }
+  19%, 100% { stroke-dashoffset: -1000; }
+}
+
+/* ---------- the breath ---------- */
+
+.wv-w,
+.wv-far,
+.wv-tuck {
+  transform-box: view-box;
+  transform-origin: 230px 150px;
+}
+
+.hero[data-idle] .wv-w { animation: wvBreathe 17s ease-in-out infinite; }
+/* Far group and its overpaint share one animation exactly, so the clipped
+   copy never slips off the strand it is covering. */
+.hero[data-idle] .wv-far,
+.hero[data-idle] .wv-tuck { animation: wvDrift 23s ease-in-out infinite; }
+
+@keyframes wvBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.022); }
+}
+/* Against the breath, and on a period that shares no factor with it, so the
+   two never settle into a beat. */
+@keyframes wvDrift {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(.9935); }
+}
+
+/* ---------- reduced motion ---------- */
+
+/* The finished weave, drawn, held still, unlit. */
 @media (prefers-reduced-motion: reduce) {
-  .wv-s {
-    animation: none;
+  [data-mo] .wv-s {
     stroke-dashoffset: 0;
+    animation: none;
+    transform: none;
   }
+  .hero[data-idle] .wv-p,
+  .hero[data-idle] .wv-w,
+  .hero[data-idle] .wv-far,
+  .hero[data-idle] .wv-tuck { animation: none; }
 }

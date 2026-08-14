@@ -166,6 +166,7 @@
 .pd-visual {
   margin-top: clamp(26px, 3.4vw, 38px);
   padding: clamp(24px, 3.2vw, 40px);
+  border-radius: var(--r-lg);
   background: var(--tint);
 }
 .pd-visual .pm-card {

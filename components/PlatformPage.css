@@ -7,8 +7,8 @@
    product stands on, not another feature band.
 
    Every token below is the light palette translated for dark, so the two
-   halves of the site stay one system: 2px radii, no shadows, 1px hairlines
-   for all separation. The accent lifts from #4024C0 to #8E75F2 because brand
+   halves of the site stay one system: the --r-* radius tokens, no shadows,
+   1px hairlines for all separation. The accent lifts from #4024C0 to #8E75F2 because brand
    purple at full depth disappears against #101014, and --accent itself is
    re-pointed on the wrapper so the shared Spotlight wash and the shared
    buttons lift with it. */
@@ -203,7 +203,7 @@
   letter-spacing: .09em;
   padding: 4px 9px;
   border: 1px solid var(--pf-line-2);
-  border-radius: 2px;
+  border-radius: var(--r-sm);
   color: var(--pf-ink-2);
   white-space: nowrap;
 }

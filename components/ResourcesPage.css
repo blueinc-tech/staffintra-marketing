@@ -88,7 +88,7 @@
   display: flex;
   flex-direction: column;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--r-md);
   background: var(--surface);
   overflow: hidden;
   transition: border-color .22s var(--ease);
@@ -135,7 +135,7 @@
   text-transform: uppercase;
   color: var(--ink-3-text);
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--r-sm);
   padding: 3px 7px;
 }
 .rx-tag--type {
@@ -234,7 +234,8 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: clamp(40px, 5vw, 66px);
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--r-md);
+  overflow: hidden;
   background: var(--surface);
 }
 .rx-col { padding: 26px 26px 24px; }

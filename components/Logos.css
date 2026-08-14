@@ -14,7 +14,7 @@
 .logos {
   position: relative;
   background: var(--surface);
-  padding: 0 0 56px;
+  padding: 0 0 clamp(64px, 7vw, 96px);
 }
 
 /* Closes the hero band above: full page width, past the rails on both sides.
@@ -31,7 +31,7 @@
 }
 
 /* The gap between the hero's closing rule and the grid. */
-.logos-head { padding: 46px 0 30px; }
+.logos-head { padding: clamp(52px, 5.4vw, 72px) 0 clamp(32px, 3.4vw, 44px); }
 
 .logos-label {
   text-align: center;
@@ -74,6 +74,7 @@
   display: grid;
   grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr));
   border: 1px solid var(--line);
+  border-radius: var(--r-md);
   /* Keeps the slide-in card inside the grid; the animation is unchanged. */
   overflow: hidden;
 }
@@ -86,8 +87,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 110px;
-  padding: 22px 16px 32px;
+  min-height: 122px;
+  padding: 28px 20px 36px;
   background: var(--surface);
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -191,9 +192,10 @@
     justify-content: space-between;
     width: 200%;
     height: 200%;
-    padding: 20px 24px 22px;
+    padding: 24px 28px 26px;
     background: var(--surface);
     border: 1px solid var(--line);
+    border-radius: var(--r-sm);
     /* Never takes the pointer: you keep it alive by being over the cells. */
     pointer-events: none;
     opacity: 0;
@@ -216,7 +218,7 @@
 }
 .lg-card-by { display: flex; align-items: center; gap: 11px; margin-top: 14px; }
 .lg-avatar {
-  width: 40px; height: 40px; flex-shrink: 0; border-radius: 2px;
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--r-sm);
   object-fit: cover; display: block;
   background: var(--accent-soft);
 }
@@ -234,11 +236,11 @@
 @media (max-width: 1000px) {
   .logos-band { grid-template-columns: 1fr; }
   .logos-hatch { display: none; }
-  .logos-grid { border-left: 0; border-right: 0; }
+  .logos-grid { border-left: 0; border-right: 0; border-radius: 0; }
 }
 @media (max-width: 560px) {
   .logos-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-  .lg-cell { min-height: 84px; padding: 18px 14px; }
+  .lg-cell { min-height: 92px; padding: 22px 16px 26px; }
   .lg-cell.is-last-col { border-right: 1px solid var(--line); }
   .lg-cell:nth-child(2n) { border-right: 0; }
 }

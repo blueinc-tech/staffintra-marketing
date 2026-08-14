@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Brand from './Brand';
+import Ticker from './motion/Ticker';
+import Typewriter from './motion/Typewriter';
 import './HeroMockup.css';
 
 /* The product surface in the hero, rebuilt to the real Home screen rather than
@@ -294,7 +296,9 @@ export default function HeroMockup() {
           >
             <IPanel />
           </button>
-          <span className="hm-search"><ISearch />Search anything<kbd>⌘K</kbd></span>
+          <span className="hm-search"><ISearch />
+            <Typewriter phrases={['Search anything', 'timesheets week 33', 'leave balance Jemimah', 'cases escalated']} />
+            <kbd>⌘K</kbd></span>
           <span className="hm-pill"><ITarget />My Work</span>
           <span className="hm-stack">
             {PEOPLE.map((p) => <Ava key={p.initials} p={p} />)}
@@ -323,13 +327,13 @@ export default function HeroMockup() {
           <div className="hm-strip">
             <div>
               <span className="hm-k">Now</span>
-              <strong className="hm-mono">14:27</strong>
+              <strong className="hm-mono"><Ticker value="14:27" delay={520} /></strong>
               <span className="hm-sub">Africa/Lagos</span>
               <span className="hm-dot">Clocked in 09:02</span>
             </div>
             <div>
               <span className="hm-k">Today</span>
-              <strong className="hm-mono">5h 24m</strong>
+              <strong className="hm-mono"><Ticker value="5h 24m" delay={640} /></strong>
               <span className="hm-sub">3 sessions</span>
             </div>
             {/* Productivity and Workday, not "This week" and "Elsewhere".
@@ -338,7 +342,7 @@ export default function HeroMockup() {
                 two before the app had been read. */}
             <div>
               <span className="hm-k">Productivity</span>
-              <strong className="hm-mono">26h 10m</strong>
+              <strong className="hm-mono"><Ticker value="26h 10m" delay={760} /></strong>
               <span className="hm-sub">This month</span>
               <span className="hm-link">View timesheet →</span>
             </div>

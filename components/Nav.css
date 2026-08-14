@@ -1,6 +1,6 @@
 /* Header modelled on the reference site, measured at 1440px:
    64px sticky bar, opaque white, no border, no shadow; links Inter 15/400 at
-   40px apart; buttons 2px radius, 12x18, Inter 15/500. The dropdown is a single
+   40px apart; buttons pill radius, 12x18, Inter 15/500. The dropdown is a single
    shared panel that slides and resizes between triggers. */
 
 .nav-root {
@@ -128,7 +128,7 @@
   height: 100%;
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: var(--r-lg);
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(23, 23, 28, 0.05), 0 14px 38px rgba(23, 23, 28, 0.10);
   /* Keeps the width/height transition from reflowing the rest of the page. */
@@ -145,7 +145,7 @@
      the most visible failure mode of this pattern. */
   width: max-content;
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--r-md);
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
@@ -308,7 +308,7 @@
   margin: 13px 16px;
   min-height: 118px;
   background: var(--accent-ink);
-  border-radius: 2px;
+  border-radius: var(--r-sm);
   overflow: hidden;
   text-decoration: none;
 }

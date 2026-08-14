@@ -6,6 +6,15 @@
 .nav-root {
   position: fixed;
   top: 0;
+  /* Retracts on descent, returns on ascent. Transform rather than top, so it
+     never triggers layout on a scroll frame. */
+  transform: translateY(var(--nav-shift, 0px));
+  transition: transform .34s var(--ease);
+}
+/* The bar still retracts under reduced motion, because the extra room is the
+   point, but it does so without the slide. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-root { transition: none; }
   left: 0;
   right: 0;
   z-index: 100;
@@ -77,7 +86,9 @@
   /* Gap between the outer panel and the inner framed grid. */
   --gap: 7px;
   position: absolute;
-  top: 64px;
+  /* Relative to .nav-root, which carries the retraction transform, so the
+     panel rides down with the bar rather than needing its own offset. */
+  top: var(--nav-h);
   left: 0;
   width: var(--w);
   height: var(--h);

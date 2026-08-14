@@ -45,7 +45,7 @@
 
 /* ---------- the index ---------- */
 
-.pd-index { position: sticky; top: 88px; }
+.pd-index { position: sticky; top: calc(var(--nav-off) + 24px); }
 .pd-index-title {
   display: block;
   padding-bottom: 14px;

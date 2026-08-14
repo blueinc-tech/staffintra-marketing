@@ -19,6 +19,12 @@
      off-white, and the width of the white gutters either side of the page. */
   --tint:#F6F4FD;
   --rail:48px;
+  /* The header's height, and how far it is currently retracted. NavAutoHide
+     rewrites --nav-shift; everything that parks under the bar is positioned
+     from the pair, so there is one number to change rather than five. */
+  --nav-h:64px;
+  --nav-shift:0px;
+  --nav-off:calc(var(--nav-h) + var(--nav-shift));
   /* One dotted-rule recipe for the whole site: a 4.5px tick every 8px, so the
      gap stays at 3.5px and only the tick changes. Used for rails, section edges
      and every divider that used to be `dashed`. --rule-solid is the same ink
@@ -32,7 +38,7 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-off) + 16px)}
 body{
   font-family:var(--font-ui);font-weight:450;color:var(--ink);
   background:var(--surface);-webkit-font-smoothing:antialiased;

@@ -1,5 +1,6 @@
 import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from 'next/font/google';
 import AnchorFlash from '../components/motion/AnchorFlash';
+import NavAutoHide from '../components/motion/NavAutoHide';
 import './globals.css';
 
 // Display face for headlines, and the same face inside the product mockups.
@@ -61,6 +62,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <AnchorFlash />
+        <NavAutoHide />
         <noscript>
           <style>{`.reveal{opacity:1;transform:none}`}</style>
         </noscript>

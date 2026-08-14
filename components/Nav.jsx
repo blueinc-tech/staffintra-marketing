@@ -367,6 +367,10 @@ export default function Nav() {
       className="nav-root"
       id="top"
       ref={rootRef}
+      /* Read by NavAutoHide: the bar must not retract out from under an open
+         panel, which would tear it off its trigger. */
+      data-open={activeId || undefined}
+      data-mobile-open={mobileOpen ? '' : undefined}
       onPointerLeave={whenMouse(scheduleClose)}
       onPointerEnter={() => {
         suppress.current = false;

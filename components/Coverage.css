@@ -13,7 +13,14 @@
   --cov-ground-2: #241461;
   background: linear-gradient(150deg, var(--cov-ground) 0%, var(--cov-ground-2) 100%);
   color: #F2F2F5;
-  padding: clamp(84px, 10vw, 140px) 0;
+  /* Given real room now that the header retracts on the way down. The band
+     fills the viewport rather than sitting in it, which is what a globe this
+     size needs: cropped by the frame it reads as an object the page is
+     looking at, boxed inside a short band it reads as a picture of one. */
+  min-height: min(96vh, 900px);
+  display: grid;
+  align-items: center;
+  padding: clamp(96px, 12vw, 168px) 0;
   border-radius: var(--r-lg);
   margin: 0 var(--rail);
   isolation: isolate;
@@ -81,7 +88,7 @@
 .cov-link:hover { color: #B7A7FF; }
 
 @media (max-width: 860px) {
-  .cov { margin: 0; border-radius: 0; padding: 72px 0 clamp(280px, 62vw, 380px); }
+  .cov { margin: 0; border-radius: 0; min-height: 0; display: block; padding: 72px 0 clamp(280px, 62vw, 380px); }
   /* On a phone the globe moves below the copy rather than behind it, so the
      text never sits on a busy field. */
   .cov::before {

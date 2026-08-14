@@ -8,9 +8,14 @@ import './Pillars.css';
 
 /* Height of the sticky nav plus this section's own tab bar. The tab bar parks
    directly under the nav, and panels scroll to sit just below both. */
-const NAV_H = 64;
+/* Measured, not assumed. The header retracts on scroll now, so a fixed 64
+   would put the spy line in the wrong place half the time, and the tab bar
+   parks against whatever the header currently is. */
 const TABS_H = 72;
-const SPY_LINE = NAV_H + TABS_H + 8;
+const navBottom = () => {
+  const el = typeof document !== 'undefined' && document.querySelector('.nav-root');
+  return el ? Math.max(0, el.getBoundingClientRect().bottom) : 64;
+};
 
 export default function Pillars() {
   const [active, setActive] = useState(0);
@@ -40,8 +45,9 @@ export default function Pillars() {
     const measure = () => {
       frame = 0;
       let next = 0;
+      const line = navBottom() + TABS_H + 8;
       panelsRef.current.forEach((el, i) => {
-        if (el && el.getBoundingClientRect().top <= SPY_LINE) next = i;
+        if (el && el.getBoundingClientRect().top <= line) next = i;
       });
       setActive(next);
     };
@@ -67,7 +73,7 @@ export default function Pillars() {
   const goTo = useCallback((i) => {
     const el = panelsRef.current[i];
     if (!el) return;
-    const top = window.scrollY + el.getBoundingClientRect().top - (NAV_H + TABS_H - 4);
+    const top = window.scrollY + el.getBoundingClientRect().top - (navBottom() + TABS_H - 4);
     window.scrollTo({ top, behavior: 'smooth' });
   }, []);
 

@@ -23,7 +23,7 @@
 
 /* Sections need somewhere to land: without this the sticky header covers the
    heading you just asked to see. */
-[id] { scroll-margin-top: 96px; }
+[id] { scroll-margin-top: calc(var(--nav-off) + 32px); }
 
 @media (prefers-reduced-motion: reduce) {
   .is-anchor-flash::after {

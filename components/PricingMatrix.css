@@ -47,7 +47,7 @@
 /* Plan header. Sticky under the 64px nav so the column stays labelled. */
 .pmx-table thead th {
   position: sticky;
-  top: 64px;
+  top: var(--nav-off);
   z-index: 3;
   background: var(--surface);
   vertical-align: top;

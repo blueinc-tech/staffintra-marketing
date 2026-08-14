@@ -37,7 +37,7 @@
    scrolling visibly past it in the gutters either side. */
 .pillar-tabs-wrap {
   position: sticky;
-  top: 64px; /* the nav's height */
+  top: var(--nav-off); /* follows the header as it retracts */
   z-index: 40;
 }
 
@@ -98,10 +98,13 @@
 .ptab[data-tone='b'] .pt-mark { color: var(--warn); }
 .ptab[data-tone='c'] .pt-mark { color: var(--ok); }
 
-/* For hash navigation only — the tab buttons scroll by computation instead.
-   html sets scroll-padding-top: 80px, and that ADDS to this rather than
-   replacing it, so 56 here is what lands a panel at the 136px the sticky nav
-   and tab bar occupy. Setting 136 here put it at 216 and missed the spy line. */
+/* For hash navigation only: the tab buttons scroll by computation instead.
+
+   html's scroll-padding-top ADDS to this rather than replacing it, so this
+   value is the REMAINDER needed on top of it, not the total. Setting the full
+   136 here put a panel at 216 and missed the spy line entirely. The padding
+   now tracks the header as it retracts, and this covers the tab bar beneath
+   it. */
 .pillar-anchor { scroll-margin-top: 56px; }
 
 /* ---------- panel ---------- */

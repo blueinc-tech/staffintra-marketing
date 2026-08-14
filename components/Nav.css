@@ -6,21 +6,22 @@
 .nav-root {
   position: fixed;
   top: 0;
-  /* Retracts on descent, returns on ascent. Transform rather than top, so it
-     never triggers layout on a scroll frame. */
-  transform: translateY(var(--nav-shift, 0px));
-  transition: transform .34s var(--ease);
-}
-/* The bar still retracts under reduced motion, because the extra room is the
-   point, but it does so without the slide. */
-@media (prefers-reduced-motion: reduce) {
-  .nav-root { transition: none; }
   left: 0;
   right: 0;
   z-index: 100;
   background: var(--surface);
   /* Runs the full page width, past the rails to both edges. */
   border-bottom: 1px solid var(--line);
+  /* Retracts on descent, returns on ascent. Transform rather than top, so it
+     never triggers layout on a scroll frame. */
+  transform: translateY(var(--nav-shift, 0px));
+  transition: transform .34s var(--ease);
+}
+
+/* The bar still retracts under reduced motion, because the extra room is the
+   point, but it does so without the slide. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-root { transition: none; }
 }
 
 /* The page rails used to carry on through the nav band as dashes. They are

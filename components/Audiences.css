@@ -35,6 +35,7 @@
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
+  scroll-padding-inline: max(calc((100vw - 1260px) / 2), clamp(24px, 4vw, 72px));
   cursor: grab;
   /* The scrollbar is noise under a row of cards; the progress bar below is
      the affordance instead. */
@@ -54,12 +55,15 @@
   /* Starts and ends level with the page gutter, so the first card lines up
      with the heading above it while the row still bleeds off the edges. */
   padding-inline: max(calc((100vw - 1260px) / 2), clamp(24px, 4vw, 72px));
+  /* A little extra past the last card so five can settle without touching the
+     edge, matching the gutter the first card opens on. */
+  padding-right: max(calc((100vw - 1260px) / 2 + 40px), clamp(64px, 6vw, 112px));
 }
 
 /* ---------- cards ---------- */
 
 .aud-card {
-  scroll-snap-align: center;
+  scroll-snap-align: start;
   flex: 0 0 clamp(280px, 27vw, 380px);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);

@@ -71,15 +71,30 @@ export default function Audiences() {
     const el = track.current;
     if (!el) return;
     const box = el.getBoundingClientRect();
-    const mid = box.left + box.width / 2;
+    const max = el.scrollWidth - el.clientWidth;
+    const prog = max > 0 ? el.scrollLeft / max : 0;
+
+    /* The focal point TRAVELS with the scroll rather than sitting at the
+       track's centre.
+
+       Pinned to the centre, the first card can never be the focused one,
+       because at scroll zero the middle of the viewport already falls on the
+       second card; the same happens in reverse at the far end, which left the
+       row opening on 02 and closing on 04. Sliding the focus from the left
+       edge to the right edge as the track scrolls means card one is in focus
+       when you arrive and card five when you reach the end, with no dead
+       padding needed at either end to fake it. */
+    const first = el.querySelector('.aud-card');
+    const half = first ? first.getBoundingClientRect().width / 2 : 0;
+    const pad = 24;
+    const focus = (box.left + half + pad) + prog * (box.width - 2 * (half + pad));
+
     el.querySelectorAll('.aud-card').forEach((c) => {
       const r = c.getBoundingClientRect();
-      // 0 at the centre of the track, 1 roughly one card away from it.
-      const d = Math.min(1, Math.abs(r.left + r.width / 2 - mid) / (r.width * 1.35));
+      const d = Math.min(1, Math.abs(r.left + r.width / 2 - focus) / (r.width * 1.35));
       c.style.setProperty('--d', d.toFixed(3));
     });
-    const max = el.scrollWidth - el.clientWidth;
-    setP(max > 0 ? el.scrollLeft / max : 0);
+    setP(prog);
   }, []);
 
   useEffect(() => {

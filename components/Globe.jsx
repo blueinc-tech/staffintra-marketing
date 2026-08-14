@@ -91,10 +91,6 @@ export default function Globe({ className = '' }) {
     const draw = (t) => {
       const w = cv.width;
       const h = cv.height;
-      // Sits low and right, so the sphere reads as bigger than its panel.
-      const R = Math.min(w, h) * 0.62 * (0.94 + 0.06 * e);
-      const cx = w * 0.62;
-      const cy = h * 0.52;
 
       const dt = last ? Math.min(t - last, 60) : 16;
       if (!reduced) {
@@ -110,6 +106,14 @@ export default function Globe({ className = '' }) {
       const gShell = win(0, 0.35);
       const gCoast = win(0.25, 0.75);
       const gLand = win(0.4, 1);
+
+      /* Geometry has to come AFTER the progress block: R reads `e`, and a
+         const cannot be read before its own declaration. Computing it above
+         threw on every frame and left the canvas blank. */
+      // Sits low and right, so the sphere reads as bigger than its panel.
+      const R = Math.min(w, h) * 0.62 * (0.94 + 0.06 * e);
+      const cx = w * 0.62;
+      const cy = h * 0.52;
 
       const cs = Math.cos(spin);
       const sn = Math.sin(spin);
